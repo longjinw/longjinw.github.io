@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>markdown简易上手</title>
-    <url>/2024/06/23/markdown%E7%AE%80%E6%98%93%E4%B8%8A%E6%89%8B/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>hexo+butterfly+Github</title>
     <url>/2024/06/23/hexo-butterfly-Github/</url>
     <content><![CDATA[<h3 id="配置butterfly时总结出来的的经验">配置butterfly时总结出来的的经验</h3>
@@ -21,227 +16,9 @@
 </ol>
 <h3 id="用代码说话，两个配置文件最容易出问题">用代码说话，两个配置文件最容易出问题</h3>
 <h4 id="config-butterfly-yml">_config.butterfly.yml</h4>
-<pre><code class="language-YAML"># 如果你用vs编程发现最后主页中文是乱码，
-#是因为vs默认生成的文件不按照utf-8，请按照这个解决 https://blog.csdn.net/qq_41868108/article/details/105750175
-#浏览器图标修改
-favicon: /image/luogic.jpg
-#导航栏设置 最上面的一栏，logo是最左边的小圈圈
-nav:
-  logo: /image/微信图片_202406231044301.jpg
-  display_title: true
-  fixed: false # fixed navigation bar    
-post_asset_folder: true 
-
-#这里是右上角的设置 格式是，/文件夹路劲/|| fas图标
-#（一定要建立文件夹，不如找不到会报错） 
-#这里的fas图标 它用的是一个公司发行的标准图标图
-menu:
-  首页: / || fas fa-home
-  分类: /categories/ || fas fa-folder-open
-  时间轴: /archives/ || fas fa-archive
-  标签: /tags/ || fas fa-tags
-  其他||fa fa-heartbeat:
-    音乐: /music/ || fas fa-music
-    照片: /Gallery/ || fas fa-images
-    电影: /movies/ || fas fa-video
-
-#网站副标题，中间标题下面一点点
-# 主页subtitle
-subtitle:
-  enable: true
-  # Typewriter Effect (打字效果)
-  effect: true
-  startDelay: 300 # time before typing starts in milliseconds
-  typeSpeed: 200 # type speed in milliseconds
-  backSpeed: 800 # backspacing speed in milliseconds
-  # loop (循环打字)
-  loop: true
-  # source 调用三方服务
-  # source: false 开关调用
-  # subtitle 会先显示 source , 再显示 sub 的內容
-  source: true
-  # 如果关闭打字效果，subtitle 只会显示 sub 的第一行文字
-  sub:
-    - 飒飒西风满院栽，蕊寒香冷蝶难来
-    - 他年我若为青帝，报与桃花一处开
-
-#页面 右侧个人信息相关的设置
-#头像 如果报错或者显示的是吃豆小人，检查你的名称，一定要正确
-avatar:
-  img: /image/luogic.jpg
-  #effect: true # 头像会一直转，转的贼快，太鬼畜了（emmm，超级抽象，别设置
-
-#顶部图片设置，就是主页的那张背景图，建议设置400px，默认的全屏容易让人找不到博客在哪里
-#
-index_img: /image/流萤.jpg
-default_top_img: /image/流萤.jpg
-index_top_img_height:  #顶部图高度
-
-#背景动态
-canvas_fluttering_ribbon:
-  enable: true
-  mobile: false # false 手机端不显示 true 手机端显示
-
-
-#页面加载动画
-#加载动画
-preloader:
-  enable: true
-  source: 1 #可选值1=fullpage或2=progress bar，可查看https://codebyzach.github.io/pace/
-  pace_css_url: 
-
-#池塘养鱼（最底部）+渐变色
-inject:
- head:
-  - &lt;script src=&quot;/styles/fish.js&quot;&gt;&lt;/script&gt;
-  - &lt;script src=&quot;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&quot;&gt;&lt;/script&gt;
-  - &lt;link rel=&quot;stylesheet&quot; href=&quot;/styles/main.css&quot;&gt;   
- bottom:
-       - &lt;script src=&quot;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&quot;&gt;&lt;/script&gt;
-       - &lt;script src=&quot;https://cdn.jsdelivr.net/gh/xiabo2/CDN@latest/fishes.js&quot;&gt;&lt;/script&gt;
-
-#搜索功能
-# Local search
-local_search:
-  enable: true
-  # Preload the search data when the page loads.
-  preload: false
-  # Show top n results per article, show all results by setting to -1
-  top_n_per_article: 3
-  # Unescape html strings to the readable one.
-  unescape: false
-  CDN:
-#数学公式支持
-katex:
-  enable: true
-  # true 表示每一页都加载katex.js
-  # false 需要时加载，须在使用的Markdown Front-matter 加上 katex: true
-  per_page: false
-  hide_scrollbar: true
-
-#### _config.yml
-```YAML
-# Hexo Configuration
-## Docs: https://hexo.io/docs/configuration.html
-## Source: https://github.com/hexojs/hexo/
-
-# Site
-title: 龙锦
-subtitle: ''
-description: '买不起茅台 '
-keywords:
-author: 龙金伟
-language: zh-CN
-timezone: ''
-
-# URL
-## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://username.github.io
-permalink: :year/:month/:day/:title/
-permalink_defaults:
-pretty_urls:
-  trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
-  trailing_html: true # Set to false to remove trailing '.html' from permalinks
-
-# Directory
-source_dir: source
-public_dir: public
-tag_dir: tags
-archive_dir: archives
-category_dir: categories
-code_dir: downloads/code
-i18n_dir: :lang
-skip_render:
-
-# Writing
-new_post_name: :title.md # File name of new posts
-default_layout: post
-titlecase: false # Transform title into titlecase
-external_link:
-  enable: true # Open external links in new tab
-  field: site # Apply to the whole site
-  exclude: ''
-filename_case: 0
-render_drafts: false
-post_asset_folder: false
-relative_link: false
-future: true
-syntax_highlighter: highlight.js
-highlight:
-  line_number: true
-  auto_detect: false
-  tab_replace: ''
-  wrap: true
-  hljs: false
-prismjs:
-  preprocess: true
-  line_number: true
-  tab_replace: ''
-
-# Home page setting
-# path: Root path for your blogs index page. (default = '')
-# per_page: Posts displayed per page. (0 = disable pagination)
-# order_by: Posts order. (Order by date descending by default)
-index_generator:
-  path: ''
-  per_page: 10
-  order_by: -date
-
-# Category &amp; Tag
-default_category: uncategorized
-category_map:
-tag_map:
-
-# Metadata elements
-## https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
-meta_generator: true
-
-# Date / Time format
-## Hexo uses Moment.js to parse and display date
-## You can customize the date format as defined in
-## http://momentjs.com/docs/#/displaying/format/
-date_format: YYYY-MM-DD
-time_format: HH:mm:ss
-## updated_option supports 'mtime', 'date', 'empty'
-updated_option: 'mtime'
-
-# Pagination
-## Set per_page to 0 to disable pagination
-per_page: 10
-pagination_dir: page
-
-# Include / Exclude file(s)
-## include:/exclude: options only apply to the 'source/' folder
-include:
-exclude:
-ignore:
-
-# Extensions
-## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
-theme: butterfly
-
-
-# Deployment
-## Docs: https://hexo.io/docs/one-command-deployment
-# deploy:
-#   type: ''
-deploy:
-  type: git
-  repo: https://github.com/longjinw/longjinw.github.io.git
-  branch: main
-  # message: Site updated: &#123;&#123; now('YYYY-MM-DD HH:mm:ss') &#125;&#125;)
-#搜索
-search:
-  path: search.xml
-  field: post
-  content: true
-  format: html
-#数学支chi
-markdown:
-    plugins:
-      - '@renbaoshuo/markdown-it-katex'
-</code></pre>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如果你用vs编程发现最后主页中文是乱码，</span></span><br><span class="line"><span class="comment">#是因为vs默认生成的文件不按照utf-8，请按照这个解决 https://blog.csdn.net/qq_41868108/article/details/105750175</span></span><br><span class="line"><span class="comment">#浏览器图标修改</span></span><br><span class="line"><span class="attr">favicon:</span> <span class="string">/image/luogic.jpg</span></span><br><span class="line"><span class="comment">#导航栏设置 最上面的一栏，logo是最左边的小圈圈</span></span><br><span class="line"><span class="attr">nav:</span></span><br><span class="line">  <span class="attr">logo:</span> <span class="string">/image/微信图片_202406231044301.jpg</span></span><br><span class="line">  <span class="attr">display_title:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">fixed:</span> <span class="literal">false</span> <span class="comment"># fixed navigation bar    </span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#这里是右上角的设置 格式是，/文件夹路劲/|| fas图标</span></span><br><span class="line"><span class="comment">#（一定要建立文件夹，不如找不到会报错） </span></span><br><span class="line"><span class="comment">#这里的fas图标 它用的是一个公司发行的标准图标图</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="string">首页:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="string">分类:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-folder-open</span></span><br><span class="line">  <span class="string">时间轴:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="string">标签:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="string">其他||fa</span> <span class="attr">fa-heartbeat:</span></span><br><span class="line">    <span class="string">音乐:</span> <span class="string">/music/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-music</span></span><br><span class="line">    <span class="string">照片:</span> <span class="string">/Gallery/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-images</span></span><br><span class="line">    <span class="string">电影:</span> <span class="string">/movies/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-video</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#网站副标题，中间标题下面一点点</span></span><br><span class="line"><span class="comment"># 主页subtitle</span></span><br><span class="line"><span class="attr">subtitle:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Typewriter Effect (打字效果)</span></span><br><span class="line">  <span class="attr">effect:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">startDelay:</span> <span class="number">300</span> <span class="comment"># time before typing starts in milliseconds</span></span><br><span class="line">  <span class="attr">typeSpeed:</span> <span class="number">200</span> <span class="comment"># type speed in milliseconds</span></span><br><span class="line">  <span class="attr">backSpeed:</span> <span class="number">800</span> <span class="comment"># backspacing speed in milliseconds</span></span><br><span class="line">  <span class="comment"># loop (循环打字)</span></span><br><span class="line">  <span class="attr">loop:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># source 调用三方服务</span></span><br><span class="line">  <span class="comment"># source: false 开关调用</span></span><br><span class="line">  <span class="comment"># subtitle 会先显示 source , 再显示 sub 的內容</span></span><br><span class="line">  <span class="attr">source:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># 如果关闭打字效果，subtitle 只会显示 sub 的第一行文字</span></span><br><span class="line">  <span class="attr">sub:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">飒飒西风满院栽，蕊寒香冷蝶难来</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">他年我若为青帝，报与桃花一处开</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#页面 右侧个人信息相关的设置</span></span><br><span class="line"><span class="comment">#头像 如果报错或者显示的是吃豆小人，检查你的名称，一定要正确</span></span><br><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="attr">img:</span> <span class="string">/image/luogic.jpg</span></span><br><span class="line">  <span class="comment">#effect: true # 头像会一直转，转的贼快，太鬼畜了（emmm，超级抽象，别设置</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#顶部图片设置，就是主页的那张背景图，建议设置400px，默认的全屏容易让人找不到博客在哪里</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">index_img:</span> <span class="string">/image/流萤.jpg</span></span><br><span class="line"><span class="attr">default_top_img:</span> <span class="string">/image/流萤.jpg</span></span><br><span class="line"><span class="attr">index_top_img_height:</span>  <span class="comment">#顶部图高度</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#背景动态</span></span><br><span class="line"><span class="attr">canvas_fluttering_ribbon:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">mobile:</span> <span class="literal">false</span> <span class="comment"># false 手机端不显示 true 手机端显示</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#页面加载动画</span></span><br><span class="line"><span class="comment">#加载动画</span></span><br><span class="line"><span class="attr">preloader:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">source:</span> <span class="number">1</span> <span class="comment">#可选值1=fullpage或2=progress bar，可查看https://codebyzach.github.io/pace/</span></span><br><span class="line">  <span class="attr">pace_css_url:</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#池塘养鱼（最底部）+渐变色</span></span><br><span class="line"><span class="attr">inject:</span></span><br><span class="line"> <span class="attr">head:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;/styles/fish.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&lt;link</span> <span class="string">rel=&quot;stylesheet&quot;</span> <span class="string">href=&quot;/styles/main.css&quot;&gt;</span>   </span><br><span class="line"> <span class="attr">bottom:</span></span><br><span class="line">       <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line">       <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;https://cdn.jsdelivr.net/gh/xiabo2/CDN@latest/fishes.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#搜索功能</span></span><br><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Preload the search data when the page loads.</span></span><br><span class="line">  <span class="attr">preload:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># Show top n results per article, show all results by setting to -1</span></span><br><span class="line">  <span class="attr">top_n_per_article:</span> <span class="number">3</span></span><br><span class="line">  <span class="comment"># Unescape html strings to the readable one.</span></span><br><span class="line">  <span class="attr">unescape:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">CDN:</span></span><br><span class="line"><span class="comment">#数学公式支持</span></span><br><span class="line"><span class="attr">katex:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># true 表示每一页都加载katex.js</span></span><br><span class="line">  <span class="comment"># false 需要时加载，须在使用的Markdown Front-matter 加上 katex: true</span></span><br><span class="line">  <span class="attr">per_page:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">hide_scrollbar:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h4 id="config-yml">_config.yml</h4>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Hexo Configuration</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/configuration.html</span></span><br><span class="line"><span class="comment">## Source: https://github.com/hexojs/hexo/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">龙锦</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;买不起茅台 &#x27;</span></span><br><span class="line"><span class="attr">keywords:</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">龙金伟</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://username.github.io</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Directory</span></span><br><span class="line"><span class="attr">source_dir:</span> <span class="string">source</span></span><br><span class="line"><span class="attr">public_dir:</span> <span class="string">public</span></span><br><span class="line"><span class="attr">tag_dir:</span> <span class="string">tags</span></span><br><span class="line"><span class="attr">archive_dir:</span> <span class="string">archives</span></span><br><span class="line"><span class="attr">category_dir:</span> <span class="string">categories</span></span><br><span class="line"><span class="attr">code_dir:</span> <span class="string">downloads/code</span></span><br><span class="line"><span class="attr">i18n_dir:</span> <span class="string">:lang</span></span><br><span class="line"><span class="attr">skip_render:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Writing</span></span><br><span class="line"><span class="attr">new_post_name:</span> <span class="string">:title.md</span> <span class="comment"># File name of new posts</span></span><br><span class="line"><span class="attr">default_layout:</span> <span class="string">post</span></span><br><span class="line"><span class="attr">titlecase:</span> <span class="literal">false</span> <span class="comment"># Transform title into titlecase</span></span><br><span class="line"><span class="attr">external_link:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># Open external links in new tab</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">site</span> <span class="comment"># Apply to the whole site</span></span><br><span class="line">  <span class="attr">exclude:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">filename_case:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">render_drafts:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">relative_link:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">future:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">syntax_highlighter:</span> <span class="string">highlight.js</span></span><br><span class="line"><span class="attr">highlight:</span></span><br><span class="line">  <span class="attr">line_number:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">auto_detect:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">tab_replace:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">  <span class="attr">wrap:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">hljs:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">prismjs:</span></span><br><span class="line">  <span class="attr">preprocess:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">line_number:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">tab_replace:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Home page setting</span></span><br><span class="line"><span class="comment"># path: Root path for your blogs index page. (default = &#x27;&#x27;)</span></span><br><span class="line"><span class="comment"># per_page: Posts displayed per page. (0 = disable pagination)</span></span><br><span class="line"><span class="comment"># order_by: Posts order. (Order by date descending by default)</span></span><br><span class="line"><span class="attr">index_generator:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">  <span class="attr">per_page:</span> <span class="number">10</span></span><br><span class="line">  <span class="attr">order_by:</span> <span class="string">-date</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Category &amp; Tag</span></span><br><span class="line"><span class="attr">default_category:</span> <span class="string">uncategorized</span></span><br><span class="line"><span class="attr">category_map:</span></span><br><span class="line"><span class="attr">tag_map:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Metadata elements</span></span><br><span class="line"><span class="comment">## https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta</span></span><br><span class="line"><span class="attr">meta_generator:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Date / Time format</span></span><br><span class="line"><span class="comment">## Hexo uses Moment.js to parse and display date</span></span><br><span class="line"><span class="comment">## You can customize the date format as defined in</span></span><br><span class="line"><span class="comment">## http://momentjs.com/docs/#/displaying/format/</span></span><br><span class="line"><span class="attr">date_format:</span> <span class="string">YYYY-MM-DD</span></span><br><span class="line"><span class="attr">time_format:</span> <span class="string">HH:mm:ss</span></span><br><span class="line"><span class="comment">## updated_option supports &#x27;mtime&#x27;, &#x27;date&#x27;, &#x27;empty&#x27;</span></span><br><span class="line"><span class="attr">updated_option:</span> <span class="string">&#x27;mtime&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Pagination</span></span><br><span class="line"><span class="comment">## Set per_page to 0 to disable pagination</span></span><br><span class="line"><span class="attr">per_page:</span> <span class="number">10</span></span><br><span class="line"><span class="attr">pagination_dir:</span> <span class="string">page</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Include / Exclude file(s)</span></span><br><span class="line"><span class="comment">## include:/exclude: options only apply to the &#x27;source/&#x27; folder</span></span><br><span class="line"><span class="attr">include:</span></span><br><span class="line"><span class="attr">exclude:</span></span><br><span class="line"><span class="attr">ignore:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">butterfly</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/one-command-deployment</span></span><br><span class="line"><span class="comment"># deploy:</span></span><br><span class="line"><span class="comment">#   type: &#x27;&#x27;</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/longjinw/longjinw.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br><span class="line">  <span class="comment"># message: Site updated: &#123;&#123; now(&#x27;YYYY-MM-DD HH:mm:ss&#x27;) &#125;&#125;)</span></span><br><span class="line"><span class="comment">#搜索</span></span><br><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">content:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line"><span class="comment">#数学支chi</span></span><br><span class="line"><span class="attr">markdown:</span></span><br><span class="line">    <span class="attr">plugins:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;@renbaoshuo/markdown-it-katex&#x27;</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>hexo</tag>
@@ -267,5 +44,108 @@ markdown:
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>相关: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>markdown简易上手</title>
+    <url>/2024/06/23/markdown%E7%AE%80%E6%98%93%E4%B8%8A%E6%89%8B/</url>
+    <content><![CDATA[<h1>markdown简易上手</h1>
+<h3 id="编写渠道">编写渠道</h3>
+<ul>
+<li>软件：收费：<a href="https://typora.ymzhxing.cn/index.html?bd_vid=12314572084174744930%22%E4%B8%AD%E6%96%87%E7%BD%91%E7%AB%99%22">Typora</a>  不收费：<a href="https://apps.microsoft.com/detail/xp9khm4bk9fz7q?launch=true&amp;mode=full&amp;hl=zh-cn&amp;gl=cn&amp;ocid=bingwebsearch%22%E5%AE%98%E7%BD%91%22">VS Code</a>。</li>
+<li>网站：程序员聚集网站都有这个功能如<a href="https://www.csdn.net/">CSDN</a>、<a href="https://github.com/">Github</a>。</li>
+</ul>
+<h3 id="VS-studio配置编辑器的链接">VS studio配置编辑器的链接</h3>
+<ul>
+<li>这告诉你怎么增加一个Markdown的扩展：<a href="https://blog.csdn.net/qq_35504602/article/details/108054416%22%E9%85%8D%E7%BD%AE%E8%BF%9E%E6%8E%A5%22">VS studio</a></li>
+</ul>
+<h3 id="起源与定义">起源与定义</h3>
+<ul>
+<li>起源：由约翰·格鲁伯（John Gruber）创建，旨在简化纯文本格式的文档编写。</li>
+<li>定义：一种纯文本格式的标记语言，可选择性地转换为有效的XHTML（或HTML）。</li>
+<li>特性：语法简单，纯文本，可使用文本编辑器打开，并化成其他格式（HTML文档等）。</li>
+</ul>
+<h3 id="常用语法">常用语法</h3>
+<ul>
+<li>标题: #+“空格”+标题内容，得到标题，多个#号得到多级标题，最多6级；</li>
+<li>引用：&gt;+“空格”+内容，得到引用内容</li>
+<li>有序列表：序号+“空格”+内容<br>
+ 1 序列一<br>
+ 2 序列二<br>
+ 3 序列三</li>
+<li>无序列表：-+“空格”+内容
+<ul>
+<li>a</li>
+<li>b</li>
+<li>c</li>
+</ul>
+</li>
+<li>任务列表：-+‘‘空格’’+[ ],[]里面也要有空格
+<ul>
+<li>[ ] 任务一</li>
+<li>[ ] 任务二</li>
+<li>[ ] 任务三</li>
+</ul>
+</li>
+<li>代码块：```c 三个反引号（键盘上和波浪线在一起）+语言  <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">在这里插入代码 </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>数学公式：$$,中间加公式（不会也不打算学，就不做实列了</li>
+<li>表格：|A|B|C|	表格头<br>
+   |:—|—: | :—: |对齐方式：左。右。居中。<br>
+   |qq|eee|wwww |打完按enter</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">A</th>
+<th style="text-align:right">B</th>
+<th style="text-align:center">C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">qqq</td>
+<td style="text-align:right">eee</td>
+<td style="text-align:center">www</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>脚注：ABC [ ^abc]————在文末或者下一行+[ ^abc]:注释内容就行<br>
+ABC[^abc]<br>
+[^abc]:skfkdsaif</li>
+<li>横线：— 三个-生成一条横线，打完按enter</li>
+</ul>
+<hr>
+<ul>
+<li>链接：[ 百度]( caidu m&quot;注释&quot;) 会得到一个链接,中间的网址正确的话<br>
+ <a href="baidu.com%22%E6%B3%A8%E9%87%8A%22"> 百度</a></li>
+<li>图片：![百度]（）括号里面是图片链接</li>
+<li>视频：直接找到网站上的视频，复制嵌入链接粘贴即可</li>
+</ul>
+<h3 id="行内格式">行内格式</h3>
+<ul>
+<li>斜体：**</li>
+<li>加粗：****</li>
+<li>编写行内代码：''反引号</li>
+</ul>
+<p><code>ssss</code></p>
+<ul>
+<li>下划线：&lt; u&gt;&lt; /u&gt;</li>
+<li>行内数学公式：$$</li>
+<li>高亮文字：== a==</li>
+<li>首行缩进：&amp;emsp；</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>c++基础</title>
+    <url>/2024/06/23/c-%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[]]></content>
+      <tags>
+        <tag>c++</tag>
+      </tags>
   </entry>
 </search>
