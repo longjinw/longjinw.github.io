@@ -58,6 +58,80 @@
 ]]></content>
   </entry>
   <entry>
+    <title>hexo文章主题头内各个数据的意义</title>
+    <url>/2024/06/24/hexo%E6%96%87%E7%AB%A0%E4%B8%BB%E9%A2%98%E5%A4%B4%E9%87%8C%E5%A1%AB%E5%86%99%E7%9A%84%E6%84%8F%E6%80%9D/</url>
+    <content><![CDATA[<h3 id="页面编写（page）">页面编写（page）</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">写法</th>
+<th style="text-align:left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">title</td>
+<td style="text-align:left">【必需】页面标题</td>
+</tr>
+<tr>
+<td style="text-align:left">date</td>
+<td style="text-align:left">【必需】页面创建日期</td>
+</tr>
+<tr>
+<td style="text-align:left">type</td>
+<td style="text-align:left">【必需】标签、分类和友情链接三个页面需要配置</td>
+</tr>
+</tbody>
+</table>
+<h3 id="文章编辑（port1）">文章编辑（port1）</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">写法</th>
+<th style="text-align:left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">title</td>
+<td style="text-align:left">【必需】文章标题</td>
+</tr>
+<tr>
+<td style="text-align:left">date</td>
+<td style="text-align:left">【必需】文章创建日期</td>
+</tr>
+<tr>
+<td style="text-align:left">tagas</td>
+<td style="text-align:left">【可选】文章标签</td>
+</tr>
+<tr>
+<td style="text-align:left">categories</td>
+<td style="text-align:left">【可选】文章分类</td>
+</tr>
+<tr>
+<td style="text-align:left">keywords</td>
+<td style="text-align:left">【可选】文章关键字</td>
+</tr>
+<tr>
+<td style="text-align:left">description</td>
+<td style="text-align:left">【可选】文章描述</td>
+</tr>
+<tr>
+<td style="text-align:left">cover</td>
+<td style="text-align:left">【可选】文章图标</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>博客编写</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>markdown简易上手</title>
     <url>/2024/06/23/markdown%E7%AE%80%E6%98%93%E4%B8%8A%E6%89%8B/</url>
     <content><![CDATA[<h1>markdown简易上手</h1>
@@ -150,80 +224,6 @@ ABC[^abc]<br>
 ]]></content>
       <tags>
         <tag>markdown</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo文章主题头内各个数据的意义</title>
-    <url>/2024/06/24/hexo%E6%96%87%E7%AB%A0%E4%B8%BB%E9%A2%98%E5%A4%B4%E9%87%8C%E5%A1%AB%E5%86%99%E7%9A%84%E6%84%8F%E6%80%9D/</url>
-    <content><![CDATA[<h3 id="页面编写（page）">页面编写（page）</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">写法</th>
-<th style="text-align:left">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">title</td>
-<td style="text-align:left">【必需】页面标题</td>
-</tr>
-<tr>
-<td style="text-align:left">date</td>
-<td style="text-align:left">【必需】页面创建日期</td>
-</tr>
-<tr>
-<td style="text-align:left">type</td>
-<td style="text-align:left">【必需】标签、分类和友情链接三个页面需要配置</td>
-</tr>
-</tbody>
-</table>
-<h3 id="文章编辑（port1）">文章编辑（port1）</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">写法</th>
-<th style="text-align:left">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">title</td>
-<td style="text-align:left">【必需】文章标题</td>
-</tr>
-<tr>
-<td style="text-align:left">date</td>
-<td style="text-align:left">【必需】文章创建日期</td>
-</tr>
-<tr>
-<td style="text-align:left">tagas</td>
-<td style="text-align:left">【可选】文章标签</td>
-</tr>
-<tr>
-<td style="text-align:left">categories</td>
-<td style="text-align:left">【可选】文章分类</td>
-</tr>
-<tr>
-<td style="text-align:left">keywords</td>
-<td style="text-align:left">【可选】文章关键字</td>
-</tr>
-<tr>
-<td style="text-align:left">description</td>
-<td style="text-align:left">【可选】文章描述</td>
-</tr>
-<tr>
-<td style="text-align:left">cover</td>
-<td style="text-align:left">【可选】文章图标</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>博客编写</tag>
       </tags>
   </entry>
 </search>
