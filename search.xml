@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>c++基础</title>
+    <url>/2024/06/23/c-%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>c++</category>
+      </categories>
+      <tags>
+        <tag>c++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo+butterfly+Github</title>
     <url>/2024/06/23/hexo-butterfly-Github/</url>
     <content><![CDATA[<h3 id="配置butterfly时总结出来的的经验">配置butterfly时总结出来的的经验</h3>
@@ -44,6 +55,80 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>相关: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>hexo文章主题头内各个数据的意义</title>
+    <url>/2024/06/24/hexo%E6%96%87%E7%AB%A0%E4%B8%BB%E9%A2%98%E5%A4%B4%E9%87%8C%E5%A1%AB%E5%86%99%E7%9A%84%E6%84%8F%E6%80%9D/</url>
+    <content><![CDATA[<h3 id="页面编写（page）">页面编写（page）</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">写法</th>
+<th style="text-align:left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">title</td>
+<td style="text-align:left">【必需】页面标题</td>
+</tr>
+<tr>
+<td style="text-align:left">date</td>
+<td style="text-align:left">【必需】页面创建日期</td>
+</tr>
+<tr>
+<td style="text-align:left">type</td>
+<td style="text-align:left">【必需】标签、分类和友情链接三个页面需要配置</td>
+</tr>
+</tbody>
+</table>
+<h3 id="文章编辑（port1）">文章编辑（port1）</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">写法</th>
+<th style="text-align:left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">title</td>
+<td style="text-align:left">【必需】文章标题</td>
+</tr>
+<tr>
+<td style="text-align:left">date</td>
+<td style="text-align:left">【必需】文章创建日期</td>
+</tr>
+<tr>
+<td style="text-align:left">tagas</td>
+<td style="text-align:left">【可选】文章标签</td>
+</tr>
+<tr>
+<td style="text-align:left">categories</td>
+<td style="text-align:left">【可选】文章分类</td>
+</tr>
+<tr>
+<td style="text-align:left">keywords</td>
+<td style="text-align:left">【可选】文章关键字</td>
+</tr>
+<tr>
+<td style="text-align:left">description</td>
+<td style="text-align:left">【可选】文章描述</td>
+</tr>
+<tr>
+<td style="text-align:left">cover</td>
+<td style="text-align:left">【可选】文章图标</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>博客编写</tag>
+      </tags>
   </entry>
   <entry>
     <title>markdown简易上手</title>
@@ -138,14 +223,6 @@ ABC[^abc]<br>
 ]]></content>
       <tags>
         <tag>markdown</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>c++基础</title>
-    <url>/2024/06/23/c-%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[]]></content>
-      <tags>
-        <tag>c++</tag>
       </tags>
   </entry>
 </search>
