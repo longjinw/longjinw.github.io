@@ -1,0 +1,450 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>STL标准模板库 | 龙锦</title><meta name="author" content="龙金伟"><meta name="copyright" content="龙金伟"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="STL标准模板库的详细介绍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL标准模板库">
+<meta property="og:url" content="https://longjinw.github.io/2024/06/26/STL%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E5%BA%93/index.html">
+<meta property="og:site_name" content="龙锦">
+<meta property="og:description" content="STL标准模板库的详细介绍">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://longjinw.github.io/image/T2.jpg">
+<meta property="article:published_time" content="2024-06-26T13:57:46.000Z">
+<meta property="article:modified_time" content="2024-06-26T15:06:44.923Z">
+<meta property="article:author" content="龙金伟">
+<meta property="article:tag" content="STL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://longjinw.github.io/image/T2.jpg"><link rel="shortcut icon" href="/image/luogic.jpg"><link rel="canonical" href="https://longjinw.github.io/2024/06/26/STL%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E5%BA%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":3,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'STL标准模板库',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-26 23:06:44'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><script src="/styles/fish.js"></script><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><link rel="stylesheet" href="/styles/main.css"><meta name="generator" content="Hexo 7.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/image/luogic.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/image/T2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="龙锦"><img class="site-icon" src="/image/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_202406231044301.jpg"/><span class="site-name">龙锦</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">STL标准模板库</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-26T13:57:46.000Z" title="发表于 2024-06-26 21:57:46">2024-06-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-26T15:06:44.923Z" title="更新于 2024-06-26 23:06:44">2024-06-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/C/">C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="STL标准模板库"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="概述：">概述：</h3>
+<p>STL（Standard Template Library，标准模板库）是C++标准库的一部分，它提供了大量的模板类和函数，用于执行常见的算法和数据结构操作。STL的主要目的是提供一个统一、高效、可重用的数据结构和算法库，以减少程序员在编写这些基础代码时的重复工作。</p>
+<h3 id="优点：">优点：</h3>
+<ul>
+<li>STL 是 C++的一部分，因此不用额外安装什么，它被内建在你的编译器之内。</li>
+<li>程序员可以不用思考 STL 具体的实现过程，只要能够熟练使用 STL 就 OK 了。</li>
+<li>STL 具有高可重用性，高性能，高移植性，跨平台的优点。</li>
+</ul>
+<h3 id="组成：">组成：</h3>
+<ul>
+<li>容器、迭代器、算法、函数对象、适配器和分配器</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>示例</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>容器（Containers）</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>序列容器</td>
+<td><code>vector</code></td>
+<td>动态数组，支持快速随机访问</td>
+</tr>
+<tr>
+<td></td>
+<td><code>deque</code></td>
+<td>双端队列，支持在两端快速插入和删除</td>
+</tr>
+<tr>
+<td></td>
+<td><code>list</code></td>
+<td>双向链表，支持在任何位置快速插入和删除</td>
+</tr>
+<tr>
+<td>关联容器</td>
+<td><code>set</code></td>
+<td>有序集合，不允许重复元素</td>
+</tr>
+<tr>
+<td></td>
+<td><code>multiset</code></td>
+<td>有序集合，允许重复元素</td>
+</tr>
+<tr>
+<td></td>
+<td><code>map</code></td>
+<td>键值对集合，键唯一，值可重复</td>
+</tr>
+<tr>
+<td></td>
+<td><code>multimap</code></td>
+<td>键值对集合，键可重复</td>
+</tr>
+<tr>
+<td>容器适配器</td>
+<td><code>stack</code></td>
+<td>后进先出（LIFO）容器</td>
+</tr>
+<tr>
+<td></td>
+<td><code>queue</code></td>
+<td>先进先出（FIFO）容器</td>
+</tr>
+<tr>
+<td></td>
+<td><code>priority_queue</code></td>
+<td>优先级队列，元素根据优先级排序</td>
+</tr>
+<tr>
+<td><strong>迭代器（Iterators）</strong></td>
+<td></td>
+<td>访问容器中元素的通用接口</td>
+</tr>
+<tr>
+<td></td>
+<td><code>begin()</code></td>
+<td>返回指向容器第一个元素的迭代器</td>
+</tr>
+<tr>
+<td></td>
+<td><code>end()</code></td>
+<td>返回指向容器尾后位置的迭代器（不指向任何元素）</td>
+</tr>
+<tr>
+<td><strong>算法（Algorithms）</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><code>sort()</code></td>
+<td>对容器中的元素进行排序</td>
+</tr>
+<tr>
+<td></td>
+<td><code>find()</code></td>
+<td>在容器中查找元素</td>
+</tr>
+<tr>
+<td></td>
+<td><code>copy()</code></td>
+<td>复制容器中的元素</td>
+</tr>
+<tr>
+<td></td>
+<td>…</td>
+<td>其他各种算法，如 <code>remove()</code>, <code>reverse()</code>, <code>binary_search()</code> 等</td>
+</tr>
+<tr>
+<td><strong>函数对象（Function Objects）</strong></td>
+<td></td>
+<td>类似于函数，但可以作为对象传递和存储</td>
+</tr>
+<tr>
+<td></td>
+<td><code>less&lt;T&gt;</code></td>
+<td>比较两个对象是否小于（默认用于<code>set</code>, <code>map</code>等）</td>
+</tr>
+<tr>
+<td></td>
+<td><code>greater&lt;T&gt;</code></td>
+<td>比较两个对象是否大于</td>
+</tr>
+<tr>
+<td></td>
+<td>自定义函数对象</td>
+<td>自定义比较或操作函数</td>
+</tr>
+<tr>
+<td><strong>适配器（Adapters）</strong></td>
+<td></td>
+<td>修改已有接口以适应不同需求</td>
+</tr>
+<tr>
+<td></td>
+<td><code>reverse_iterator</code></td>
+<td>反向迭代器，用于反向遍历容器</td>
+</tr>
+<tr>
+<td></td>
+<td><code>istream_iterator</code></td>
+<td>读取输入流中的元素</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ostream_iterator</code></td>
+<td>将元素写入输出流</td>
+</tr>
+<tr>
+<td><strong>分配器（Allocators）</strong></td>
+<td></td>
+<td>管理容器中的内存分配</td>
+</tr>
+<tr>
+<td></td>
+<td><code>allocator&lt;T&gt;</code></td>
+<td>默认分配器，使用<code>new</code>和<code>delete</code></td>
+</tr>
+<tr>
+<td></td>
+<td>自定义分配器</td>
+<td>根据特定需求管理内存</td>
+</tr>
+</tbody>
+</table>
+<h3 id="常用容器">常用容器</h3>
+<h4 id="string容器">string容器</h4>
+<h5 id="构造函数：">构造函数：</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>();<span class="comment">//创建一个空的字符串 例如: string str;      </span></span><br><span class="line"><span class="built_in">string</span>(<span class="type">const</span> string&amp; str);<span class="comment">//使用一个string对象初始化另一个string对象</span></span><br><span class="line"><span class="built_in">string</span>(<span class="type">const</span> <span class="type">char</span>* s);<span class="comment">//使用字符串s初始化</span></span><br><span class="line"><span class="built_in">string</span>(<span class="type">int</span> n, <span class="type">char</span> c);<span class="comment">//使用n个字符c初始化 </span></span><br></pre></td></tr></table></figure>
+<h5 id="基本赋值：">基本赋值：</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">string&amp; <span class="keyword">operator</span>=(<span class="type">const</span> <span class="type">char</span>* s);<span class="comment">//char*类型字符串 赋值给当前的字符串</span></span><br><span class="line">string&amp; <span class="keyword">operator</span>=(<span class="type">const</span> string &amp;s);<span class="comment">//把字符串s赋给当前的字符串</span></span><br><span class="line">string&amp; <span class="keyword">operator</span>=(<span class="type">char</span> c);<span class="comment">//字符赋值给当前的字符串</span></span><br><span class="line"><span class="function">string&amp; <span class="title">assign</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s)</span></span>;<span class="comment">//把字符串s赋给当前的字符串</span></span><br><span class="line"><span class="function">string&amp; <span class="title">assign</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s, <span class="type">int</span> n)</span></span>;<span class="comment">//把字符串s的前n个字符赋给当前的字符串</span></span><br><span class="line"><span class="function">string&amp; <span class="title">assign</span><span class="params">(<span class="type">const</span> string &amp;s)</span></span>;<span class="comment">//把字符串s赋给当前字符串</span></span><br><span class="line"><span class="function">string&amp; <span class="title">assign</span><span class="params">(<span class="type">int</span> n, <span class="type">char</span> c)</span></span>;<span class="comment">//用n个字符c赋给当前字符串</span></span><br><span class="line"><span class="function">string&amp; <span class="title">assign</span><span class="params">(<span class="type">const</span> string &amp;s, <span class="type">int</span> start, <span class="type">int</span> n)</span></span>;<span class="comment">//将s从start开始n个字符赋值给字符</span></span><br></pre></td></tr></table></figure>
+<h5 id="存取字符：">存取字符：</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span>&amp; <span class="keyword">operator</span>[](<span class="type">int</span> n);<span class="comment">//通过[]方式取字符</span></span><br><span class="line"><span class="function"><span class="type">char</span>&amp; <span class="title">at</span><span class="params">(<span class="type">int</span> n)</span></span>;<span class="comment">//通过at方法获取字符</span></span><br></pre></td></tr></table></figure>
+<h5 id="拼接操作：">拼接操作：</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">string&amp; <span class="keyword">operator</span>+=(<span class="type">const</span> string&amp; str);<span class="comment">//重载+=操作符</span></span><br><span class="line">string&amp; <span class="keyword">operator</span>+=(<span class="type">const</span> <span class="type">char</span>* str);<span class="comment">//重载+=操作符</span></span><br><span class="line">string&amp; <span class="keyword">operator</span>+=(<span class="type">const</span> <span class="type">char</span> c);<span class="comment">//重载+=操作符</span></span><br><span class="line"><span class="function">string&amp; <span class="title">append</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s)</span></span>;<span class="comment">//把字符串s连接到当前字符串结尾</span></span><br><span class="line"><span class="function">string&amp; <span class="title">append</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s, <span class="type">int</span> n)</span></span>;<span class="comment">//把字符串s的前n个字符连接到当前字符串结尾</span></span><br><span class="line"><span class="function">string&amp; <span class="title">append</span><span class="params">(<span class="type">const</span> string &amp;s)</span></span>;<span class="comment">//同operator+=()</span></span><br><span class="line"><span class="function">string&amp; <span class="title">append</span><span class="params">(<span class="type">const</span> string &amp;s, <span class="type">int</span> pos, <span class="type">int</span> n)</span></span>;<span class="comment">//把字符串s中从pos开始的n个字符连接到当前字符串结尾</span></span><br><span class="line"><span class="function">string&amp; <span class="title">append</span><span class="params">(<span class="type">int</span> n, <span class="type">char</span> c)</span></span>;<span class="comment">//在当前字符串结尾添加n个字符c</span></span><br></pre></td></tr></table></figure>
+<h5 id="查找替换：">查找替换：</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">const</span> string&amp; str, <span class="type">int</span> pos = <span class="number">0</span>)</span> <span class="type">const</span></span>; <span class="comment">//查找str第一次出现位置,从pos开始查找</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* s, <span class="type">int</span> pos = <span class="number">0</span>)</span> <span class="type">const</span></span>;  <span class="comment">//查找s第一次出现位置,从pos开始查找</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* s, <span class="type">int</span> pos, <span class="type">int</span> n)</span> <span class="type">const</span></span>;  <span class="comment">//从pos位置查找s的前n个字符第一次位置</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">const</span> <span class="type">char</span> c, <span class="type">int</span> pos = <span class="number">0</span>)</span> <span class="type">const</span></span>;  <span class="comment">//查找字符c第一次出现位置</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">rfind</span><span class="params">(<span class="type">const</span> string&amp; str, <span class="type">int</span> pos = npos)</span> <span class="type">const</span></span>;<span class="comment">//查找str最后一次位置,从pos开始查找</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">rfind</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* s, <span class="type">int</span> pos = npos)</span> <span class="type">const</span></span>;<span class="comment">//查找s最后一次出现位置,从pos开始查找</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">rfind</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* s, <span class="type">int</span> pos, <span class="type">int</span> n)</span> <span class="type">const</span></span>;<span class="comment">//从pos查找s的前n个字符最后一次位置</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">rfind</span><span class="params">(<span class="type">const</span> <span class="type">char</span> c, <span class="type">int</span> pos = <span class="number">0</span>)</span> <span class="type">const</span></span>; <span class="comment">//查找字符c最后一次出现位置</span></span><br><span class="line"><span class="function">string&amp; <span class="title">replace</span><span class="params">(<span class="type">int</span> pos, <span class="type">int</span> n, <span class="type">const</span> string&amp; str)</span></span>; <span class="comment">//替换从pos开始n个字符为字符串str</span></span><br><span class="line"><span class="function">string&amp; <span class="title">replace</span><span class="params">(<span class="type">int</span> pos, <span class="type">int</span> n, <span class="type">const</span> <span class="type">char</span>* s)</span></span>; <span class="comment">//替换从pos开始的n个字符为字符串s</span></span><br></pre></td></tr></table></figure>
+<h5 id="比较操作：">比较操作：</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">compare函数在&gt;时返回 1，&lt;时返回 -1，==时返回 0。</span></span><br><span class="line"><span class="comment">比较区分大小写，比较时参考字典顺序，排越前面的越小。</span></span><br><span class="line"><span class="comment">大写的A比小写的a小。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">compare</span><span class="params">(<span class="type">const</span> string &amp;s)</span> <span class="type">const</span></span>;<span class="comment">//与字符串s比较</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">compare</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s)</span> <span class="type">const</span></span>;<span class="comment">//与字符串s比较</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="取出子串：">取出子串：</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">substr</span><span class="params">(<span class="type">int</span> pos = <span class="number">0</span>, <span class="type">int</span> n = npos)</span> <span class="type">const</span></span>;<span class="comment">//返回由pos开始的n个字符组成的字符串</span></span><br></pre></td></tr></table></figure>
+<h5 id="插入删除：">插入删除：</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string&amp; <span class="title">insert</span><span class="params">(<span class="type">int</span> pos, <span class="type">const</span> <span class="type">char</span>* s)</span></span>; <span class="comment">//插入字符串</span></span><br><span class="line"><span class="function">string&amp; <span class="title">insert</span><span class="params">(<span class="type">int</span> pos, <span class="type">const</span> string&amp; str)</span></span>; <span class="comment">//插入字符串</span></span><br><span class="line"><span class="function">string&amp; <span class="title">insert</span><span class="params">(<span class="type">int</span> pos, <span class="type">int</span> n, <span class="type">char</span> c)</span></span>;<span class="comment">//在指定位置插入n个字符c</span></span><br><span class="line"><span class="function">string&amp; <span class="title">erase</span><span class="params">(<span class="type">int</span> pos, <span class="type">int</span> n = npos)</span></span>;<span class="comment">//删除从Pos开始的n个字符 </span></span><br></pre></td></tr></table></figure>
+<h5 id="c-style转换：">c-style转换：</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//string 转 char*</span></span><br><span class="line">string str = <span class="string">&quot;it&quot;</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* cstr = str.<span class="built_in">c_str</span>();</span><br><span class="line"><span class="comment">//char* 转 string </span></span><br><span class="line"><span class="type">char</span>* s = <span class="string">&quot;it&quot;</span>;</span><br><span class="line"><span class="function">string <span class="title">str</span><span class="params">(s)</span></span>;</span><br></pre></td></tr></table></figure>
+<h4 id="vector容器">vector容器</h4>
+<h5 id="构造函数">构造函数</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;T&gt; v; <span class="comment">//采用模板实现类实现，默认构造函数</span></span><br><span class="line"><span class="built_in">vector</span>(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>());<span class="comment">//将v[begin(), end())区间中的元素拷贝给本身。</span></span><br><span class="line"><span class="built_in">vector</span>(n, elem);<span class="comment">//构造函数将n个elem拷贝给本身。</span></span><br><span class="line"><span class="built_in">vector</span>(<span class="type">const</span> vector &amp;vec);<span class="comment">//拷贝构造函数。</span></span><br></pre></td></tr></table></figure>
+<h5 id="赋值操作">赋值操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">assign</span>(beg, end);<span class="comment">//将[beg, end)区间中的数据拷贝赋值给本身。</span></span><br><span class="line"><span class="built_in">assign</span>(n, elem);<span class="comment">//将n个elem拷贝赋值给本身。</span></span><br><span class="line">vector&amp; <span class="keyword">operator</span>=(<span class="type">const</span> vector  &amp;vec);<span class="comment">//重载等号操作符</span></span><br><span class="line"><span class="built_in">swap</span>(vec);<span class="comment">// 将vec与本身的元素互换。</span></span><br></pre></td></tr></table></figure>
+<h5 id="大小操作">大小操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">size</span>();<span class="comment">//返回容器中元素的个数</span></span><br><span class="line"><span class="built_in">empty</span>();<span class="comment">//判断容器是否为空</span></span><br><span class="line"><span class="built_in">resize</span>(<span class="type">int</span> num);<span class="comment">//重新指定容器的长度为num，若容器变长，则以默认值填充新位置。如果容器变短，则末尾超出容器长度的元素被删除。</span></span><br><span class="line"><span class="built_in">resize</span>(<span class="type">int</span> num, elem);<span class="comment">//重新指定容器的长度为num，若容器变长，则以elem值填充新位置。如果容器变短，则末尾超出容器长&gt;度的元素被删除。</span></span><br><span class="line"><span class="built_in">capacity</span>();<span class="comment">//容器的容量</span></span><br><span class="line"><span class="built_in">reserve</span>(<span class="type">int</span> len);<span class="comment">//容器预留len个元素长度，预留位置不初始化，元素不可访问。</span></span><br></pre></td></tr></table></figure>
+<h5 id="数据存取">数据存取</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">at</span>(<span class="type">int</span> idx); <span class="comment">//返回索引idx所指的数据，如果idx越界，抛出out_of_range异常。</span></span><br><span class="line"><span class="keyword">operator</span>[];<span class="comment">//返回索引idx所指的数据，越界时，运行直接报错</span></span><br><span class="line"><span class="built_in">front</span>();<span class="comment">//返回容器中第一个数据元素</span></span><br><span class="line"><span class="built_in">back</span>();<span class="comment">//返回容器中最后一个数据元素</span></span><br></pre></td></tr></table></figure>
+<h5 id="插入删除">插入删除</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">insert</span>(const_iterator pos, <span class="type">int</span> count,ele);<span class="comment">//迭代器指向位置pos插入count个元素ele.</span></span><br><span class="line"><span class="built_in">push_back</span>(ele); <span class="comment">//尾部插入元素ele</span></span><br><span class="line"><span class="built_in">pop_back</span>();<span class="comment">//删除最后一个元素</span></span><br><span class="line"><span class="built_in">erase</span>(const_iterator start, const_iterator end);<span class="comment">//删除迭代器从start到end之间的元素</span></span><br><span class="line"><span class="built_in">erase</span>(const_iterator pos);<span class="comment">//删除迭代器指向的元素</span></span><br><span class="line"><span class="built_in">clear</span>();<span class="comment">//删除容器中所有元素</span></span><br></pre></td></tr></table></figure>
+<h4 id="deque容器">deque容器</h4>
+<h5 id="构造函数-2">构造函数</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deque&lt;T&gt; deqT;<span class="comment">//默认构造形式</span></span><br><span class="line"><span class="built_in">deque</span>(beg, end);<span class="comment">//构造函数将[beg, end)区间中的元素拷贝给本身。</span></span><br><span class="line"><span class="built_in">deque</span>(n, elem);<span class="comment">//构造函数将n个elem拷贝给本身。</span></span><br><span class="line"><span class="built_in">deque</span>(<span class="type">const</span> deque &amp;deq);<span class="comment">//拷贝构造函数。</span></span><br></pre></td></tr></table></figure>
+<h5 id="赋值操作-2">赋值操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">assign</span>(beg, end);<span class="comment">//将[beg, end)区间中的数据拷贝赋值给本身。</span></span><br><span class="line"><span class="built_in">assign</span>(n, elem);<span class="comment">//将n个elem拷贝赋值给本身。</span></span><br><span class="line">deque&amp; <span class="keyword">operator</span>=(<span class="type">const</span> deque &amp;deq); <span class="comment">//重载等号操作符 </span></span><br><span class="line"><span class="built_in">swap</span>(deq);<span class="comment">// 将deq与本身的元素互换</span></span><br></pre></td></tr></table></figure>
+<h5 id="大小操作-2">大小操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deque.<span class="built_in">size</span>();<span class="comment">//返回容器中元素的个数</span></span><br><span class="line">deque.<span class="built_in">empty</span>();<span class="comment">//判断容器是否为空</span></span><br><span class="line">deque.<span class="built_in">resize</span>(num);<span class="comment">//重新指定容器的长度为num,若容器变长，则以默认值填充新位置。如果容器变短，则末尾超出容器长度的元素被删除。</span></span><br><span class="line">deque.<span class="built_in">resize</span>(num, elem); <span class="comment">//重新指定容器的长度为num,若容器变长，则以elem值填充新位置,如果容器变短，则末尾超出容器长度的元素被删除。</span></span><br></pre></td></tr></table></figure>
+<h5 id="插入删除-2">插入删除</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">insert</span>(pos,elem);<span class="comment">//在pos位置插入一个elem元素的拷贝，返回新数据的位置。</span></span><br><span class="line"><span class="built_in">insert</span>(pos,n,elem);<span class="comment">//在pos位置插入n个elem数据，无返回值。</span></span><br><span class="line"><span class="built_in">insert</span>(pos,beg,end);<span class="comment">//在pos位置插入[beg,end)区间的数据，无返回值。</span></span><br><span class="line"><span class="built_in">clear</span>();<span class="comment">//移除容器的所有数据</span></span><br><span class="line"><span class="built_in">erase</span>(beg,end);<span class="comment">//删除[beg,end)区间的数据，返回下一个数据的位置。</span></span><br><span class="line"><span class="built_in">erase</span>(pos);<span class="comment">//删除pos位置的数据，返回下一个数据的位置。</span></span><br></pre></td></tr></table></figure>
+<h5 id="数据存取-2">数据存取</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">at</span>(idx);<span class="comment">//返回索引idx所指的数据，如果idx越界，抛出out_of_range。</span></span><br><span class="line"><span class="keyword">operator</span>[];<span class="comment">//返回索引idx所指的数据，如果idx越界，不抛出异常，直接出错。</span></span><br><span class="line"><span class="built_in">front</span>();<span class="comment">//返回第一个数据。</span></span><br><span class="line"><span class="built_in">back</span>();<span class="comment">//返回最后一个数据</span></span><br></pre></td></tr></table></figure>
+<h5 id="双端插入删除">双端插入删除</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">push_back</span>(elem);<span class="comment">//在容器尾部添加一个数据</span></span><br><span class="line"><span class="built_in">push_front</span>(elem);<span class="comment">//在容器头部插入一个数据</span></span><br><span class="line"><span class="built_in">pop_back</span>();<span class="comment">//删除容器最后一个数据</span></span><br><span class="line"><span class="built_in">pop_front</span>();<span class="comment">//删除容器第一个数据</span></span><br></pre></td></tr></table></figure>
+<h4 id="stack容器">stack容器</h4>
+<h5 id="构造函数-3">构造函数</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stack&lt;T&gt; stkT;<span class="comment">//stack采用模板类实现， stack对象的默认构造形式： </span></span><br><span class="line"><span class="built_in">stack</span>(<span class="type">const</span> stack &amp;stk);<span class="comment">//拷贝构造函数</span></span><br></pre></td></tr></table></figure>
+<h5 id="赋值操作-3">赋值操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stack&amp; <span class="keyword">operator</span>=(<span class="type">const</span> stack &amp;stk);<span class="comment">//重载等号操作符</span></span><br></pre></td></tr></table></figure>
+<h5 id="大小操作-3">大小操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">push</span>(elem);<span class="comment">//向栈顶添加元素</span></span><br><span class="line"><span class="built_in">pop</span>();<span class="comment">//从栈顶移除第一个元素</span></span><br><span class="line"><span class="built_in">top</span>();<span class="comment">//返回栈顶元素</span></span><br></pre></td></tr></table></figure>
+<h5 id="数据存取-3">数据存取</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">push</span>(elem);<span class="comment">//向栈顶添加元素</span></span><br><span class="line"><span class="built_in">pop</span>();<span class="comment">//从栈顶移除第一个元素</span></span><br><span class="line"><span class="built_in">top</span>();<span class="comment">//返回栈顶元素</span></span><br></pre></td></tr></table></figure>
+<h4 id="queue容器">queue容器</h4>
+<h5 id="构造函数-4">构造函数</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">queue&lt;T&gt; queT;<span class="comment">//queue采用模板类实现，queue对象的默认构造形式：</span></span><br><span class="line"><span class="built_in">queue</span>(<span class="type">const</span> queue &amp;que);<span class="comment">//拷贝构造函数</span></span><br></pre></td></tr></table></figure>
+<h5 id="赋值操作-4">赋值操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">queue&amp; <span class="keyword">operator</span>=(<span class="type">const</span> queue &amp;que);<span class="comment">//重载等号操作符</span></span><br></pre></td></tr></table></figure>
+<h5 id="大小操作-4">大小操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">queue&amp; <span class="keyword">operator</span>=(<span class="type">const</span> queue &amp;que);<span class="comment">//重载等号操作符</span></span><br></pre></td></tr></table></figure>
+<h5 id="存取插入删除">存取插入删除</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">push</span>(elem);<span class="comment">//往队尾添加元素</span></span><br><span class="line"><span class="built_in">pop</span>();<span class="comment">//从队头移除第一个元素</span></span><br><span class="line"><span class="built_in">back</span>();<span class="comment">//返回最后一个元素</span></span><br><span class="line"><span class="built_in">front</span>();<span class="comment">//返回第一个元素</span></span><br></pre></td></tr></table></figure>
+<h4 id="list容器">list容器</h4>
+<h5 id="构造函数-5">构造函数</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list&lt;T&gt; lstT;<span class="comment">//list采用采用模板类实现,对象的默认构造形式：</span></span><br><span class="line"><span class="built_in">list</span>(beg,end);<span class="comment">//构造函数将[beg, end)区间中的元素拷贝给本身。</span></span><br><span class="line"><span class="built_in">list</span>(n,elem);<span class="comment">//构造函数将n个elem拷贝给本身。</span></span><br><span class="line"><span class="built_in">list</span>(<span class="type">const</span> list &amp;lst);<span class="comment">//拷贝构造函数。</span></span><br></pre></td></tr></table></figure>
+<h5 id="赋值操作-5">赋值操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">assign</span>(beg, end);<span class="comment">//将[beg, end)区间中的数据拷贝赋值给本身。</span></span><br><span class="line"><span class="built_in">assign</span>(n, elem);<span class="comment">//将n个elem拷贝赋值给本身。</span></span><br><span class="line">list&amp; <span class="keyword">operator</span>=(<span class="type">const</span> list &amp;lst);<span class="comment">//重载等号操作符</span></span><br><span class="line"><span class="built_in">swap</span>(lst);<span class="comment">//将lst与本身的元素互换。</span></span><br></pre></td></tr></table></figure>
+<h5 id="大小操作-5">大小操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">size</span>();<span class="comment">//返回容器中元素的个数</span></span><br><span class="line"><span class="built_in">empty</span>();<span class="comment">//判断容器是否为空</span></span><br><span class="line"><span class="built_in">resize</span>(num);<span class="comment">//重新指定容器的长度为num，</span></span><br><span class="line">若容器变长，则以默认值填充新位置。</span><br><span class="line">如果容器变短，则末尾超出容器长度的元素被删除。</span><br><span class="line"><span class="built_in">resize</span>(num, elem);<span class="comment">//重新指定容器的长度为num，</span></span><br><span class="line">若容器变长，则以elem值填充新位置。</span><br><span class="line">如果容器变短，则末尾超出容器长度的元素被删除。</span><br></pre></td></tr></table></figure>
+<h5 id="插入删除-3">插入删除</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">push_back</span>(elem);<span class="comment">//在容器尾部加入一个元素</span></span><br><span class="line"><span class="built_in">pop_back</span>();<span class="comment">//删除容器中最后一个元素</span></span><br><span class="line"><span class="built_in">push_front</span>(elem);<span class="comment">//在容器开头插入一个元素</span></span><br><span class="line"><span class="built_in">pop_front</span>();<span class="comment">//从容器开头移除第一个元素</span></span><br><span class="line"><span class="built_in">insert</span>(pos,elem);<span class="comment">//在pos位置插elem元素的拷贝，返回新数据的位置。</span></span><br><span class="line"><span class="built_in">insert</span>(pos,n,elem);<span class="comment">//在pos位置插入n个elem数据，无返回值。</span></span><br><span class="line"><span class="built_in">insert</span>(pos,beg,end);<span class="comment">//在pos位置插入[beg,end)区间的数据，无返回值。</span></span><br><span class="line"><span class="built_in">clear</span>();<span class="comment">//移除容器的所有数据</span></span><br><span class="line"><span class="built_in">erase</span>(beg,end);<span class="comment">//删除[beg,end)区间的数据，返回下一个数据的位置。</span></span><br><span class="line"><span class="built_in">erase</span>(pos);<span class="comment">//删除pos位置的数据，返回下一个数据的位置。</span></span><br><span class="line"><span class="built_in">remove</span>(elem);<span class="comment">//删除容器中所有与elem值匹配的元素。</span></span><br></pre></td></tr></table></figure>
+<h5 id="数据存取-4">数据存取</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">front</span>();<span class="comment">//返回第一个元素。</span></span><br><span class="line"><span class="built_in">back</span>();<span class="comment">//返回最后一个元素。</span></span><br></pre></td></tr></table></figure>
+<h5 id="反转排序">反转排序</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">reverse</span>();<span class="comment">//反转链表，比如lst包含1,3,5元素，运行此方法后，lst就包含5,3,1元素。</span></span><br><span class="line"><span class="built_in">sort</span>(); <span class="comment">//list排序</span></span><br></pre></td></tr></table></figure>
+<h4 id="set-multiset容器">set/multiset容器</h4>
+<h5 id="构造函数-6">构造函数</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set&lt;T&gt; st;<span class="comment">//set默认构造函数：</span></span><br><span class="line">mulitset&lt;T&gt; mst; <span class="comment">//multiset默认构造函数: </span></span><br><span class="line"><span class="built_in">set</span>(<span class="type">const</span> set &amp;st);<span class="comment">//拷贝构造函数</span></span><br></pre></td></tr></table></figure>
+<h5 id="赋值操作-6">赋值操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set&amp; <span class="keyword">operator</span>=(<span class="type">const</span> set &amp;st);<span class="comment">//重载等号操作符</span></span><br><span class="line"><span class="built_in">swap</span>(st);<span class="comment">//交换两个集合容器</span></span><br></pre></td></tr></table></figure>
+<h5 id="大小操作-6">大小操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set&amp; <span class="keyword">operator</span>=(<span class="type">const</span> set &amp;st);<span class="comment">//重载等号操作符</span></span><br><span class="line"><span class="built_in">swap</span>(st);<span class="comment">//交换两个集合容器</span></span><br></pre></td></tr></table></figure>
+<h5 id="插入删除-4">插入删除</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">insert</span>(elem);<span class="comment">//在容器中插入元素。</span></span><br><span class="line"><span class="built_in">clear</span>();<span class="comment">//清除所有元素</span></span><br><span class="line"><span class="built_in">erase</span>(pos);<span class="comment">//删除pos迭代器所指的元素，返回下一个元素的迭代器。</span></span><br><span class="line"><span class="built_in">erase</span>(beg, end);<span class="comment">//删除区间[beg,end)的所有元素 ，返回下一个元素的迭代器。</span></span><br><span class="line"><span class="built_in">erase</span>(elem);<span class="comment">//删除容器中值为elem的元素。</span></span><br></pre></td></tr></table></figure>
+<h5 id="查找操作">查找操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">find</span>(key);<span class="comment">//查找键key是否存在,若存在，返回该键的元素的迭代器；若不存在，返回set.end();</span></span><br><span class="line"><span class="built_in">count</span>(key);<span class="comment">//查找键key的元素个数</span></span><br><span class="line"><span class="built_in">lower_bound</span>(keyElem);<span class="comment">//返回第一个key&gt;=keyElem元素的迭代器。</span></span><br><span class="line"><span class="built_in">upper_bound</span>(keyElem);<span class="comment">//返回第一个key&gt;keyElem元素的迭代器。</span></span><br><span class="line"><span class="built_in">equal_range</span>(keyElem);<span class="comment">//返回容器中key与keyElem相等的上下限的两个迭代器。</span></span><br></pre></td></tr></table></figure>
+<h5 id="对组（pair）">对组（pair）</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一种方法创建一个对组</span></span><br><span class="line"><span class="function">pair&lt;string, <span class="type">int</span>&gt; <span class="title">pair1</span><span class="params">(string(<span class="string">&quot;name&quot;</span>), <span class="number">20</span>)</span></span>;</span><br><span class="line">cout &lt;&lt; pair1.first &lt;&lt; endl; <span class="comment">//访问pair第一个值</span></span><br><span class="line">cout &lt;&lt; pair1.second &lt;&lt; endl;<span class="comment">//访问pair第二个值</span></span><br><span class="line"><span class="comment">//第二种</span></span><br><span class="line">pair&lt;string, <span class="type">int</span>&gt; pair2 = <span class="built_in">make_pair</span>(<span class="string">&quot;name&quot;</span>, <span class="number">30</span>);</span><br><span class="line">cout &lt;&lt; pair2.first &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; pair2.second &lt;&lt; endl;</span><br><span class="line"><span class="comment">//pair=赋值</span></span><br><span class="line">pair&lt;string, <span class="type">int</span>&gt; pair3 = pair2;</span><br><span class="line">cout &lt;&lt; pair3.first &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; pair3.second &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<h4 id="map-multimap">map/multimap</h4>
+<h5 id="构造函数-7">构造函数</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">map&lt;T1, T2&gt; mapTT;<span class="comment">//map默认构造函数: </span></span><br><span class="line"><span class="built_in">map</span>(<span class="type">const</span> map &amp;mp);<span class="comment">//拷贝构造函数</span></span><br></pre></td></tr></table></figure>
+<h5 id="赋值操作-7">赋值操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">map&amp; <span class="keyword">operator</span>=(<span class="type">const</span> map &amp;mp);<span class="comment">//重载等号操作符</span></span><br><span class="line"><span class="built_in">swap</span>(mp);<span class="comment">//交换两个集合容器</span></span><br></pre></td></tr></table></figure>
+<h5 id="大小操作-7">大小操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">size</span>();<span class="comment">//返回容器中元素的数目</span></span><br><span class="line"><span class="built_in">empty</span>();<span class="comment">//判断容器是否为空</span></span><br></pre></td></tr></table></figure>
+<h5 id="插入删除-5">插入删除</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">map.<span class="built_in">insert</span>(...); <span class="comment">//往容器插入元素，返回pair&lt;iterator,bool&gt;</span></span><br><span class="line">map&lt;<span class="type">int</span>, string&gt; mapStu;</span><br><span class="line"><span class="comment">// 第一种 通过pair的方式插入对象</span></span><br><span class="line">mapStu.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, string&gt;(<span class="number">3</span>, <span class="string">&quot;小张&quot;</span>));</span><br><span class="line"><span class="comment">// 第二种 通过pair的方式插入对象</span></span><br><span class="line">mapStu.<span class="built_in">inset</span>(<span class="built_in">make_pair</span>(<span class="number">-1</span>, <span class="string">&quot;校长&quot;</span>));</span><br><span class="line"><span class="comment">// 第三种 通过value_type的方式插入对象</span></span><br><span class="line">mapStu.<span class="built_in">insert</span>(map&lt;<span class="type">int</span>, string&gt;::<span class="built_in">value_type</span>(<span class="number">1</span>, <span class="string">&quot;小李&quot;</span>));</span><br><span class="line"><span class="comment">// 第四种 通过数组的方式插入值</span></span><br><span class="line">mapStu[<span class="number">3</span>] = <span class="string">&quot;小刘&quot;</span>;</span><br><span class="line">mapStu[<span class="number">5</span>] = <span class="string">&quot;小王&quot;</span>;</span><br><span class="line"><span class="built_in">clear</span>();<span class="comment">//删除所有元素</span></span><br><span class="line"><span class="built_in">erase</span>(pos);<span class="comment">//删除pos迭代器所指的元素，返回下一个元素的迭代器。</span></span><br><span class="line"><span class="built_in">erase</span>(beg,end);<span class="comment">//删除区间[beg,end)的所有元素 ，返回下一个元素的迭代器。</span></span><br><span class="line"><span class="built_in">erase</span>(keyElem);<span class="comment">//删除容器中key为keyElem的对组。</span></span><br></pre></td></tr></table></figure>
+<h5 id="查找操作-2">查找操作</h5>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">find</span>(key);<span class="comment">//查找键key是否存在,若存在，返回该键的元素的迭代器；/若不存在，返回map.end();</span></span><br><span class="line"><span class="built_in">count</span>(keyElem);<span class="comment">//返回容器中key为keyElem的对组个数。对map来说，要么是0，要么是1。对multimap来说，值可能大于1。</span></span><br><span class="line"><span class="built_in">lower_bound</span>(keyElem);<span class="comment">//返回第一个key&gt;=keyElem元素的迭代器。</span></span><br><span class="line"><span class="built_in">upper_bound</span>(keyElem);<span class="comment">//返回第一个key&gt;keyElem元素的迭代器。</span></span><br><span class="line"><span class="built_in">equal_range</span>(keyElem);<span class="comment">//返回容器中key与keyElem相等的上下限的两个迭代器。</span></span><br></pre></td></tr></table></figure>
+<h4 id=""></h4>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://longjinw.github.io">龙金伟</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://longjinw.github.io/2024/06/26/STL%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E5%BA%93/">https://longjinw.github.io/2024/06/26/STL%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E5%BA%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://longjinw.github.io" target="_blank">龙锦</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/STL/">STL</a></div><div class="post_share"><div class="social-share" data-image="/image/T2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/06/24/hexo%E6%96%87%E7%AB%A0%E4%B8%BB%E9%A2%98%E5%A4%B4%E9%87%8C%E5%A1%AB%E5%86%99%E7%9A%84%E6%84%8F%E6%80%9D/" title="hexo文章主题头内各个数据的意义"><img class="cover" src="/image/T1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">hexo文章主题头内各个数据的意义</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/image/luogic.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">龙金伟</div><div class="author-info__description">买不起茅台 </div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/longjinw"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/longjinw" target="_blank" title="Github"><i class="fab fa-github" style="color: #hdhfbb;"></i></a><a class="social-icon" href="https://blog.csdn.net/longer_net" target="_blank" title="csdn"><i class="fa-regular fa-envelope" style="color: #000000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">概述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%82%B9%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">优点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E6%88%90%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">组成：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%AE%B9%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">常用容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#string%E5%AE%B9%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">string容器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="toc-number">4.1.1.</span> <span class="toc-text">构造函数：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%B5%8B%E5%80%BC%EF%BC%9A"><span class="toc-number">4.1.2.</span> <span class="toc-text">基本赋值：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%98%E5%8F%96%E5%AD%97%E7%AC%A6%EF%BC%9A"><span class="toc-number">4.1.3.</span> <span class="toc-text">存取字符：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8B%BC%E6%8E%A5%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="toc-number">4.1.4.</span> <span class="toc-text">拼接操作：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%9B%BF%E6%8D%A2%EF%BC%9A"><span class="toc-number">4.1.5.</span> <span class="toc-text">查找替换：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AF%94%E8%BE%83%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="toc-number">4.1.6.</span> <span class="toc-text">比较操作：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%96%E5%87%BA%E5%AD%90%E4%B8%B2%EF%BC%9A"><span class="toc-number">4.1.7.</span> <span class="toc-text">取出子串：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4%EF%BC%9A"><span class="toc-number">4.1.8.</span> <span class="toc-text">插入删除：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#c-style%E8%BD%AC%E6%8D%A2%EF%BC%9A"><span class="toc-number">4.1.9.</span> <span class="toc-text">c-style转换：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E5%AE%B9%E5%99%A8"><span class="toc-number">4.2.</span> <span class="toc-text">vector容器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">4.2.1.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C"><span class="toc-number">4.2.2.</span> <span class="toc-text">赋值操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E6%93%8D%E4%BD%9C"><span class="toc-number">4.2.3.</span> <span class="toc-text">大小操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%8F%96"><span class="toc-number">4.2.4.</span> <span class="toc-text">数据存取</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4"><span class="toc-number">4.2.5.</span> <span class="toc-text">插入删除</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#deque%E5%AE%B9%E5%99%A8"><span class="toc-number">4.3.</span> <span class="toc-text">deque容器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0-2"><span class="toc-number">4.3.1.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C-2"><span class="toc-number">4.3.2.</span> <span class="toc-text">赋值操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E6%93%8D%E4%BD%9C-2"><span class="toc-number">4.3.3.</span> <span class="toc-text">大小操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4-2"><span class="toc-number">4.3.4.</span> <span class="toc-text">插入删除</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%8F%96-2"><span class="toc-number">4.3.5.</span> <span class="toc-text">数据存取</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8C%E7%AB%AF%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4"><span class="toc-number">4.3.6.</span> <span class="toc-text">双端插入删除</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stack%E5%AE%B9%E5%99%A8"><span class="toc-number">4.4.</span> <span class="toc-text">stack容器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0-3"><span class="toc-number">4.4.1.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C-3"><span class="toc-number">4.4.2.</span> <span class="toc-text">赋值操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E6%93%8D%E4%BD%9C-3"><span class="toc-number">4.4.3.</span> <span class="toc-text">大小操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%8F%96-3"><span class="toc-number">4.4.4.</span> <span class="toc-text">数据存取</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#queue%E5%AE%B9%E5%99%A8"><span class="toc-number">4.5.</span> <span class="toc-text">queue容器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0-4"><span class="toc-number">4.5.1.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C-4"><span class="toc-number">4.5.2.</span> <span class="toc-text">赋值操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E6%93%8D%E4%BD%9C-4"><span class="toc-number">4.5.3.</span> <span class="toc-text">大小操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%98%E5%8F%96%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4"><span class="toc-number">4.5.4.</span> <span class="toc-text">存取插入删除</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#list%E5%AE%B9%E5%99%A8"><span class="toc-number">4.6.</span> <span class="toc-text">list容器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0-5"><span class="toc-number">4.6.1.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C-5"><span class="toc-number">4.6.2.</span> <span class="toc-text">赋值操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E6%93%8D%E4%BD%9C-5"><span class="toc-number">4.6.3.</span> <span class="toc-text">大小操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4-3"><span class="toc-number">4.6.4.</span> <span class="toc-text">插入删除</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%8F%96-4"><span class="toc-number">4.6.5.</span> <span class="toc-text">数据存取</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8D%E8%BD%AC%E6%8E%92%E5%BA%8F"><span class="toc-number">4.6.6.</span> <span class="toc-text">反转排序</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#set-multiset%E5%AE%B9%E5%99%A8"><span class="toc-number">4.7.</span> <span class="toc-text">set&#x2F;multiset容器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0-6"><span class="toc-number">4.7.1.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C-6"><span class="toc-number">4.7.2.</span> <span class="toc-text">赋值操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E6%93%8D%E4%BD%9C-6"><span class="toc-number">4.7.3.</span> <span class="toc-text">大小操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4-4"><span class="toc-number">4.7.4.</span> <span class="toc-text">插入删除</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%93%8D%E4%BD%9C"><span class="toc-number">4.7.5.</span> <span class="toc-text">查找操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AF%B9%E7%BB%84%EF%BC%88pair%EF%BC%89"><span class="toc-number">4.7.6.</span> <span class="toc-text">对组（pair）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#map-multimap"><span class="toc-number">4.8.</span> <span class="toc-text">map&#x2F;multimap</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0-7"><span class="toc-number">4.8.1.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C-7"><span class="toc-number">4.8.2.</span> <span class="toc-text">赋值操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E6%93%8D%E4%BD%9C-7"><span class="toc-number">4.8.3.</span> <span class="toc-text">大小操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4-5"><span class="toc-number">4.8.4.</span> <span class="toc-text">插入删除</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E6%93%8D%E4%BD%9C-2"><span class="toc-number">4.8.5.</span> <span class="toc-text">查找操作</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.9.</span> <span class="toc-text"></span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/06/26/STL%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E5%BA%93/" title="STL标准模板库"><img src="/image/T2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="STL标准模板库"/></a><div class="content"><a class="title" href="/2024/06/26/STL%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E5%BA%93/" title="STL标准模板库">STL标准模板库</a><time datetime="2024-06-26T13:57:46.000Z" title="发表于 2024-06-26 21:57:46">2024-06-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/24/hexo%E6%96%87%E7%AB%A0%E4%B8%BB%E9%A2%98%E5%A4%B4%E9%87%8C%E5%A1%AB%E5%86%99%E7%9A%84%E6%84%8F%E6%80%9D/" title="hexo文章主题头内各个数据的意义"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hexo文章主题头内各个数据的意义"/></a><div class="content"><a class="title" href="/2024/06/24/hexo%E6%96%87%E7%AB%A0%E4%B8%BB%E9%A2%98%E5%A4%B4%E9%87%8C%E5%A1%AB%E5%86%99%E7%9A%84%E6%84%8F%E6%80%9D/" title="hexo文章主题头内各个数据的意义">hexo文章主题头内各个数据的意义</a><time datetime="2024-06-24T01:28:00.000Z" title="发表于 2024-06-24 09:28:00">2024-06-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/23/c-%E5%9F%BA%E7%A1%80/" title="c++关键字"><img src="/image/T2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="c++关键字"/></a><div class="content"><a class="title" href="/2024/06/23/c-%E5%9F%BA%E7%A1%80/" title="c++关键字">c++关键字</a><time datetime="2024-06-23T14:11:19.000Z" title="发表于 2024-06-23 22:11:19">2024-06-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/23/hexo-butterfly-Github/" title="hexo+butterfly+Github">hexo+butterfly+Github</a><time datetime="2024-06-23T09:08:20.000Z" title="发表于 2024-06-23 17:08:20">2024-06-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/23/markdown%E7%AE%80%E6%98%93%E4%B8%8A%E6%89%8B/" title="markdown简易上手">markdown简易上手</a><time datetime="2024-06-23T07:55:12.000Z" title="发表于 2024-06-23 15:55:12">2024-06-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By 龙金伟</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/xiabo2/CDN@latest/fishes.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
