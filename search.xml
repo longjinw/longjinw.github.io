@@ -1,9 +1,434 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>c++基础</title>
+    <title>hexo 命令使用</title>
+    <url>/2024/06/23/hexo_%E5%91%BD%E4%BB%A4%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<p>这个是官网（可以查看主题以及更新）：<a href="https://hexo.io/">Hexo</a><br>
+这篇文章是hexo第一篇文章. 点击 <a href="https://hexo.io/docs/">documentation</a> 可以获得更多信息.<br>
+可以在 <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> 找到绝大部分hexo相关问题，或者直接去 <a href="https://github.com/hexojs/hexo/issues">GitHub</a>评论留言.</p>
+<h2 id="快速开始">快速开始</h2>
+<h3 id="创建一个新的文章，文章默认在source-ports-目录下面">创建一个新的文章，文章默认在source/ _ports /目录下面</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>相关: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="在本地上启动">在本地上启动</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>相关: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="生成静态文件">生成静态文件</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>相关: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="部署到网站">部署到网站</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>相关: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>c++关键字</title>
     <url>/2024/06/23/c-%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h1>1</h1>
+    <content><![CDATA[<h3 id="概述：">概述：</h3>
+<p>C++ 是一种广泛使用的、通用的、面向对象的编程语言，它支持过程化编程、数据抽象、面向对象编程和泛型编程等多种编程范式。C++ 是在 C 语言的基础上发展起来的，它增加了许多新的特性，如类、继承、多态、模板、异常处理、命名空间等。</p>
+<p>以下是 C++ 的一些基本特点：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">特点</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">面向对象</td>
+<td style="text-align:left">C++ 支持面向对象编程（OOP），通过类（class）和对象（object）的概念。</td>
+</tr>
+<tr>
+<td style="text-align:left">继承</td>
+<td style="text-align:left">一个类可以从另一个类继承，从而重用代码并扩展功能。</td>
+</tr>
+<tr>
+<td style="text-align:left">多态</td>
+<td style="text-align:left">通过虚函数（virtual functions）和继承，C++ 支持运行时多态，允许不同的对象对同一消息做出不同的响应。</td>
+</tr>
+<tr>
+<td style="text-align:left">模板</td>
+<td style="text-align:left">C++ 提供了模板（templates），允许程序员编写适用于多种数据类型的通用代码。</td>
+</tr>
+<tr>
+<td style="text-align:left">异常处理</td>
+<td style="text-align:left">C++ 引入了异常处理机制，用于处理程序运行时的错误情况。</td>
+</tr>
+<tr>
+<td style="text-align:left">命名空间</td>
+<td style="text-align:left">C++ 支持命名空间（namespaces），用于避免名称冲突和组织代码。</td>
+</tr>
+<tr>
+<td style="text-align:left">标准库</td>
+<td style="text-align:left">C++ 标准库提供了大量的函数和类，用于处理常见的编程任务，如字符串处理、文件操作、内存管理等。</td>
+</tr>
+<tr>
+<td style="text-align:left">与C语言兼容</td>
+<td style="text-align:left">C++ 是 C 语言的超集，这意味着任何有效的 C 程序也是有效的 C++ 程序（但可能不是最优的 C++ 程序）。</td>
+</tr>
+</tbody>
+</table>
+<p>以下是一个简单的 C++ 程序示例，用于输出 “Hello, World!”：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Hello, World!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在该示例中，<code>#include &lt;iostream&gt;</code> 指令告诉编译器包含标准输入输出流库。<code>int main()</code> 是程序的入口点。<code>std::cout</code> 是一个输出流对象，用于将文本发送到标准输出（通常是屏幕）。<code>&lt;&lt;</code> 是一个插入运算符，用于将数据插入到输出流中。<code>std::endl</code> 是一个操纵符，用于在输出中插入一个新行。最后，<code>return 0;</code> 表示程序正常退出。</p>
+<h3 id="对C的扩充：">对C的扩充：</h3>
+<p>下面是一个简化的表格，展示了C++在非面向对象方面对C语言的主要扩充点：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">扩充点</th>
+<th>C++特性</th>
+<th>C语言对应/比较</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">类型安全性</td>
+<td>强类型检查</td>
+<td>弱类型检查，依赖程序员注意</td>
+</tr>
+<tr>
+<td style="text-align:left">输入输出流</td>
+<td><code>iostream</code>库</td>
+<td>标准I/O库（如<code>stdio.h</code>）</td>
+</tr>
+<tr>
+<td style="text-align:left">内存管理</td>
+<td><code>new</code>和<code>delete</code></td>
+<td><code>malloc</code>和<code>free</code></td>
+</tr>
+<tr>
+<td style="text-align:left">引用（Reference）</td>
+<td>变量别名</td>
+<td>指针操作</td>
+</tr>
+<tr>
+<td style="text-align:left">函数重载</td>
+<td>允许同名不同参数函数</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td style="text-align:left">缺省参数</td>
+<td>允许函数参数有默认值</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td style="text-align:left">内联函数</td>
+<td>提高函数调用效率</td>
+<td>无直接对应</td>
+</tr>
+<tr>
+<td style="text-align:left">命名空间</td>
+<td>组织代码，避免命名冲突</td>
+<td>全局作用域，可能导致冲突</td>
+</tr>
+<tr>
+<td style="text-align:left">运算符重载</td>
+<td>允许重载运算符</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td style="text-align:left">条件编译</td>
+<td><code>#ifdef</code>, <code>#ifndef</code>等</td>
+<td><code>#if</code>, <code>#else</code>, <code>#endif</code></td>
+</tr>
+<tr>
+<td style="text-align:left">宏定义</td>
+<td><code>#define</code></td>
+<td><code>#define</code></td>
+</tr>
+<tr>
+<td style="text-align:left">预处理撤销</td>
+<td><code>#undef</code></td>
+<td>无直接对应</td>
+</tr>
+<tr>
+<td style="text-align:left">模板（Templates）</td>
+<td>泛型编程</td>
+<td>无直接对应</td>
+</tr>
+<tr>
+<td style="text-align:left">异常处理</td>
+<td><code>try</code>, <code>catch</code>, <code>throw</code></td>
+<td>无直接对应，使用错误码</td>
+</tr>
+</tbody>
+</table>
+<p>C++的关键字是编程语言中预先保留的标识符，用于定义语言的结构和语法。在C++中，这些关键字不能被用作变量名、函数名或其他标识符的名称。以下是C++（不包括C++11新增的关键字）中的一部分主要关键字，按照不同的功能分类进行简述：</p>
+<h3 id="数据类型关键字">数据类型关键字:</h3>
+<table>
+<thead>
+<tr>
+<th>基本数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+<td>布尔类型，用于表示逻辑值（true或false）</td>
+</tr>
+<tr>
+<td>char</td>
+<td>字符类型，用于存储字符值</td>
+</tr>
+<tr>
+<td>int</td>
+<td>整型，用于存储整数</td>
+</tr>
+<tr>
+<td>float、double、long double</td>
+<td>浮点型，用于存储小数</td>
+</tr>
+<tr>
+<td>signed、unsigned</td>
+<td>用于指定整数类型是有符号还是无符号的</td>
+</tr>
+<tr>
+<td>short、long</td>
+<td>用于指定整数类型的长度</td>
+</tr>
+<tr>
+<td>void</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>复合数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>class</td>
+<td>用于定义类</td>
+</tr>
+<tr>
+<td>struct</td>
+<td>用于定义结构体</td>
+</tr>
+<tr>
+<td>union</td>
+<td>用于定义联合体</td>
+</tr>
+<tr>
+<td>enum</td>
+<td>用于定义枚举类型</td>
+</tr>
+</tbody>
+</table>
+<h3 id="控制语句关键字">控制语句关键字:</h3>
+<table>
+<thead>
+<tr>
+<th>循环语句</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>for</td>
+<td>用于执行固定次数的循环</td>
+</tr>
+<tr>
+<td>while</td>
+<td>用于在条件为真时重复执行代码块</td>
+</tr>
+<tr>
+<td>do…while</td>
+<td>与<code>while</code>类似，但循环体至少会执行一次</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>条件语句</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>if</td>
+<td>用于根据条件执行不同的代码块</td>
+</tr>
+<tr>
+<td>else</td>
+<td>与<code>if</code>一起使用，用于指定条件为假时执行的代码块</td>
+</tr>
+<tr>
+<td>switch</td>
+<td>用于根据表达式的值选择不同的代码块执行</td>
+</tr>
+<tr>
+<td>case</td>
+<td>与<code>switch</code>一起使用，用于指定表达式可能的值</td>
+</tr>
+<tr>
+<td>default</td>
+<td>与<code>switch</code>一起使用，用于指定表达式不匹配任何<code>case</code>时执行的代码块</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>跳转语句</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>break</td>
+<td>用于跳出当前循环或<code>switch</code>语句</td>
+</tr>
+<tr>
+<td>continue</td>
+<td>用于跳过当前循环的剩余部分，直接进入下一次循环</td>
+</tr>
+<tr>
+<td>goto</td>
+<td>无条件跳转到指定的标签位置（在现代编程中很少使用）</td>
+</tr>
+<tr>
+<td>return</td>
+<td>用于从函数中返回值并结束函数执行</td>
+</tr>
+</tbody>
+</table>
+<h3 id="存储类型关键字">存储类型关键字:</h3>
+<table>
+<thead>
+<tr>
+<th>存储关键字</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>auto</td>
+<td>尽管在C++11中有更多用途，但在C++98/03中主要用于自动存储期变量的声明</td>
+</tr>
+<tr>
+<td>extern</td>
+<td>用于声明在其他文件中定义的变量或函数</td>
+</tr>
+<tr>
+<td>register</td>
+<td>建议编译器将变量存储在寄存器中（但现代编译器通常忽略此建议）</td>
+</tr>
+<tr>
+<td>static</td>
+<td>用于声明静态变量或静态成员函数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="其他关键字">其他关键字:</h3>
+<table>
+<thead>
+<tr>
+<th>另外的常用关键字</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sizeof</td>
+<td>用于计算数据类型或变量的大小（以字节为单位）</td>
+</tr>
+<tr>
+<td>typedef</td>
+<td>用于为数据类型定义别名</td>
+</tr>
+<tr>
+<td>volatile</td>
+<td>用于修饰变量，表示该变量可能在程序外部被意外地改变（如多线程或硬件操作）</td>
+</tr>
+<tr>
+<td>namespace</td>
+<td>用于定义命名空间，以避免命名冲突</td>
+</tr>
+<tr>
+<td>using</td>
+<td>用于在当前作用域中引入命名空间中的名称</td>
+</tr>
+<tr>
+<td>friend</td>
+<td>用于声明友元函数或友元类，它们可以访问类的私有和保护成员</td>
+</tr>
+<tr>
+<td>explicit</td>
+<td>用于防止类构造函数被用于隐式类型转换</td>
+</tr>
+<tr>
+<td>mutable</td>
+<td>用于修饰类的非静态成员变量，即使在<code>const</code>成员函数中也可以修改它</td>
+</tr>
+</tbody>
+</table>
+<h3 id="c-11新引入：">c++11新引入：</h3>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alignas</code></td>
+<td>用于指定变量或类型的对齐要求</td>
+</tr>
+<tr>
+<td><code>alignof</code></td>
+<td>用于获取变量或类型的对齐要求</td>
+</tr>
+<tr>
+<td><code>char16_t</code></td>
+<td>16位字符类型</td>
+</tr>
+<tr>
+<td><code>char32_t</code></td>
+<td>32位字符类型</td>
+</tr>
+<tr>
+<td><code>constexpr</code></td>
+<td>声明编译时常量表达式</td>
+</tr>
+<tr>
+<td><code>decltype</code></td>
+<td>用于类型推导，返回表达式的类型</td>
+</tr>
+<tr>
+<td><code>final</code></td>
+<td>禁止类被继承，或禁止虚函数被重写</td>
+</tr>
+<tr>
+<td><code>noexcept</code></td>
+<td>指定函数不会抛出异常</td>
+</tr>
+<tr>
+<td><code>nullptr</code></td>
+<td>表示空指针常量</td>
+</tr>
+<tr>
+<td><code>override</code></td>
+<td>检查子类虚函数是否重写了某个基类虚函数</td>
+</tr>
+<tr>
+<td><code>static_assert</code></td>
+<td>在编译时进行断言</td>
+</tr>
+<tr>
+<td><code>thread_local</code></td>
+<td>声明变量的线程局部存储期</td>
+</tr>
+</tbody>
+</table>
 ]]></content>
       <categories>
         <category>c++</category>
@@ -35,27 +460,6 @@
       <tags>
         <tag>hexo</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>hexo 命令使用</title>
-    <url>/2024/06/23/hexo_%E5%91%BD%E4%BB%A4%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<p>这个是官网（可以查看主题以及更新）：<a href="https://hexo.io/">Hexo</a><br>
-这篇文章是hexo第一篇文章. 点击 <a href="https://hexo.io/docs/">documentation</a> 可以获得更多信息.<br>
-可以在 <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> 找到绝大部分hexo相关问题，或者直接去 <a href="https://github.com/hexojs/hexo/issues">GitHub</a>评论留言.</p>
-<h2 id="快速开始">快速开始</h2>
-<h3 id="创建一个新的文章，文章默认在source-ports-目录下面">创建一个新的文章，文章默认在source/ _ports /目录下面</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>相关: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="在本地上启动">在本地上启动</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>相关: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="生成静态文件">生成静态文件</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>相关: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="部署到网站">部署到网站</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>相关: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>hexo文章主题头内各个数据的意义</title>
