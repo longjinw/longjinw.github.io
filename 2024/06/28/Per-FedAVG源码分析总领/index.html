@@ -1,0 +1,332 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Per_FedAVG源码分析总领 | 龙锦</title><meta name="author" content="龙金伟"><meta name="copyright" content="龙金伟"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Per_FedAVG代码复现各个文件的主要作用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Per_FedAVG源码分析总领">
+<meta property="og:url" content="https://longjinw.github.io/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/index.html">
+<meta property="og:site_name" content="龙锦">
+<meta property="og:description" content="Per_FedAVG代码复现各个文件的主要作用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://longjinw.github.io/image/T1.jpg">
+<meta property="article:published_time" content="2024-06-28T05:50:07.000Z">
+<meta property="article:modified_time" content="2024-06-28T05:57:00.648Z">
+<meta property="article:author" content="龙金伟">
+<meta property="article:tag" content="Per_FedAVG">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://longjinw.github.io/image/T1.jpg"><link rel="shortcut icon" href="/image/luogic.jpg"><link rel="canonical" href="https://longjinw.github.io/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":3,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Per_FedAVG源码分析总领',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-28 13:57:00'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><script src="/styles/fish.js"></script><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><link rel="stylesheet" href="/styles/main.css"><meta name="generator" content="Hexo 7.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/image/luogic.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/image/T1.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="龙锦"><img class="site-icon" src="/image/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_202406231044301.jpg"/><span class="site-name">龙锦</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Per_FedAVG源码分析总领</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-28T05:50:07.000Z" title="发表于 2024-06-28 13:50:07">2024-06-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-28T05:57:00.648Z" title="更新于 2024-06-28 13:57:00">2024-06-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/python/">python</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Per_FedAVG源码分析总领"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="data-dataset-py">data_dataset.py</h3>
+<p>这段代码定义了两个自定义的PyTorch数据集类：<code>MNISTDataset</code> 和 <code>CIFARDataset</code>。这两个类都继承自PyTorch提供的<code>Dataset</code>类，这使得它们能够与PyTorch的数据加载器一起使用。<br>
+<code>MNISTDataset</code>是为MNIST数据集设计的，该数据集包含28x28像素的灰度手写数字图像。<code>CIFARDataset</code>是为CIFAR数据集设计的，该数据集包含32x32像素的彩色图像，分为10个不同的类别（飞机、汽车、鸟、猫、鹿、狗、青蛙、马、船和卡车）。<br>
+这两个数据集的构造函数和方法都相同，唯一的区别是数据集的名称（这并不影响其功能）。构造函数接受数据子集和目标，或者单独的数据和目标张量。它还接受可选的transform和target_transform函数，这些函数可以在迭代数据集时用于对数据和目标应用变换。<br>
+<code>__getitem__</code>方法为给定的索引返回一个数据样本及其相应的目标。如果提供了变换函数，它将应用于数据样本。如果提供了target_transform函数，它将应用于目标。<br>
+<code>__len__</code>方法返回数据集中的样本数量。</p>
+<h3 id="data-utils-py">data_utils.py</h3>
+<p>这段代码提供了两个函数，<code>get_dataloader</code> 和 <code>get_client_id_indices</code>，用于加载预处理后的联邦学习数据集的数据加载器，以及获取客户端ID的索引。</p>
+<ol>
+<li><code>get_dataloader</code> 函数接受数据集名称（“mnist” 或 “cifar”）、客户端ID、批处理大小和验证集比例作为参数。它首先检查是否存在预处理的数据集pickle文件，如果没有，则抛出运行时错误。然后，它加载指定客户端的数据集，并将其随机划分为训练集和验证集。最后，它为训练集和验证集创建数据加载器，并返回它们。</li>
+<li><code>get_client_id_indices</code> 函数接受数据集名称作为参数。它加载保存的客户端分离信息（“seperation.pkl”），并返回训练客户端、测试客户端和总客户端数的索引列表。<br>
+这些函数允许在联邦学习设置中为每个客户端加载和分割数据集，以便进行模型训练和验证。使用这些函数，可以轻松地获取每个客户端的数据加载器，以及客户端的索引信息。</li>
+</ol>
+<h3 id="data-perprocess-py">data_perprocess.py</h3>
+<p>这段代码是一个Python脚本，用于预处理MNIST或CIFAR10数据集，以适应联邦学习设置。它随机地为每个客户端分配类别，将数据集分为训练集和测试集，然后将这些数据集保存为磁盘上的pickle文件。它还将客户端数据分布的统计信息保存为JSON文件。<br>
+以下是代码的详细说明：</p>
+<ol>
+<li>脚本导入了必要的库，包括PyTorch、<a target="_blank" rel="noopener" href="http://xn--torchvisionpath-hb5z.py">torchvision和path.py</a>，用于文件系统操作。</li>
+<li><code>DATASET</code>、<code>MEAN</code>和<code>STD</code>字典定义了数据集、平均值和标准差的信息，用于数据归一化。</li>
+<li><code>preprocess</code>函数是主要的功能，负责处理数据：
+<ul>
+<li>它设置数据集目录和pickle目录。</li>
+<li>它为随机数生成器设置种子，以确保可重复性。</li>
+<li>它根据客户端总数和训练客户端的比例计算训练和测试客户端的数量。</li>
+<li>它定义了用于归一化的数据转换。</li>
+<li>它加载原始数据集，并使用<code>randomly_alloc_classes</code>函数为客户端分配类别。</li>
+<li>它将各个客户端的数据集保存为pickle文件，并将客户端分为训练和测试的分离信息保存为&quot;seperation.pkl&quot;。</li>
+<li>它将数据集分布的统计信息保存为&quot;all_stats.json&quot;。</li>
+</ul>
+</li>
+<li><code>randomly_alloc_classes</code>函数接受原始数据集、目标数据集类、客户端数量、每个客户端的类别数量以及可选的转换。它使用<code>noniid_slicing</code>函数以非独立同分布的方式切分数据集，为每个客户端创建一个包含指定类别数量的数据集列表。它还计算并返回客户端数据分布的统计信息。</li>
+<li><code>__main__</code>块解析命令行参数，包括数据集选择、客户端总数、训练客户端的比例、每个客户端的类别数量和随机种子，然后调用<code>preprocess</code>函数。<br>
+要运行此脚本，通常会在命令行中执行它，并提供必要的参数。例如：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python preprocess.py --dataset mnist --client_num_in_total 100 --fraction 0.8 --classes 2 --seed 123</span><br></pre></td></tr></table></figure>
+<p>这将预处理MNIST数据集，用于有100个客户端的联邦学习设置，其中80%是训练客户端，每个客户端有2个类别的数据，并使用随机种子123确保结果的可重复性。</p>
+<h3 id="model-py"><a target="_blank" rel="noopener" href="http://model.py">model.py</a></h3>
+<p>这段代码定义了两个模型类，<code>MLP_MNIST</code> 和 <code>MLP_CIFAR10</code>，分别用于MNIST和CIFAR10数据集。这两个模型都是多层感知机（MLP），包含三个全连接层，每个层后面都有一个ELU激活函数。<br>
+此外，代码还定义了一个<code>MODEL_DICT</code>字典，用于根据数据集名称获取相应的模型类。<br>
+最后，<code>get_model</code>函数接受数据集名称和设备（CPU或GPU）作为参数，并返回相应的模型实例。<br>
+以下是代码的详细说明：</p>
+<ol>
+<li><code>elu</code>类是一个自定义的ELU激活函数，它使用<code>torch.where</code>来判断输入是否大于0，并返回相应的值。对于小于0的输入，它使用0.2乘以指数函数减1的结果。</li>
+<li><code>linear</code>类是一个自定义的全连接层，它包含权重矩阵<code>w</code>和偏置<code>b</code>。权重矩阵是通过随机初始化得到的，其标准差是输入特征数目的倒数。</li>
+<li><code>MLP_MNIST</code>和<code>MLP_CIFAR10</code>类是MNIST和CIFAR10数据集的MLP模型。它们包含三个全连接层，每个层后面都跟着一个ELU激活函数。在MNIST模型中，输入特征是28x28像素的图像，而在CIFAR10模型中，输入特征是32x32x3的图像。</li>
+<li><code>MODEL_DICT</code>字典包含两个模型类，分别对应MNIST和CIFAR10数据集。</li>
+<li><code>get_model</code>函数根据传入的数据集名称和设备，从<code>MODEL_DICT</code>中获取相应的模型类，并实例化模型。如果设备是GPU，它将模型移动到GPU上；如果设备是CPU，它将模型移动到CPU上。</li>
+</ol>
+<h3 id="utils-py"><a target="_blank" rel="noopener" href="http://utils.py">utils.py</a></h3>
+<p>这段代码提供了一个命令行参数解析函数 <code>get_args</code>，以及两个用于模型评估和随机种子固定的辅助函数 <code>eval</code> 和 <code>fix_random_seed</code>。</p>
+<ol>
+<li><code>get_args</code> 函数使用 <code>ArgumentParser</code> 从命令行中解析参数。这些参数包括学习率、正则化参数、全局和局部训练轮次、个性化阶段的轮次、批处理大小、验证集比例、数据集名称、每轮训练的客户端数量、随机种子、是否使用GPU、是否在训练过程中进行评估，以及是否记录日志。</li>
+<li><code>eval</code> 函数是一个用于评估模型的函数，它接受模型、数据加载器、损失函数和设备作为参数。该函数在评估模式下运行模型，并计算在数据加载器上的总损失和准确率。它返回总损失和准确率。</li>
+<li><code>fix_random_seed</code> 函数用于固定PyTorch和其他库的随机种子，以确保实验的可重复性。它接受一个种子值作为参数，并设置相应的随机种子。此外，它还清空了GPU缓存，并设置了CUDA的确定性选项。<br>
+这些函数为联邦学习实验提供了一个基础框架，用于处理命令行参数、评估模型和确保实验的可重复性。</li>
+</ol>
+<h3 id="perfedavg-py"><a target="_blank" rel="noopener" href="http://perfedavg.py">perfedavg.py</a></h3>
+<p>这段代码定义了一个名为 <code>PerFedAvgClient</code> 的类，用于在联邦学习中训练一个客户端的模型。该类支持两种不同的训练模式：<code>Per-FedAvg(FO)</code> 和 <code>Per-FedAvg(HF)</code>。<br>
+以下是代码的详细说明：</p>
+<ol>
+<li><strong>初始化方法</strong>：
+<ul>
+<li>客户端ID（<code>client_id</code>）：标识客户端的唯一ID。</li>
+<li><code>alpha</code> 和 <code>beta</code>：学习率和正则化参数。</li>
+<li><code>global_model</code>：全局模型，即所有客户端共享的模型。</li>
+<li><code>criterion</code>：损失函数。</li>
+<li><code>batch_size</code>：批量大小。</li>
+<li><code>dataset</code>：数据集名称，支持MNIST和CIFAR10。</li>
+<li><code>local_epochs</code>：本地训练轮次。</li>
+<li><code>valset_ratio</code>：验证集比例。</li>
+<li><code>logger</code>：日志记录器。</li>
+<li><code>gpu</code>：是否使用GPU。</li>
+</ul>
+</li>
+<li><strong>训练方法</strong>：
+<ul>
+<li>首先，客户端加载全局模型的状态字典。</li>
+<li>然后，客户端进行本地训练。对于 <code>Per-FedAvg(HF)</code> 模式，训练分为两个阶段，每个阶段都包含一个梯度计算和模型更新。对于 <code>Per-FedAvg(FO)</code> 模式，代码中包含了注释掉的联邦平均（FedAvg）训练步骤。</li>
+<li>如果设置了 <code>eval_while_training</code>，客户端在本地训练前后都会进行评估。</li>
+<li>训练完成后，客户端返回序列化的模型状态。</li>
+</ul>
+</li>
+<li><strong>计算梯度方法</strong>：
+<ul>
+<li>该方法计算模型参数的梯度。</li>
+<li>对于 <code>Per-FedAvg(HF)</code> 模式，它还会计算二阶导数。</li>
+</ul>
+</li>
+<li><strong>个性化评估方法</strong>：
+<ul>
+<li>该方法用于个性化评估。客户端首先加载全局模型的状态字典，然后进行个性化训练和评估。</li>
+<li>个性化训练包括一个梯度计算和模型更新。</li>
+<li>评估完成后，客户端返回损失和准确率的变化。</li>
+</ul>
+</li>
+<li><strong>辅助方法</strong>：
+<ul>
+<li><code>get_data_batch</code>：获取一个数据批量的方法。</li>
+<li><code>utils.eval</code>：评估模型的方法，从 <code>utils</code> 模块导入。</li>
+<li><code>SerializationTool.serialize_model</code>：序列化模型的方法，从 <code>SerializationTool</code> 模块导入。<br>
+这个类为联邦学习中的客户端提供了训练和评估模型的功能，支持不同的训练模式和个性化评估。</li>
+</ul>
+</li>
+</ol>
+<h3 id="main-py"><a target="_blank" rel="noopener" href="http://main.py">main.py</a></h3>
+<p>这段代码是一个联邦学习实验的主程序，它负责初始化客户端、进行训练和评估，并记录日志。以下是代码的详细说明：</p>
+<ol>
+<li><strong>命令行参数解析</strong>：
+<ul>
+<li>代码首先使用 <code>get_args</code> 函数解析命令行参数，并使用 <code>fix_random_seed</code> 函数设置随机种子。</li>
+<li>检查是否存在日志目录，如果不存在则创建。</li>
+</ul>
+</li>
+<li><strong>设备选择</strong>：
+<ul>
+<li>如果指定了GPU并且GPU可用，则选择GPU作为设备；否则选择CPU。</li>
+</ul>
+</li>
+<li><strong>全局模型初始化</strong>：
+<ul>
+<li>使用 <code>get_model</code> 函数根据数据集名称初始化全局模型。</li>
+<li>创建日志记录器。</li>
+</ul>
+</li>
+<li><strong>客户端初始化</strong>：
+<ul>
+<li>创建一个客户端列表，每个客户端都使用 <code>PerFedAvgClient</code> 类初始化。</li>
+</ul>
+</li>
+<li><strong>训练循环</strong>：
+<ul>
+<li>使用 <code>track</code> 函数跟踪训练进度。</li>
+<li>随机选择客户端进行本地训练，并将序列化的模型参数存储在 <code>model_params_cache</code> 中。</li>
+<li>使用 <code>Aggregators.fedavg_aggregate</code> 函数聚合模型参数。</li>
+<li>反序列化聚合后的模型参数到全局模型。</li>
+</ul>
+</li>
+<li><strong>评估循环</strong>：
+<ul>
+<li>使用 <code>track</code> 函数跟踪评估进度。</li>
+<li>对每个评估客户端执行个性化评估，并记录损失和准确率。</li>
+</ul>
+</li>
+<li><strong>结果展示</strong>：
+<ul>
+<li>打印评估结果。</li>
+</ul>
+</li>
+<li><strong>日志记录</strong>：
+<ul>
+<li>如果设置了日志记录，使用 <code>logger.save_html</code> 函数将日志保存为HTML文件。<br>
+这个程序为联邦学习实验提供了一个完整的框架，包括客户端的初始化、模型的训练和评估，以及日志的记录和保存。</li>
+</ul>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://longjinw.github.io">龙金伟</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://longjinw.github.io/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/">https://longjinw.github.io/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://longjinw.github.io" target="_blank">龙锦</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Per-FedAVG/">Per_FedAVG</a></div><div class="post_share"><div class="social-share" data-image="/image/T1.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2024/06/27/shell%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E5%9F%BA%E7%A1%80/" title="shell脚本编写基础"><img class="cover" src="/image/T2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">shell脚本编写基础</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/06/27/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="Per_FedAVG源码分析"><img class="cover" src="/image/T1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-27</div><div class="title">Per_FedAVG源码分析</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/image/luogic.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">龙金伟</div><div class="author-info__description">买不起茅台 </div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/longjinw"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/longjinw" target="_blank" title="Github"><i class="fab fa-github" style="color: #hdhfbb;"></i></a><a class="social-icon" href="https://blog.csdn.net/longer_net" target="_blank" title="csdn"><i class="fa-regular fa-envelope" style="color: #000000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#data-dataset-py"><span class="toc-number">1.</span> <span class="toc-text">data_dataset.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#data-utils-py"><span class="toc-number">2.</span> <span class="toc-text">data_utils.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#data-perprocess-py"><span class="toc-number">3.</span> <span class="toc-text">data_perprocess.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#model-py"><span class="toc-number">4.</span> <span class="toc-text">model.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#utils-py"><span class="toc-number">5.</span> <span class="toc-text">utils.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#perfedavg-py"><span class="toc-number">6.</span> <span class="toc-text">perfedavg.py</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#main-py"><span class="toc-number">7.</span> <span class="toc-text">main.py</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/" title="Per_FedAVG源码分析总领"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Per_FedAVG源码分析总领"/></a><div class="content"><a class="title" href="/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/" title="Per_FedAVG源码分析总领">Per_FedAVG源码分析总领</a><time datetime="2024-06-28T05:50:07.000Z" title="发表于 2024-06-28 13:50:07">2024-06-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/27/shell%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E5%9F%BA%E7%A1%80/" title="shell脚本编写基础"><img src="/image/T2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="shell脚本编写基础"/></a><div class="content"><a class="title" href="/2024/06/27/shell%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E5%9F%BA%E7%A1%80/" title="shell脚本编写基础">shell脚本编写基础</a><time datetime="2024-06-27T13:11:37.000Z" title="发表于 2024-06-27 21:11:37">2024-06-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/27/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="Per_FedAVG源码分析"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Per_FedAVG源码分析"/></a><div class="content"><a class="title" href="/2024/06/27/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="Per_FedAVG源码分析">Per_FedAVG源码分析</a><time datetime="2024-06-27T12:24:17.000Z" title="发表于 2024-06-27 20:24:17">2024-06-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/27/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/" title="Linux常用命令集合"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux常用命令集合"/></a><div class="content"><a class="title" href="/2024/06/27/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/" title="Linux常用命令集合">Linux常用命令集合</a><time datetime="2024-06-27T00:50:10.000Z" title="发表于 2024-06-27 08:50:10">2024-06-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/26/STL%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E5%BA%93/" title="STL标准模板库"><img src="/image/T2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="STL标准模板库"/></a><div class="content"><a class="title" href="/2024/06/26/STL%E6%A0%87%E5%87%86%E6%A8%A1%E6%9D%BF%E5%BA%93/" title="STL标准模板库">STL标准模板库</a><time datetime="2024-06-26T13:57:46.000Z" title="发表于 2024-06-26 21:57:46">2024-06-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By 龙金伟</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/xiabo2/CDN@latest/fishes.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
