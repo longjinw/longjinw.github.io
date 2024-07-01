@@ -1,0 +1,665 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>C++编译和内存管理 | 龙锦</title><meta name="author" content="龙金伟"><meta name="copyright" content="龙金伟"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="面试里常见的C++内存管理相关问题的梳理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++编译和内存管理">
+<meta property="og:url" content="https://longjinw.github.io/2024/07/01/C-%E7%BC%96%E8%AF%91%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="龙锦">
+<meta property="og:description" content="面试里常见的C++内存管理相关问题的梳理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://longjinw.github.io/image/T2.jpg">
+<meta property="article:published_time" content="2024-07-01T00:18:52.000Z">
+<meta property="article:modified_time" content="2024-07-01T06:28:59.954Z">
+<meta property="article:author" content="龙金伟">
+<meta property="article:tag" content="编译和内存管理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://longjinw.github.io/image/T2.jpg"><link rel="shortcut icon" href="/image/luogic.jpg"><link rel="canonical" href="https://longjinw.github.io/2024/07/01/C-%E7%BC%96%E8%AF%91%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":3,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++编译和内存管理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-01 14:28:59'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><script src="/styles/fish.js"></script><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><link rel="stylesheet" href="/styles/main.css"><meta name="generator" content="Hexo 7.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/image/luogic.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/image/T2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="龙锦"><img class="site-icon" src="/image/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_202406231044301.jpg"/><span class="site-name">龙锦</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++编译和内存管理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-01T00:18:52.000Z" title="发表于 2024-07-01 08:18:52">2024-07-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-01T06:28:59.954Z" title="更新于 2024-07-01 14:28:59">2024-07-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/C/">C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>23分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C++编译和内存管理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="C-编译和内存管理">C++编译和内存管理</h3>
+<h4 id="内存管理">内存管理</h4>
+<h5 id="ELF文件（可执行可链接文件）：">ELF文件（可执行可链接文件）：</h5>
+<p>是Linux等类Unix操作系统中用于表示可执行文件、共享库、目标文件和核心转储文件的标准二进制文件格式。每个 ELFELF 文件都由一个 <code>ELF header</code> 和紧跟其后的文件数据部分组成。</p>
+<h5 id="C-内存分区：">C++内存分区：</h5>
+<p>C++内存分区在程序执行时，为了更有效地管理内存资源，通常将内存划分为不同的区域。</p>
+<table>
+<thead>
+<tr>
+<th>程序存储区</th>
+<th>全局/静态存储</th>
+<th>栈区</th>
+<th>堆区</th>
+<th>常量存储区</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>操作系统管理，运行期间不变</td>
+<td>执行时已分配好，运行期间不变</td>
+<td>编译器管理，分配和释放的效率很高</td>
+<td>程序员管理，要自己要求和释放</td>
+<td>存放常量，运行期间不变</td>
+</tr>
+</tbody>
+</table>
+<p>以下是C++内存分区的详细解释：</p>
+<h6 id="程序存储区（程序代码区）">程序存储区（程序代码区）</h6>
+<ul>
+<li>功能：存放函数体的二进制代码，由操作系统进行管理。</li>
+<li>特点：这部分内存主要存储了程序的指令和数据结构，它们在程序开始执行时就已经加载到内存中，并在程序运行期间保持不变</li>
+</ul>
+<h6 id="全局-静态存储区">全局/静态存储区</h6>
+<ul>
+<li>功能：存放全局变量和静态变量（包括全局静态变量和局部静态变量）。</li>
+<li>特点：
+<ul>
+<li>在程序开始执行时，这部分内存就已经分配好了，并且它们的存储单元是固定的。</li>
+<li>变量的生命周期与程序的运行时间相同，程序结束时才会释放这部分内存。</li>
+<li>由于静态分配，其访问速度相对较快。</li>
+</ul>
+</li>
+</ul>
+<h6 id="栈区（Stack）">栈区（Stack）</h6>
+<ul>
+<li>功能：
+<ul>
+<li>由编译器自动分配和释放。</li>
+<li>存放函数的参数值、局部变量等。</li>
+</ul>
+</li>
+<li>特点：
+<ul>
+<li>栈区采用后进先出（LIFO）的管理方式。</li>
+<li>分配和释放的效率非常高，因为栈内存分配运算内置于处理器的指令集中。</li>
+<li>但栈区的空间大小是有限制的，过多的局部变量或递归调用可能导致栈溢出。</li>
+</ul>
+</li>
+</ul>
+<h6 id="堆区（Heap）">堆区（Heap）</h6>
+<ul>
+<li>功能：
+<ul>
+<li>由程序员分配和释放。</li>
+<li>若程序员不释放，程序结束时由操作系统回收。</li>
+</ul>
+</li>
+<li>特点：
+<ul>
+<li>堆区是动态内存分配的主要区域，程序员可以使用<code>new</code>和<code>delete</code>（或<code>new[]</code>和<code>delete[]</code>）来分配和释放内存。</li>
+<li>堆区的空间大小相对较大，但在频繁地分配和释放内存时，可能会导致内存碎片。</li>
+<li>使用堆区时要特别注意内存泄漏的问题，即分配的内存没有被正确释放。</li>
+</ul>
+</li>
+</ul>
+<h6 id="常量存储区">常量存储区</h6>
+<ul>
+<li>功能：存放常量字符串和其他常量值。</li>
+<li>特点：
+<ul>
+<li>常量存储区中的值在程序运行期间不可修改。</li>
+<li>常量字符串通常与其他只读数据一起存放在只读存储区，以防止程序意外修改它们。</li>
+</ul>
+</li>
+</ul>
+<h6 id="自由存储区">自由存储区</h6>
+<ul>
+<li>说明：自由存储区是一个相对抽象的概念，通常指的是通过<code>new</code>操作符分配的内存区域。虽然从技术上来说，这部分内存也属于堆区，但C++标准库允许程序员通过重载<code>new</code>和<code>delete</code>操作符来改变自由存储区的实现。</li>
+</ul>
+<h6 id="总结">总结</h6>
+<p>C++内存分区是程序设计和内存管理的重要基础。了解不同内存分区的功能和特点有助于程序员更合理地使用和管理内存资源，从而提高程序的性能和稳定性。在编写C++程序时，应该尽量避免内存泄漏和栈溢出等问题，以确保程序的正确性和健壮性。</p>
+<h4 id="堆和栈">堆和栈</h4>
+<h5 id="栈">栈</h5>
+<p>当我们讨论操作系统和内存管理时，我们更经常指的是进程或线程的调用栈（Call Stack）或执行栈（Execution Stack），这是一个由操作系统自动管理的内存区域。</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自动分配和释放</td>
+<td>栈内存由系统自动分配和释放。当一个函数被调用时，它的参数和局部变量会在栈上被分配空间。当函数返回时，这些空间会被自动释放。</td>
+</tr>
+<tr>
+<td>后进先出（LIFO）</td>
+<td>栈遵循后进先出（Last In First Out）的原则。这意味着最后入栈的元素会最先出栈。</td>
+</tr>
+<tr>
+<td>栈帧（Stack Frame）</td>
+<td>每次函数调用时，都会在栈上分配一个栈帧（Stack Frame）。栈帧包含了函数的局部变量、参数、返回地址等信息。</td>
+</tr>
+<tr>
+<td>栈溢出（Stack Overflow）</td>
+<td>如果函数递归调用过深，或者局部变量占用了过多的栈空间，就可能导致栈溢出。栈溢出是一种严重的错误，通常会导致程序崩溃。</td>
+</tr>
+<tr>
+<td>栈指针（Stack Pointer）</td>
+<td>栈指针是一个指向栈顶的内存地址的指针。当数据入栈时，栈指针会向下移动（在大多数系统中，栈是向下增长的）；当数据出栈时，栈指针会向上移动。</td>
+</tr>
+<tr>
+<td>局部变量和函数参数</td>
+<td>在C++中，局部变量（包括自动存储期对象）和函数参数通常都存储在栈上。这意味着它们的生命周期与它们所在的函数或代码块相同。当函数返回或代码块结束时，这些变量就会被销毁。</td>
+</tr>
+<tr>
+<td>返回地址</td>
+<td>每次函数调用时，除了局部变量和参数外，还会在栈上保存一个返回地址。这个地址是函数执行完毕后应该跳转到的位置，通常是调用该函数之后的下一条指令。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="堆">堆</h5>
+<p>在C++中，堆（Heap）是一种重要的内存管理机制，它允许程序员在运行时动态地分配和释放内存。与栈（Stack）不同，堆内存是由程序员显式管理的，而不是由系统自动管理的。</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>动态分配</td>
+<td>堆内存允许程序在运行时根据需要动态地分配内存。这是通过使用诸如<code>new</code>和<code>delete</code>（在C++中）或<code>malloc</code>和<code>free</code>（在C中）等操作符或函数来实现的。</td>
+</tr>
+<tr>
+<td>显示管理</td>
+<td>与栈内存不同，程序员必须显式地管理堆内存。这意味着程序员需要负责在不再需要内存时释放它，以避免内存泄漏。</td>
+</tr>
+<tr>
+<td>内存碎片</td>
+<td>由于堆内存是动态分配的，因此可能会产生内存碎片。内存碎片是当小块内存被释放并留下未使用的空间时发生的，这些空间太小而无法容纳其他请求，但又无法合并成更大的连续块。</td>
+</tr>
+<tr>
+<td>分配和释放时间</td>
+<td>堆内存的分配和释放通常比栈内存慢，因为堆内存管理涉及到查找可用空间、跟踪分配和释放等复杂操作。</td>
+</tr>
+<tr>
+<td>存储打对象或者长生命周期对象</td>
+<td>由于堆内存是动态分配的，因此它通常用于存储大对象或具有长生命周期的对象。这些对象不适合在栈上分配，因为栈的大小通常是有限的。</td>
+</tr>
+<tr>
+<td>异常安全性</td>
+<td>在C++中，使用<code>new</code>操作符分配内存时，如果内存分配失败，会抛出<code>std::bad_alloc</code>异常。这使得堆内存分配具有更好的异常安全性，因为它允许程序员处理分配失败的情况。</td>
+</tr>
+<tr>
+<td>智能指针</td>
+<td>为了简化堆内存的管理，C++11引入了智能指针（如<code>std::unique_ptr</code>、<code>std::shared_ptr</code>和<code>std::weak_ptr</code>）。智能指针能够自动管理堆内存的生命周期，减少内存泄漏的风险。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="堆和栈的区别">堆和栈的区别</h5>
+<p>简而言之，堆是程序员手动管理的动态内存区域，而栈是自动管理的静态内存区域。</p>
+<h6 id="堆（Heap）">堆（Heap）</h6>
+<ul>
+<li>堆用于动态内存分配。程序员使用<code>new</code>或<code>malloc</code>等函数在堆上请求内存，并在不再需要时使用<code>delete</code>或<code>free</code>释放它。</li>
+<li>堆内存的生命周期由程序员控制。</li>
+<li>堆内存通常用于存储大型对象或对象数组。</li>
+</ul>
+<h6 id="栈（Stack）">栈（Stack）</h6>
+<ul>
+<li>栈是自动管理的内存区域，用于存储局部变量和函数调用的信息。</li>
+<li>栈内存的生命周期与函数或代码块的执行周期相同。当函数返回时，栈上的内存会被自动释放。</li>
+<li>栈内存通常用于存储小型对象和简单数据类型。</li>
+</ul>
+<h4 id="变量定义和生存周期">变量定义和生存周期</h4>
+<h5 id="变量作用域">变量作用域</h5>
+<p>在C++中，变量的作用域（Scope）指的是变量可以被访问的代码区域。这决定了变量的生命周期和可见性。C++中有几种不同的作用域：</p>
+<table>
+<thead>
+<tr>
+<th>作用域</th>
+<th>性质</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>局部作用域（Local Scope）</td>
+<td>局部作用域是在函数、代码块或循环内部定义的变量的作用域。这些变量在它们被声明的代码块内是可见的，一旦代码块结束，这些变量就会被销毁（对于非静态局部变量）。</td>
+</tr>
+<tr>
+<td>全局作用域（Global Scope）</td>
+<td>全局作用域是在所有函数外部定义的变量的作用域。这些变量在整个程序中都是可见的，从定义它们的文件开始到文件结束。如果它们被声明为<code>extern</code>，则可以在其他文件中通过包含适当的头文件来访问。</td>
+</tr>
+<tr>
+<td>命名空间作用域（Namespace Scope）</td>
+<td>命名空间作用域是在命名空间中定义的变量的作用域。命名空间用于将相关的标识符（如变量、函数、类等）组合在一起，以避免命名冲突。</td>
+</tr>
+<tr>
+<td>类作用域（Class Scope）</td>
+<td>类作用域是在类中定义的成员变量的作用域。这些变量是类的实例（对象）的一部分，并且只能通过类的对象或指针来访问。</td>
+</tr>
+</tbody>
+</table>
+<p>在下面这段代码中，我们定义了：</p>
+<ul>
+<li>一个全局变量 <code>globalVar</code>。</li>
+<li>一个命名空间 <code>MyNamespace</code>，其中包含一个命名空间变量 <code>namespaceVar</code>。</li>
+<li>一个类 <code>MyClass</code>，其中包含一个类成员变量 <code>classVar</code> 和一个成员函数 <code>printVar</code>。</li>
+<li>一个函数 <code>foo</code>，其中包含一个局部变量 <code>localVar</code>，并访问了全局变量、命名空间变量和类实例的变量。</li>
+<li>在 <code>main</code> 函数中，我们访问了全局变量、命名空间变量，并创建了一个 <code>MyClass</code> 的实例来访问其成员变量。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>    </span></span><br><span class="line"><span class="comment">// 全局作用域  </span></span><br><span class="line"><span class="type">int</span> globalVar = <span class="number">100</span>;  </span><br><span class="line"><span class="comment">// 命名空间作用域  </span></span><br><span class="line"><span class="keyword">namespace</span> MyNamespace &#123;  </span><br><span class="line">    <span class="type">int</span> namespaceVar = <span class="number">200</span>;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">// 类作用域  </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    <span class="type">int</span> classVar = <span class="number">300</span>; <span class="comment">// 类成员变量（实例变量）  </span></span><br><span class="line">    <span class="comment">// 成员函数（也在类作用域内）  </span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">printVar</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;classVar: &quot;</span> &lt;&lt; classVar &lt;&lt; std::endl;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"><span class="comment">// 函数作用域（包括局部作用域）  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="type">int</span> localVar = <span class="number">42</span>; <span class="comment">// 局部变量  </span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;localVar: &quot;</span> &lt;&lt; localVar &lt;&lt; std::endl;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;globalVar: &quot;</span> &lt;&lt; globalVar &lt;&lt; std::endl;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;MyNamespace::namespaceVar: &quot;</span> &lt;&lt; MyNamespace::namespaceVar &lt;&lt; std::endl;  </span><br><span class="line">    MyClass obj; <span class="comment">// 创建MyClass的实例  </span></span><br><span class="line">    obj.<span class="built_in">printVar</span>(); <span class="comment">// 调用成员函数打印classVar  </span></span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;globalVar: &quot;</span> &lt;&lt; globalVar &lt;&lt; std::endl;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;MyNamespace::namespaceVar: &quot;</span> &lt;&lt; MyNamespace::namespaceVar &lt;&lt; std::endl;  </span><br><span class="line">    <span class="built_in">foo</span>(); <span class="comment">// 调用foo函数，该函数将打印其局部变量和全局/命名空间变量  </span></span><br><span class="line">    MyClass obj; <span class="comment">// 在main函数中创建MyClass的实例  </span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;obj.classVar: &quot;</span> &lt;&lt; obj.classVar &lt;&lt; std::endl; <span class="comment">// 直接访问obj的classVar </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="变量生命周期">变量生命周期</h5>
+<p>在C++中，变量的生命周期指的是变量从创建到销毁的时间段。这取决于变量在何处以及如何被声明。以下是C++中变量生命周期的几种主要情况：</p>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>局部变量（Local Variables）</td>
+<td>局部变量在函数、代码块或循环内定义。它们的生命周期从定义点开始，到包含它们的代码块执行完毕时结束。一旦变量离开其作用域（即包含它的代码块），它就会被销毁，其占用的内存会被释放。</td>
+</tr>
+<tr>
+<td>全局变量（Global Variables）</td>
+<td>全局变量在函数外部定义，通常在所有函数外部的文件顶部。它们的生命周期是整个程序的执行期间，从程序开始执行到程序结束。</td>
+</tr>
+<tr>
+<td>静态局部变量（Static Local Variables）</td>
+<td>静态局部变量在函数内部定义，但它们的生命周期与全局变量类似。它们在第一次进入包含它们的函数时被初始化，并在程序执行期间一直存在，即使函数返回也不会被销毁。在下次函数调用时，静态局部变量的值保持不变。</td>
+</tr>
+<tr>
+<td>动态分配的内存（Dynamically Allocated Memory）</td>
+<td>使用<code>new</code>操作符在堆上动态分配的内存的生命周期是由程序员控制的。当使用<code>new</code>分配内存时，该内存会一直存在，直到显式地使用<code>delete</code>操作符释放它。忘记释放内存会导致内存泄漏。</td>
+</tr>
+<tr>
+<td>类的成员变量（Class Member Variables）</td>
+<td>类的成员变量（包括静态和非静态）的生命周期取决于类的实例（对象）的生命周期。非静态成员变量与对象一起创建和销毁，而静态成员变量在第一次创建类的对象时初始化，并在程序执行期间一直存在，即使所有对象都被销毁。</td>
+</tr>
+</tbody>
+</table>
+<p>在接下来这段代码中，我们有：</p>
+<ul>
+<li>一个全局变量<code>globalVar</code></li>
+<li>一个类<code>MyClass</code>，它有一个非静态成员变量<code>instanceVar</code>和一个静态成员变量<code>staticVar</code>。</li>
+<li>在<code>main</code>函数中，我们访问了全局变量并创建了一个<code>MyClass</code>的实例，然后通过这个实例访问了其成员变量。</li>
+<li>我们还定义了一个函数<code>foo</code>，其中包含了静态局部变量<code>staticLocalVar</code>和局部变量<code>localVar</code>。</li>
+<li>此外，我们还在<code>foo</code>函数中动态分配了一个整数，并在使用后立即释放了它。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>  </span></span><br><span class="line"><span class="comment">// 全局变量  </span></span><br><span class="line"><span class="type">int</span> globalVar = <span class="number">100</span>;  </span><br><span class="line"><span class="comment">// 类的声明  </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    <span class="type">int</span> instanceVar; <span class="comment">// 类的非静态成员变量（实例变量）  </span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> staticVar; <span class="comment">// 类的静态成员变量  </span></span><br><span class="line">    <span class="built_in">MyClass</span>(<span class="type">int</span> value) : <span class="built_in">instanceVar</span>(value) &#123;&#125; <span class="comment">// 构造函数  </span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">printVars</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Instance variable: &quot;</span> &lt;&lt; instanceVar &lt;&lt; std::endl;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Static variable: &quot;</span> &lt;&lt; staticVar &lt;&lt; std::endl;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"><span class="comment">// 类的静态成员变量的初始化  </span></span><br><span class="line"><span class="type">int</span> MyClass::staticVar = <span class="number">200</span>;  </span><br><span class="line"><span class="comment">// 函数定义  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="comment">// 静态局部变量  </span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> staticLocalVar = <span class="number">0</span>;  </span><br><span class="line">    staticLocalVar++;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Static local variable: &quot;</span> &lt;&lt; staticLocalVar &lt;&lt; std::endl;  </span><br><span class="line">    <span class="comment">// 局部变量  </span></span><br><span class="line">    <span class="type">int</span> localVar = <span class="number">42</span>;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Local variable: &quot;</span> &lt;&lt; localVar &lt;&lt; std::endl;  </span><br><span class="line">    <span class="comment">// 动态分配的内存  </span></span><br><span class="line">    <span class="type">int</span>* ptr = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">84</span>);  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Dynamically allocated variable: &quot;</span> &lt;&lt; *ptr &lt;&lt; std::endl;  </span><br><span class="line">    <span class="keyword">delete</span> ptr; <span class="comment">// 释放内存  </span></span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="comment">// 访问全局变量  </span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Global variable: &quot;</span> &lt;&lt; globalVar &lt;&lt; std::endl;  </span><br><span class="line">    <span class="comment">// 创建MyClass的实例并访问其成员变量  </span></span><br><span class="line">    <span class="function">MyClass <span class="title">obj</span><span class="params">(<span class="number">300</span>)</span></span>;  </span><br><span class="line">    obj.<span class="built_in">printVars</span>();  </span><br><span class="line">    <span class="comment">// 调用foo函数，访问静态局部变量和局部变量  </span></span><br><span class="line">    <span class="built_in">foo</span>();  </span><br><span class="line">    <span class="comment">// 注意：在main函数结束时，全局变量和静态成员变量仍然存在，但局部变量（包括静态局部变量在foo函数外部）已经销毁  </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="内存对齐">内存对齐</h4>
+<p>在C++中，内存对齐（Memory Alignment）是计算机内存访问性能优化的一种技术。当数据在内存中按照某种特定的规则对齐时，处理器可以更高效地访问这些数据。这是因为现代处理器在访问内存时，通常会一次性读取多个字节（比如4字节、8字节等），这种读取方式被称为“字”（word）或“双字”（doubleword）访问。如果数据没有正确对齐，那么处理器可能需要执行额外的操作来访问这些数据，这会降低访问速度。</p>
+<h5 id="alignas关键字">alignas关键字</h5>
+<p>在大多数情况下，最好让编译器自动处理内存对齐,你也可以使用特定的编译器指令或C++17引入的<code>alignas</code>关键字来指定对齐要求。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdint&gt;</span>  </span></span><br><span class="line"><span class="comment">// 指定16字节对齐的结构体  </span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">alignas</span>(<span class="number">16</span>) AlignedStruct &#123;  </span><br><span class="line">    <span class="type">int32_t</span> a;  </span><br><span class="line">    <span class="type">double</span> b;  </span><br><span class="line">    <span class="comment">// ... 可能还有其他成员 ...  </span></span><br><span class="line">&#125;;  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    AlignedStruct s;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Alignment of s: &quot;</span> &lt;&lt; <span class="built_in">alignof</span>(s) &lt;&lt; <span class="string">&quot; bytes\n&quot;</span>;  </span><br><span class="line">    <span class="comment">// 输出应该是 16 bytes（取决于平台和编译器）  </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="智能指针">智能指针</h4>
+<p>C++中的智能指针是一种特殊的指针，它们可以自动管理动态分配的内存的生命周期，从而避免内存泄漏和其他与内存管理相关的问题。C++11标准引入了三种主要的智能指针：<code>std::unique_ptr</code>、<code>std::shared_ptr</code>和<code>std::weak_ptr</code>。需要注意的是，智能指针不能像普通指针那样支持加减运算。</p>
+<table>
+<thead>
+<tr>
+<th>指针</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>unique_ptr</td>
+<td><code>unique_ptr</code> 独占其指向的对象。这意味着两个 <code>unique_ptr</code> 不能指向同一个对象。 当 <code>unique_ptr</code> 被销毁（例如，离开其作用域）时，它所指向的对象也会被自动删除。 <code>unique_ptr</code> 提供了对原始指针的独占所有权语义。</td>
+</tr>
+<tr>
+<td>shared_ptr</td>
+<td><code>shared_ptr</code> 实现共享所有权的语义。多个 <code>shared_ptr</code> 可以指向同一个对象，并且当最后一个拥有该对象的 <code>shared_ptr</code> 被销毁时，对象才会被删除。 <code>shared_ptr</code> 使用引用计数来跟踪有多少 <code>shared_ptr</code> 指向一个对象。当计数变为0时，对象会被删除。</td>
+</tr>
+<tr>
+<td>weak_ptr</td>
+<td><code>weak_ptr</code> 是对 <code>shared_ptr</code> 所管理对象的一个弱引用，它不会增加对象的引用计数。 <code>weak_ptr</code> 主要用于解决 <code>shared_ptr</code> 之间的循环引用问题。 <code>weak_ptr</code> 可以安全地用于检查一个对象是否仍然存在，并且可以通过它获取到 <code>shared_ptr</code>（如果对象仍然存在的话）。##### 指针建立</td>
+</tr>
+</tbody>
+</table>
+<h5 id="指针建立">指针建立</h5>
+<ul>
+<li>优先选用 <code>std::make_unique</code> 和 <code>std::make_shared</code>,而非直接 <code>new</code>。</li>
+<li>make_unique：减少代码量，能够加快编译速度，定义两遍类型时，编译器需要进行类型推导会降低编译速度，某些意外意外情况下可能会导致内存泄漏。</li>
+<li><code>make_shared</code>：这个主要是可以减少对堆中申请内存的次数，只需要申请一次即可，<code>make_share</code> 虽然效率高，但是同样不能自定义析构器。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;<span class="type">int</span>&gt; ptr=std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">5</span>);  </span><br><span class="line"><span class="comment">// ... 使用 ptr  </span></span><br><span class="line"><span class="comment">// 当 ptr 离开作用域时，它指向的 int 会被自动删除</span></span><br><span class="line">std::shared_ptr&lt;<span class="type">int</span>&gt; ptr1 = std::<span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">5</span>);  </span><br><span class="line">std::shared_ptr&lt;<span class="type">int</span>&gt; ptr2 = ptr1;  <span class="comment">// ptr1 和 ptr2 现在共享同一个 int  </span></span><br><span class="line"><span class="comment">// ... 使用 ptr1 和 ptr2  </span></span><br><span class="line"><span class="comment">// 当 ptr1 和 ptr2 都离开作用域时，它们共享的 int 才会被删除</span></span><br><span class="line">std::shared_ptr&lt;<span class="type">int</span>&gt; shared = std::<span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">5</span>);  </span><br><span class="line">std::weak_ptr&lt;<span class="type">int</span>&gt; weak = shared;   </span><br><span class="line"><span class="comment">// ...  </span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">auto</span> strong = weak.<span class="built_in">lock</span>()) &#123;  </span><br><span class="line">    <span class="comment">// strong 是一个有效的 shared_ptr，我们可以使用它  </span></span><br><span class="line">    <span class="comment">// ...  </span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">    <span class="comment">// 原始对象可能已经被删除了  </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="代码示例">代码示例</h5>
+<p>这段代码将会展示如何使用<code>std::unique_ptr</code>、<code>std::shared_ptr</code>和<code>std::weak_ptr</code>来管理<code>MyClass</code>对象的生命周期。你可以看到，当智能指针离开其作用域时，它们会自动删除所指向的对象（除非有其他的<code>shared_ptr</code>仍然指向该对象）。<code>std::weak_ptr</code>用于避免循环引用问题，并允许你检查原始对象是否仍然存在。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span>  </span></span><br><span class="line"><span class="comment">// 一个简单的类  </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    <span class="built_in">MyClass</span>(<span class="type">int</span> value) : <span class="built_in">value_</span>(value) &#123;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;MyClass(&quot;</span> &lt;&lt; value_ &lt;&lt; <span class="string">&quot;) created.\n&quot;</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    ~<span class="built_in">MyClass</span>() &#123;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;MyClass(&quot;</span> &lt;&lt; value_ &lt;&lt; <span class="string">&quot;) destroyed.\n&quot;</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">printValue</span><span class="params">()</span> <span class="type">const</span> </span>&#123;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Value: &quot;</span> &lt;&lt; value_ &lt;&lt; <span class="string">&quot;\n&quot;</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">    <span class="type">int</span> value_;  </span><br><span class="line">&#125;;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="comment">// 使用std::unique_ptr  </span></span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="function">std::unique_ptr&lt;MyClass&gt; <span class="title">uniquePtr</span><span class="params">(<span class="keyword">new</span> MyClass(<span class="number">10</span>))</span></span>;  </span><br><span class="line">        uniquePtr-&gt;<span class="built_in">printValue</span>();  </span><br><span class="line">        <span class="comment">// 当uniquePtr离开作用域时，它指向的对象会被自动删除  </span></span><br><span class="line">    &#125; <span class="comment">// 这里MyClass(10)对象会被销毁  </span></span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 使用std::shared_ptr  </span></span><br><span class="line">    std::shared_ptr&lt;MyClass&gt; sharedPtr1 = std::<span class="built_in">make_shared</span>&lt;MyClass&gt;(<span class="number">20</span>);  </span><br><span class="line">    sharedPtr1-&gt;<span class="built_in">printValue</span>();  </span><br><span class="line">    &#123;  </span><br><span class="line">        std::shared_ptr&lt;MyClass&gt; sharedPtr2 = sharedPtr1; <span class="comment">// sharedPtr1和sharedPtr2现在共享同一个对象  </span></span><br><span class="line">        sharedPtr2-&gt;<span class="built_in">printValue</span>();  </span><br><span class="line">        <span class="comment">// 当sharedPtr2离开作用域时，它指向的对象不会被删除，因为sharedPtr1仍然指向它  </span></span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 当sharedPtr1离开作用域时，如果这是最后一个shared_ptr指向该对象，则对象会被删除  </span></span><br><span class="line">    <span class="comment">// 这里MyClass(20)对象会被销毁  </span></span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 尝试使用std::weak_ptr  </span></span><br><span class="line">    &#123;  </span><br><span class="line">        std::shared_ptr&lt;MyClass&gt; sharedPtr3 = std::<span class="built_in">make_shared</span>&lt;MyClass&gt;(<span class="number">30</span>);  </span><br><span class="line">        std::weak_ptr&lt;MyClass&gt; weakPtr = sharedPtr3;  </span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">auto</span> shared = weakPtr.<span class="built_in">lock</span>()) &#123; <span class="comment">// 尝试获取shared_ptr  </span></span><br><span class="line">            shared-&gt;<span class="built_in">printValue</span>();  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="comment">// 当sharedPtr3离开作用域时，它指向的对象会被删除  </span></span><br><span class="line">        <span class="comment">// 因为weakPtr只是一个弱引用，所以它不会影响对象的生命周期  </span></span><br><span class="line">    &#125; <span class="comment">// 这里MyClass(30)对象会被销毁  </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="编译和链接">编译和链接</h4>
+<p>在C++中，编译和链接是两个不同的步骤，尽管它们通常在一个命令中一起执行。可以分为四个阶段：</p>
+<ul>
+<li>预处理（Preprocessing）</li>
+<li>编译（Compilation）</li>
+<li>汇编（Assembly）</li>
+<li>链接（Linking）</li>
+</ul>
+<h5 id="预处理">预处理</h5>
+<ul>
+<li>替换所有的宏定义（<code>#define</code>）。</li>
+<li>插入包含的头文件内容（<code>#include</code>）。</li>
+<li>删除注释。</li>
+<li>添加行号和文件名信息（用于调试）。</li>
+</ul>
+<h5 id="编译">编译</h5>
+<ul>
+<li>检查代码中的语法错误。</li>
+<li>将代码转换为更低级别的表示形式（通常称为“汇编代码”）。</li>
+<li>简单来说编译的过程即为将 <code>.cpp</code> 源文件翻译成 <code>.s</code> 的汇编代码</li>
+</ul>
+<h5 id="汇编">汇编</h5>
+<ul>
+<li>将编译步骤中生成的汇编代码转换为机器码，这是计算机可以直接执行的指令。</li>
+<li>将汇编代码 <code>.s</code> 翻译成机器指令 <code>.o</code> 文件，一个 <code>.cpp</code> 文件只会生成一个 <code>.o</code> 文件</li>
+</ul>
+<h5 id="链接">链接</h5>
+<ul>
+<li>合并程序中所有单独编译的部分（多个<code>.o</code>文件链接到一起）。</li>
+<li>解决程序中引用的外部函数或变量（例如库函数）的地址。</li>
+<li>生成一个可执行文件（例如<code>.exe</code>文件在Windows上），这个文件可以被计算机直接执行。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">g++ -c main.cpp -o main.o  #生成main.o文件，-c表示只进行编译步骤，并生成目标代码文件</span><br><span class="line">g++ -c utility.cpp -o utility.o#生成utility.o文件，如果使用外部库，要加-l +库名或-L +库路径</span><br><span class="line">g++ main.o utility.o -o my_program#链接成my_program可执行文件</span><br></pre></td></tr></table></figure>
+<h6 id="静态链接与动态链接">静态链接与动态链接</h6>
+<p>静态链接和动态链接是程序编译和链接过程中的两种不同方式，它们在程序运行时对外部库文件的依赖和处理方式上有所不同。静态链接和动态链接各有优缺点，具体选择哪种方式取决于实际需求和应用场景。</p>
+<ul>
+<li>如果对程序的独立性和安全性要求较高，可以选择静态链接</li>
+<li>如果对程序的体积和升级方便性要求较高，可以选择动态链接。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>静态链接</th>
+<th>动态链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>定义</strong></td>
+<td>编译时将外部库直接嵌入到可执行文件中</td>
+<td>编译时只生成可执行文件和必要的资源文件，运行时加载外部库</td>
+</tr>
+<tr>
+<td><strong>完整性</strong></td>
+<td>包含所有代码和数据，无需额外加载</td>
+<td>依赖外部库文件，运行时加载</td>
+</tr>
+<tr>
+<td><strong>稳定性</strong></td>
+<td>运行时库不会被卸载或替换，稳定性高</td>
+<td>运行时库可以被卸载或替换，可能影响稳定性</td>
+</tr>
+<tr>
+<td><strong>独立性</strong></td>
+<td>与目标程序依赖性强，修改库需重新编译程序</td>
+<td>与目标程序依赖性弱，修改库无需重新编译程序</td>
+</tr>
+<tr>
+<td><strong>体积</strong></td>
+<td>体积较大，包含所有代码和数据</td>
+<td>体积较小，多个程序可共享同一个库</td>
+</tr>
+<tr>
+<td><strong>资源占用</strong></td>
+<td>磁盘和内存占用较大</td>
+<td>磁盘和内存占用较小</td>
+</tr>
+<tr>
+<td><strong>升级和维护</strong></td>
+<td>升级或维护需要替换所有相关库并重新编译程序</td>
+<td>升级或维护库时，无需重新编译程序，只需替换库文件</td>
+</tr>
+<tr>
+<td><strong>兼容性</strong></td>
+<td>不易出现兼容性问题，因为所有代码和数据都在一起</td>
+<td>可能出现兼容性问题，特别是当多个程序共享同一个库时</td>
+</tr>
+<tr>
+<td><strong>安全性</strong></td>
+<td>安全性较高，因为不依赖于外部文件</td>
+<td>安全性较低，可能受到外部文件的影响</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>对独立性和安全性要求较高的程序</td>
+<td>对体积和升级方便性要求较高的程序</td>
+</tr>
+</tbody>
+</table>
+<h4 id="大端小端">大端小端</h4>
+<h5 id="字节序">字节序</h5>
+<p>字节序是指多字节数据在计算机内存中存储或者网络传输时各字节的存储顺序。具体来说，它决定了在一个多字节的数据项中，字节的哪一端存储在该数据项的起始地址处。</p>
+<h5 id="大端-Big-Endian">大端(Big-Endian)</h5>
+<p>高位字节在前，低位字节在后。即数据的高位字节存放在内存的低地址处，而数据的低位字节存放在内存的高地址处。例如，一个32位整数<code>0x12345678</code>在大端序系统中会被存储为<code>12 34 56 78</code>（十六进制表示）。</p>
+<h5 id="小端-Little-Endian">小端(Little-Endian)</h5>
+<p>低位字节在前，高位字节在后。与大端序相反，数据的低位字节存放在内存的低地址处，而数据的高位字节存放在内存的高地址处。同样以32位整数<code>0x12345678</code>为例，在小端序系统中它会被存储为<code>78 56 34 12</code>。</p>
+<h5 id="影响">影响</h5>
+<p>在网络编程中，网络字节序通常指的是大端序（Big-Endian）。因此，当数据需要在网络上进行传输时，如果主机字节序是小端序（Little-Endian），则需要在发送前将数据从主机字节序转换为网络字节序，接收端在接收到数据后也需要进行相应的转换。</p>
+<h4 id="内存泄漏">内存泄漏</h4>
+<p>内存泄漏（Memory Leak）是指程序在运行过程中，未能正确释放已经不再需要使用的内存空间，导致系统中的可用内存逐渐减少，直至耗尽所有可用内存并可能引发系统崩溃的严重问题。常见：</p>
+<table>
+<thead>
+<tr>
+<th>特点</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>定义</td>
+<td>程序在运行过程中未能正确释放不再使用的内存空间，导致系统可用内存减少，可能引发系统崩溃。</td>
+</tr>
+<tr>
+<td>原因</td>
+<td>程序员忘记释放内存、异常处理不当、循环引用、资源未关闭等。</td>
+</tr>
+<tr>
+<td>类型</td>
+<td>常发性、偶发性、一次性、隐式内存泄漏。</td>
+</tr>
+<tr>
+<td>影响</td>
+<td>系统性能下降、内存占用持续增加、可能导致系统崩溃。</td>
+</tr>
+<tr>
+<td>解决办法</td>
+<td>及时释放内存、正确处理异常、解除循环引用、正确关闭资源、使用检测工具、养成良好编程习惯。</td>
+</tr>
+<tr>
+<td>重要性</td>
+<td>内存泄漏是严重的编程错误，需要特别注意预防和修复。</td>
+</tr>
+</tbody>
+</table>
+<p>内存泄漏缺陷具有隐蔽性、积累性的特征，比其他内存非法访问错误更难检测。因此，程序员需要特别注意在编写代码时避免内存泄漏的发生，并定期检查代码以发现和修复可能存在的内存泄漏问题。</p>
+<h4 id="include-与">#include&quot; &quot;与&lt; &gt;</h4>
+<p>以下是一个表格，展示了 <code>#include</code> 指令中使用尖括号 <code>&lt; &gt;</code> 和双引号 <code>&quot;&quot;</code> 的区别：</p>
+<table>
+<thead>
+<tr>
+<th>特点</th>
+<th>尖括号 <code>&lt; &gt;</code></th>
+<th>双引号 <code>&quot;&quot;</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>用途</strong></td>
+<td>通常用于包含编译器提供的标准库头文件</td>
+<td>通常用于包含项目中的自定义头文件</td>
+</tr>
+<tr>
+<td><strong>搜索路径</strong></td>
+<td>编译器会在其标准库路径中查找文件</td>
+<td>编译器首先在当前源文件所在的目录中查找文件，如果找不到，则会查找编译器设置的其他路径</td>
+</tr>
+<tr>
+<td><strong>处理自定义头文件</strong></td>
+<td>如果尝试使用尖括号来包含自定义头文件，并且该文件不在标准库路径中，编译器通常会报错</td>
+<td>使用双引号可以包含当前目录或编译器设置的其他路径中的自定义头文件</td>
+</tr>
+<tr>
+<td><strong>示例</strong></td>
+<td><code>&lt;iostream&gt;</code>、<code>&lt;stdio.h&gt;</code></td>
+<td><code>&quot;myheader.h&quot;</code>（假设 <code>myheader.h</code> 在当前目录或编译器设置的其他路径中）</td>
+</tr>
+<tr>
+<td><strong>注意事项</strong></td>
+<td>编译器可能会根据设置来改变默认行为</td>
+<td>编译器可能会根据设置来改变默认行为，但通常优先查找当前目录</td>
+</tr>
+</tbody>
+</table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://longjinw.github.io">龙金伟</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://longjinw.github.io/2024/07/01/C-%E7%BC%96%E8%AF%91%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">https://longjinw.github.io/2024/07/01/C-%E7%BC%96%E8%AF%91%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://longjinw.github.io" target="_blank">龙锦</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E8%AF%91%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">编译和内存管理</a></div><div class="post_share"><div class="social-share" data-image="/image/T2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/" title="Per_FedAVG源码分析总领"><img class="cover" src="/image/T1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Per_FedAVG源码分析总领</div></div></a></div><div class="next-post pull-right"><a href="/2024/07/01/gdb%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3/" title="gdb调试工具详解"><img class="cover" src="/image/T1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">gdb调试工具详解</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/image/luogic.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">龙金伟</div><div class="author-info__description">买不起茅台 </div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/longjinw"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/longjinw" target="_blank" title="Github"><i class="fab fa-github" style="color: #hdhfbb;"></i></a><a class="social-icon" href="https://blog.csdn.net/longer_net" target="_blank" title="csdn"><i class="fa-regular fa-envelope" style="color: #000000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E7%BC%96%E8%AF%91%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">C++编译和内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ELF%E6%96%87%E4%BB%B6%EF%BC%88%E5%8F%AF%E6%89%A7%E8%A1%8C%E5%8F%AF%E9%93%BE%E6%8E%A5%E6%96%87%E4%BB%B6%EF%BC%89%EF%BC%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text">ELF文件（可执行可链接文件）：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#C-%E5%86%85%E5%AD%98%E5%88%86%E5%8C%BA%EF%BC%9A"><span class="toc-number">1.1.2.</span> <span class="toc-text">C++内存分区：</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%AD%98%E5%82%A8%E5%8C%BA%EF%BC%88%E7%A8%8B%E5%BA%8F%E4%BB%A3%E7%A0%81%E5%8C%BA%EF%BC%89"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">程序存储区（程序代码区）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%85%A8%E5%B1%80-%E9%9D%99%E6%80%81%E5%AD%98%E5%82%A8%E5%8C%BA"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">全局&#x2F;静态存储区</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%A0%88%E5%8C%BA%EF%BC%88Stack%EF%BC%89"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">栈区（Stack）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%A0%86%E5%8C%BA%EF%BC%88Heap%EF%BC%89"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">堆区（Heap）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E5%AD%98%E5%82%A8%E5%8C%BA"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">常量存储区</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%87%AA%E7%94%B1%E5%AD%98%E5%82%A8%E5%8C%BA"><span class="toc-number">1.1.2.6.</span> <span class="toc-text">自由存储区</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.1.2.7.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A0%86%E5%92%8C%E6%A0%88"><span class="toc-number">1.2.</span> <span class="toc-text">堆和栈</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A0%88"><span class="toc-number">1.2.1.</span> <span class="toc-text">栈</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A0%86"><span class="toc-number">1.2.2.</span> <span class="toc-text">堆</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A0%86%E5%92%8C%E6%A0%88%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.3.</span> <span class="toc-text">堆和栈的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%A0%86%EF%BC%88Heap%EF%BC%89"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">堆（Heap）</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%A0%88%EF%BC%88Stack%EF%BC%89"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">栈（Stack）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89%E5%92%8C%E7%94%9F%E5%AD%98%E5%91%A8%E6%9C%9F"><span class="toc-number">1.3.</span> <span class="toc-text">变量定义和生存周期</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">1.3.1.</span> <span class="toc-text">变量作用域</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.3.2.</span> <span class="toc-text">变量生命周期</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90"><span class="toc-number">1.4.</span> <span class="toc-text">内存对齐</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#alignas%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.4.1.</span> <span class="toc-text">alignas关键字</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="toc-number">1.5.</span> <span class="toc-text">智能指针</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%BB%BA%E7%AB%8B"><span class="toc-number">1.5.1.</span> <span class="toc-text">指针建立</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.5.2.</span> <span class="toc-text">代码示例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%92%8C%E9%93%BE%E6%8E%A5"><span class="toc-number">1.6.</span> <span class="toc-text">编译和链接</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">1.6.1.</span> <span class="toc-text">预处理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-number">1.6.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B1%87%E7%BC%96"><span class="toc-number">1.6.3.</span> <span class="toc-text">汇编</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5"><span class="toc-number">1.6.4.</span> <span class="toc-text">链接</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">1.6.4.1.</span> <span class="toc-text">静态链接与动态链接</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E7%AB%AF%E5%B0%8F%E7%AB%AF"><span class="toc-number">1.7.</span> <span class="toc-text">大端小端</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E5%BA%8F"><span class="toc-number">1.7.1.</span> <span class="toc-text">字节序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E7%AB%AF-Big-Endian"><span class="toc-number">1.7.2.</span> <span class="toc-text">大端(Big-Endian)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B0%8F%E7%AB%AF-Little-Endian"><span class="toc-number">1.7.3.</span> <span class="toc-text">小端(Little-Endian)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BD%B1%E5%93%8D"><span class="toc-number">1.7.4.</span> <span class="toc-text">影响</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="toc-number">1.8.</span> <span class="toc-text">内存泄漏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#include-%E4%B8%8E"><span class="toc-number">1.9.</span> <span class="toc-text">#include&quot; &quot;与&lt; &gt;</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/07/01/gdb%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3/" title="gdb调试工具详解"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="gdb调试工具详解"/></a><div class="content"><a class="title" href="/2024/07/01/gdb%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3/" title="gdb调试工具详解">gdb调试工具详解</a><time datetime="2024-07-01T00:22:41.000Z" title="发表于 2024-07-01 08:22:41">2024-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/01/C-%E7%BC%96%E8%AF%91%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="C++编译和内存管理"><img src="/image/T2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++编译和内存管理"/></a><div class="content"><a class="title" href="/2024/07/01/C-%E7%BC%96%E8%AF%91%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="C++编译和内存管理">C++编译和内存管理</a><time datetime="2024-07-01T00:18:52.000Z" title="发表于 2024-07-01 08:18:52">2024-07-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/" title="Per_FedAVG源码分析总领"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Per_FedAVG源码分析总领"/></a><div class="content"><a class="title" href="/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/" title="Per_FedAVG源码分析总领">Per_FedAVG源码分析总领</a><time datetime="2024-06-28T05:50:07.000Z" title="发表于 2024-06-28 13:50:07">2024-06-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/27/shell%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E5%9F%BA%E7%A1%80/" title="shell脚本编写基础"><img src="/image/T2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="shell脚本编写基础"/></a><div class="content"><a class="title" href="/2024/06/27/shell%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E5%9F%BA%E7%A1%80/" title="shell脚本编写基础">shell脚本编写基础</a><time datetime="2024-06-27T13:11:37.000Z" title="发表于 2024-06-27 21:11:37">2024-06-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/27/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="Per_FedAVG源码分析"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Per_FedAVG源码分析"/></a><div class="content"><a class="title" href="/2024/06/27/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="Per_FedAVG源码分析">Per_FedAVG源码分析</a><time datetime="2024-06-27T12:24:17.000Z" title="发表于 2024-06-27 20:24:17">2024-06-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By 龙金伟</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/xiabo2/CDN@latest/fishes.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>

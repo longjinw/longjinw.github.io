@@ -1,6 +1,505 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C++编译和内存管理</title>
+    <url>/2024/07/01/C-%E7%BC%96%E8%AF%91%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h3 id="C-编译和内存管理">C++编译和内存管理</h3>
+<h4 id="内存管理">内存管理</h4>
+<h5 id="ELF文件（可执行可链接文件）：">ELF文件（可执行可链接文件）：</h5>
+<p>是Linux等类Unix操作系统中用于表示可执行文件、共享库、目标文件和核心转储文件的标准二进制文件格式。每个 ELFELF 文件都由一个 <code>ELF header</code> 和紧跟其后的文件数据部分组成。</p>
+<h5 id="C-内存分区：">C++内存分区：</h5>
+<p>C++内存分区在程序执行时，为了更有效地管理内存资源，通常将内存划分为不同的区域。</p>
+<table>
+<thead>
+<tr>
+<th>程序存储区</th>
+<th>全局/静态存储</th>
+<th>栈区</th>
+<th>堆区</th>
+<th>常量存储区</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>操作系统管理，运行期间不变</td>
+<td>执行时已分配好，运行期间不变</td>
+<td>编译器管理，分配和释放的效率很高</td>
+<td>程序员管理，要自己要求和释放</td>
+<td>存放常量，运行期间不变</td>
+</tr>
+</tbody>
+</table>
+<p>以下是C++内存分区的详细解释：</p>
+<h6 id="程序存储区（程序代码区）">程序存储区（程序代码区）</h6>
+<ul>
+<li>功能：存放函数体的二进制代码，由操作系统进行管理。</li>
+<li>特点：这部分内存主要存储了程序的指令和数据结构，它们在程序开始执行时就已经加载到内存中，并在程序运行期间保持不变</li>
+</ul>
+<h6 id="全局-静态存储区">全局/静态存储区</h6>
+<ul>
+<li>功能：存放全局变量和静态变量（包括全局静态变量和局部静态变量）。</li>
+<li>特点：
+<ul>
+<li>在程序开始执行时，这部分内存就已经分配好了，并且它们的存储单元是固定的。</li>
+<li>变量的生命周期与程序的运行时间相同，程序结束时才会释放这部分内存。</li>
+<li>由于静态分配，其访问速度相对较快。</li>
+</ul>
+</li>
+</ul>
+<h6 id="栈区（Stack）">栈区（Stack）</h6>
+<ul>
+<li>功能：
+<ul>
+<li>由编译器自动分配和释放。</li>
+<li>存放函数的参数值、局部变量等。</li>
+</ul>
+</li>
+<li>特点：
+<ul>
+<li>栈区采用后进先出（LIFO）的管理方式。</li>
+<li>分配和释放的效率非常高，因为栈内存分配运算内置于处理器的指令集中。</li>
+<li>但栈区的空间大小是有限制的，过多的局部变量或递归调用可能导致栈溢出。</li>
+</ul>
+</li>
+</ul>
+<h6 id="堆区（Heap）">堆区（Heap）</h6>
+<ul>
+<li>功能：
+<ul>
+<li>由程序员分配和释放。</li>
+<li>若程序员不释放，程序结束时由操作系统回收。</li>
+</ul>
+</li>
+<li>特点：
+<ul>
+<li>堆区是动态内存分配的主要区域，程序员可以使用<code>new</code>和<code>delete</code>（或<code>new[]</code>和<code>delete[]</code>）来分配和释放内存。</li>
+<li>堆区的空间大小相对较大，但在频繁地分配和释放内存时，可能会导致内存碎片。</li>
+<li>使用堆区时要特别注意内存泄漏的问题，即分配的内存没有被正确释放。</li>
+</ul>
+</li>
+</ul>
+<h6 id="常量存储区">常量存储区</h6>
+<ul>
+<li>功能：存放常量字符串和其他常量值。</li>
+<li>特点：
+<ul>
+<li>常量存储区中的值在程序运行期间不可修改。</li>
+<li>常量字符串通常与其他只读数据一起存放在只读存储区，以防止程序意外修改它们。</li>
+</ul>
+</li>
+</ul>
+<h6 id="自由存储区">自由存储区</h6>
+<ul>
+<li>说明：自由存储区是一个相对抽象的概念，通常指的是通过<code>new</code>操作符分配的内存区域。虽然从技术上来说，这部分内存也属于堆区，但C++标准库允许程序员通过重载<code>new</code>和<code>delete</code>操作符来改变自由存储区的实现。</li>
+</ul>
+<h6 id="总结">总结</h6>
+<p>C++内存分区是程序设计和内存管理的重要基础。了解不同内存分区的功能和特点有助于程序员更合理地使用和管理内存资源，从而提高程序的性能和稳定性。在编写C++程序时，应该尽量避免内存泄漏和栈溢出等问题，以确保程序的正确性和健壮性。</p>
+<h4 id="堆和栈">堆和栈</h4>
+<h5 id="栈">栈</h5>
+<p>当我们讨论操作系统和内存管理时，我们更经常指的是进程或线程的调用栈（Call Stack）或执行栈（Execution Stack），这是一个由操作系统自动管理的内存区域。</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自动分配和释放</td>
+<td>栈内存由系统自动分配和释放。当一个函数被调用时，它的参数和局部变量会在栈上被分配空间。当函数返回时，这些空间会被自动释放。</td>
+</tr>
+<tr>
+<td>后进先出（LIFO）</td>
+<td>栈遵循后进先出（Last In First Out）的原则。这意味着最后入栈的元素会最先出栈。</td>
+</tr>
+<tr>
+<td>栈帧（Stack Frame）</td>
+<td>每次函数调用时，都会在栈上分配一个栈帧（Stack Frame）。栈帧包含了函数的局部变量、参数、返回地址等信息。</td>
+</tr>
+<tr>
+<td>栈溢出（Stack Overflow）</td>
+<td>如果函数递归调用过深，或者局部变量占用了过多的栈空间，就可能导致栈溢出。栈溢出是一种严重的错误，通常会导致程序崩溃。</td>
+</tr>
+<tr>
+<td>栈指针（Stack Pointer）</td>
+<td>栈指针是一个指向栈顶的内存地址的指针。当数据入栈时，栈指针会向下移动（在大多数系统中，栈是向下增长的）；当数据出栈时，栈指针会向上移动。</td>
+</tr>
+<tr>
+<td>局部变量和函数参数</td>
+<td>在C++中，局部变量（包括自动存储期对象）和函数参数通常都存储在栈上。这意味着它们的生命周期与它们所在的函数或代码块相同。当函数返回或代码块结束时，这些变量就会被销毁。</td>
+</tr>
+<tr>
+<td>返回地址</td>
+<td>每次函数调用时，除了局部变量和参数外，还会在栈上保存一个返回地址。这个地址是函数执行完毕后应该跳转到的位置，通常是调用该函数之后的下一条指令。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="堆">堆</h5>
+<p>在C++中，堆（Heap）是一种重要的内存管理机制，它允许程序员在运行时动态地分配和释放内存。与栈（Stack）不同，堆内存是由程序员显式管理的，而不是由系统自动管理的。</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>动态分配</td>
+<td>堆内存允许程序在运行时根据需要动态地分配内存。这是通过使用诸如<code>new</code>和<code>delete</code>（在C++中）或<code>malloc</code>和<code>free</code>（在C中）等操作符或函数来实现的。</td>
+</tr>
+<tr>
+<td>显示管理</td>
+<td>与栈内存不同，程序员必须显式地管理堆内存。这意味着程序员需要负责在不再需要内存时释放它，以避免内存泄漏。</td>
+</tr>
+<tr>
+<td>内存碎片</td>
+<td>由于堆内存是动态分配的，因此可能会产生内存碎片。内存碎片是当小块内存被释放并留下未使用的空间时发生的，这些空间太小而无法容纳其他请求，但又无法合并成更大的连续块。</td>
+</tr>
+<tr>
+<td>分配和释放时间</td>
+<td>堆内存的分配和释放通常比栈内存慢，因为堆内存管理涉及到查找可用空间、跟踪分配和释放等复杂操作。</td>
+</tr>
+<tr>
+<td>存储打对象或者长生命周期对象</td>
+<td>由于堆内存是动态分配的，因此它通常用于存储大对象或具有长生命周期的对象。这些对象不适合在栈上分配，因为栈的大小通常是有限的。</td>
+</tr>
+<tr>
+<td>异常安全性</td>
+<td>在C++中，使用<code>new</code>操作符分配内存时，如果内存分配失败，会抛出<code>std::bad_alloc</code>异常。这使得堆内存分配具有更好的异常安全性，因为它允许程序员处理分配失败的情况。</td>
+</tr>
+<tr>
+<td>智能指针</td>
+<td>为了简化堆内存的管理，C++11引入了智能指针（如<code>std::unique_ptr</code>、<code>std::shared_ptr</code>和<code>std::weak_ptr</code>）。智能指针能够自动管理堆内存的生命周期，减少内存泄漏的风险。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="堆和栈的区别">堆和栈的区别</h5>
+<p>简而言之，堆是程序员手动管理的动态内存区域，而栈是自动管理的静态内存区域。</p>
+<h6 id="堆（Heap）">堆（Heap）</h6>
+<ul>
+<li>堆用于动态内存分配。程序员使用<code>new</code>或<code>malloc</code>等函数在堆上请求内存，并在不再需要时使用<code>delete</code>或<code>free</code>释放它。</li>
+<li>堆内存的生命周期由程序员控制。</li>
+<li>堆内存通常用于存储大型对象或对象数组。</li>
+</ul>
+<h6 id="栈（Stack）">栈（Stack）</h6>
+<ul>
+<li>栈是自动管理的内存区域，用于存储局部变量和函数调用的信息。</li>
+<li>栈内存的生命周期与函数或代码块的执行周期相同。当函数返回时，栈上的内存会被自动释放。</li>
+<li>栈内存通常用于存储小型对象和简单数据类型。</li>
+</ul>
+<h4 id="变量定义和生存周期">变量定义和生存周期</h4>
+<h5 id="变量作用域">变量作用域</h5>
+<p>在C++中，变量的作用域（Scope）指的是变量可以被访问的代码区域。这决定了变量的生命周期和可见性。C++中有几种不同的作用域：</p>
+<table>
+<thead>
+<tr>
+<th>作用域</th>
+<th>性质</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>局部作用域（Local Scope）</td>
+<td>局部作用域是在函数、代码块或循环内部定义的变量的作用域。这些变量在它们被声明的代码块内是可见的，一旦代码块结束，这些变量就会被销毁（对于非静态局部变量）。</td>
+</tr>
+<tr>
+<td>全局作用域（Global Scope）</td>
+<td>全局作用域是在所有函数外部定义的变量的作用域。这些变量在整个程序中都是可见的，从定义它们的文件开始到文件结束。如果它们被声明为<code>extern</code>，则可以在其他文件中通过包含适当的头文件来访问。</td>
+</tr>
+<tr>
+<td>命名空间作用域（Namespace Scope）</td>
+<td>命名空间作用域是在命名空间中定义的变量的作用域。命名空间用于将相关的标识符（如变量、函数、类等）组合在一起，以避免命名冲突。</td>
+</tr>
+<tr>
+<td>类作用域（Class Scope）</td>
+<td>类作用域是在类中定义的成员变量的作用域。这些变量是类的实例（对象）的一部分，并且只能通过类的对象或指针来访问。</td>
+</tr>
+</tbody>
+</table>
+<p>在下面这段代码中，我们定义了：</p>
+<ul>
+<li>一个全局变量 <code>globalVar</code>。</li>
+<li>一个命名空间 <code>MyNamespace</code>，其中包含一个命名空间变量 <code>namespaceVar</code>。</li>
+<li>一个类 <code>MyClass</code>，其中包含一个类成员变量 <code>classVar</code> 和一个成员函数 <code>printVar</code>。</li>
+<li>一个函数 <code>foo</code>，其中包含一个局部变量 <code>localVar</code>，并访问了全局变量、命名空间变量和类实例的变量。</li>
+<li>在 <code>main</code> 函数中，我们访问了全局变量、命名空间变量，并创建了一个 <code>MyClass</code> 的实例来访问其成员变量。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>    </span></span><br><span class="line"><span class="comment">// 全局作用域  </span></span><br><span class="line"><span class="type">int</span> globalVar = <span class="number">100</span>;  </span><br><span class="line"><span class="comment">// 命名空间作用域  </span></span><br><span class="line"><span class="keyword">namespace</span> MyNamespace &#123;  </span><br><span class="line">    <span class="type">int</span> namespaceVar = <span class="number">200</span>;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">// 类作用域  </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    <span class="type">int</span> classVar = <span class="number">300</span>; <span class="comment">// 类成员变量（实例变量）  </span></span><br><span class="line">    <span class="comment">// 成员函数（也在类作用域内）  </span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">printVar</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;classVar: &quot;</span> &lt;&lt; classVar &lt;&lt; std::endl;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"><span class="comment">// 函数作用域（包括局部作用域）  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="type">int</span> localVar = <span class="number">42</span>; <span class="comment">// 局部变量  </span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;localVar: &quot;</span> &lt;&lt; localVar &lt;&lt; std::endl;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;globalVar: &quot;</span> &lt;&lt; globalVar &lt;&lt; std::endl;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;MyNamespace::namespaceVar: &quot;</span> &lt;&lt; MyNamespace::namespaceVar &lt;&lt; std::endl;  </span><br><span class="line">    MyClass obj; <span class="comment">// 创建MyClass的实例  </span></span><br><span class="line">    obj.<span class="built_in">printVar</span>(); <span class="comment">// 调用成员函数打印classVar  </span></span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;globalVar: &quot;</span> &lt;&lt; globalVar &lt;&lt; std::endl;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;MyNamespace::namespaceVar: &quot;</span> &lt;&lt; MyNamespace::namespaceVar &lt;&lt; std::endl;  </span><br><span class="line">    <span class="built_in">foo</span>(); <span class="comment">// 调用foo函数，该函数将打印其局部变量和全局/命名空间变量  </span></span><br><span class="line">    MyClass obj; <span class="comment">// 在main函数中创建MyClass的实例  </span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;obj.classVar: &quot;</span> &lt;&lt; obj.classVar &lt;&lt; std::endl; <span class="comment">// 直接访问obj的classVar </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="变量生命周期">变量生命周期</h5>
+<p>在C++中，变量的生命周期指的是变量从创建到销毁的时间段。这取决于变量在何处以及如何被声明。以下是C++中变量生命周期的几种主要情况：</p>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>局部变量（Local Variables）</td>
+<td>局部变量在函数、代码块或循环内定义。它们的生命周期从定义点开始，到包含它们的代码块执行完毕时结束。一旦变量离开其作用域（即包含它的代码块），它就会被销毁，其占用的内存会被释放。</td>
+</tr>
+<tr>
+<td>全局变量（Global Variables）</td>
+<td>全局变量在函数外部定义，通常在所有函数外部的文件顶部。它们的生命周期是整个程序的执行期间，从程序开始执行到程序结束。</td>
+</tr>
+<tr>
+<td>静态局部变量（Static Local Variables）</td>
+<td>静态局部变量在函数内部定义，但它们的生命周期与全局变量类似。它们在第一次进入包含它们的函数时被初始化，并在程序执行期间一直存在，即使函数返回也不会被销毁。在下次函数调用时，静态局部变量的值保持不变。</td>
+</tr>
+<tr>
+<td>动态分配的内存（Dynamically Allocated Memory）</td>
+<td>使用<code>new</code>操作符在堆上动态分配的内存的生命周期是由程序员控制的。当使用<code>new</code>分配内存时，该内存会一直存在，直到显式地使用<code>delete</code>操作符释放它。忘记释放内存会导致内存泄漏。</td>
+</tr>
+<tr>
+<td>类的成员变量（Class Member Variables）</td>
+<td>类的成员变量（包括静态和非静态）的生命周期取决于类的实例（对象）的生命周期。非静态成员变量与对象一起创建和销毁，而静态成员变量在第一次创建类的对象时初始化，并在程序执行期间一直存在，即使所有对象都被销毁。</td>
+</tr>
+</tbody>
+</table>
+<p>在接下来这段代码中，我们有：</p>
+<ul>
+<li>一个全局变量<code>globalVar</code></li>
+<li>一个类<code>MyClass</code>，它有一个非静态成员变量<code>instanceVar</code>和一个静态成员变量<code>staticVar</code>。</li>
+<li>在<code>main</code>函数中，我们访问了全局变量并创建了一个<code>MyClass</code>的实例，然后通过这个实例访问了其成员变量。</li>
+<li>我们还定义了一个函数<code>foo</code>，其中包含了静态局部变量<code>staticLocalVar</code>和局部变量<code>localVar</code>。</li>
+<li>此外，我们还在<code>foo</code>函数中动态分配了一个整数，并在使用后立即释放了它。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>  </span></span><br><span class="line"><span class="comment">// 全局变量  </span></span><br><span class="line"><span class="type">int</span> globalVar = <span class="number">100</span>;  </span><br><span class="line"><span class="comment">// 类的声明  </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    <span class="type">int</span> instanceVar; <span class="comment">// 类的非静态成员变量（实例变量）  </span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> staticVar; <span class="comment">// 类的静态成员变量  </span></span><br><span class="line">    <span class="built_in">MyClass</span>(<span class="type">int</span> value) : <span class="built_in">instanceVar</span>(value) &#123;&#125; <span class="comment">// 构造函数  </span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">printVars</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Instance variable: &quot;</span> &lt;&lt; instanceVar &lt;&lt; std::endl;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Static variable: &quot;</span> &lt;&lt; staticVar &lt;&lt; std::endl;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line"><span class="comment">// 类的静态成员变量的初始化  </span></span><br><span class="line"><span class="type">int</span> MyClass::staticVar = <span class="number">200</span>;  </span><br><span class="line"><span class="comment">// 函数定义  </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="comment">// 静态局部变量  </span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> staticLocalVar = <span class="number">0</span>;  </span><br><span class="line">    staticLocalVar++;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Static local variable: &quot;</span> &lt;&lt; staticLocalVar &lt;&lt; std::endl;  </span><br><span class="line">    <span class="comment">// 局部变量  </span></span><br><span class="line">    <span class="type">int</span> localVar = <span class="number">42</span>;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Local variable: &quot;</span> &lt;&lt; localVar &lt;&lt; std::endl;  </span><br><span class="line">    <span class="comment">// 动态分配的内存  </span></span><br><span class="line">    <span class="type">int</span>* ptr = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">84</span>);  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Dynamically allocated variable: &quot;</span> &lt;&lt; *ptr &lt;&lt; std::endl;  </span><br><span class="line">    <span class="keyword">delete</span> ptr; <span class="comment">// 释放内存  </span></span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="comment">// 访问全局变量  </span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Global variable: &quot;</span> &lt;&lt; globalVar &lt;&lt; std::endl;  </span><br><span class="line">    <span class="comment">// 创建MyClass的实例并访问其成员变量  </span></span><br><span class="line">    <span class="function">MyClass <span class="title">obj</span><span class="params">(<span class="number">300</span>)</span></span>;  </span><br><span class="line">    obj.<span class="built_in">printVars</span>();  </span><br><span class="line">    <span class="comment">// 调用foo函数，访问静态局部变量和局部变量  </span></span><br><span class="line">    <span class="built_in">foo</span>();  </span><br><span class="line">    <span class="comment">// 注意：在main函数结束时，全局变量和静态成员变量仍然存在，但局部变量（包括静态局部变量在foo函数外部）已经销毁  </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="内存对齐">内存对齐</h4>
+<p>在C++中，内存对齐（Memory Alignment）是计算机内存访问性能优化的一种技术。当数据在内存中按照某种特定的规则对齐时，处理器可以更高效地访问这些数据。这是因为现代处理器在访问内存时，通常会一次性读取多个字节（比如4字节、8字节等），这种读取方式被称为“字”（word）或“双字”（doubleword）访问。如果数据没有正确对齐，那么处理器可能需要执行额外的操作来访问这些数据，这会降低访问速度。</p>
+<h5 id="alignas关键字">alignas关键字</h5>
+<p>在大多数情况下，最好让编译器自动处理内存对齐,你也可以使用特定的编译器指令或C++17引入的<code>alignas</code>关键字来指定对齐要求。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdint&gt;</span>  </span></span><br><span class="line"><span class="comment">// 指定16字节对齐的结构体  </span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">alignas</span>(<span class="number">16</span>) AlignedStruct &#123;  </span><br><span class="line">    <span class="type">int32_t</span> a;  </span><br><span class="line">    <span class="type">double</span> b;  </span><br><span class="line">    <span class="comment">// ... 可能还有其他成员 ...  </span></span><br><span class="line">&#125;;  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    AlignedStruct s;  </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Alignment of s: &quot;</span> &lt;&lt; <span class="built_in">alignof</span>(s) &lt;&lt; <span class="string">&quot; bytes\n&quot;</span>;  </span><br><span class="line">    <span class="comment">// 输出应该是 16 bytes（取决于平台和编译器）  </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="智能指针">智能指针</h4>
+<p>C++中的智能指针是一种特殊的指针，它们可以自动管理动态分配的内存的生命周期，从而避免内存泄漏和其他与内存管理相关的问题。C++11标准引入了三种主要的智能指针：<code>std::unique_ptr</code>、<code>std::shared_ptr</code>和<code>std::weak_ptr</code>。需要注意的是，智能指针不能像普通指针那样支持加减运算。</p>
+<table>
+<thead>
+<tr>
+<th>指针</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>unique_ptr</td>
+<td><code>unique_ptr</code> 独占其指向的对象。这意味着两个 <code>unique_ptr</code> 不能指向同一个对象。 当 <code>unique_ptr</code> 被销毁（例如，离开其作用域）时，它所指向的对象也会被自动删除。 <code>unique_ptr</code> 提供了对原始指针的独占所有权语义。</td>
+</tr>
+<tr>
+<td>shared_ptr</td>
+<td><code>shared_ptr</code> 实现共享所有权的语义。多个 <code>shared_ptr</code> 可以指向同一个对象，并且当最后一个拥有该对象的 <code>shared_ptr</code> 被销毁时，对象才会被删除。 <code>shared_ptr</code> 使用引用计数来跟踪有多少 <code>shared_ptr</code> 指向一个对象。当计数变为0时，对象会被删除。</td>
+</tr>
+<tr>
+<td>weak_ptr</td>
+<td><code>weak_ptr</code> 是对 <code>shared_ptr</code> 所管理对象的一个弱引用，它不会增加对象的引用计数。 <code>weak_ptr</code> 主要用于解决 <code>shared_ptr</code> 之间的循环引用问题。 <code>weak_ptr</code> 可以安全地用于检查一个对象是否仍然存在，并且可以通过它获取到 <code>shared_ptr</code>（如果对象仍然存在的话）。##### 指针建立</td>
+</tr>
+</tbody>
+</table>
+<h5 id="指针建立">指针建立</h5>
+<ul>
+<li>优先选用 <code>std::make_unique</code> 和 <code>std::make_shared</code>,而非直接 <code>new</code>。</li>
+<li>make_unique：减少代码量，能够加快编译速度，定义两遍类型时，编译器需要进行类型推导会降低编译速度，某些意外意外情况下可能会导致内存泄漏。</li>
+<li><code>make_shared</code>：这个主要是可以减少对堆中申请内存的次数，只需要申请一次即可，<code>make_share</code> 虽然效率高，但是同样不能自定义析构器。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::unique_ptr&lt;<span class="type">int</span>&gt; ptr=std::<span class="built_in">make_unique</span>&lt;<span class="type">int</span>&gt;(<span class="number">5</span>);  </span><br><span class="line"><span class="comment">// ... 使用 ptr  </span></span><br><span class="line"><span class="comment">// 当 ptr 离开作用域时，它指向的 int 会被自动删除</span></span><br><span class="line">std::shared_ptr&lt;<span class="type">int</span>&gt; ptr1 = std::<span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">5</span>);  </span><br><span class="line">std::shared_ptr&lt;<span class="type">int</span>&gt; ptr2 = ptr1;  <span class="comment">// ptr1 和 ptr2 现在共享同一个 int  </span></span><br><span class="line"><span class="comment">// ... 使用 ptr1 和 ptr2  </span></span><br><span class="line"><span class="comment">// 当 ptr1 和 ptr2 都离开作用域时，它们共享的 int 才会被删除</span></span><br><span class="line">std::shared_ptr&lt;<span class="type">int</span>&gt; shared = std::<span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">5</span>);  </span><br><span class="line">std::weak_ptr&lt;<span class="type">int</span>&gt; weak = shared;   </span><br><span class="line"><span class="comment">// ...  </span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">auto</span> strong = weak.<span class="built_in">lock</span>()) &#123;  </span><br><span class="line">    <span class="comment">// strong 是一个有效的 shared_ptr，我们可以使用它  </span></span><br><span class="line">    <span class="comment">// ...  </span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">    <span class="comment">// 原始对象可能已经被删除了  </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="代码示例">代码示例</h5>
+<p>这段代码将会展示如何使用<code>std::unique_ptr</code>、<code>std::shared_ptr</code>和<code>std::weak_ptr</code>来管理<code>MyClass</code>对象的生命周期。你可以看到，当智能指针离开其作用域时，它们会自动删除所指向的对象（除非有其他的<code>shared_ptr</code>仍然指向该对象）。<code>std::weak_ptr</code>用于避免循环引用问题，并允许你检查原始对象是否仍然存在。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span>  </span></span><br><span class="line"><span class="comment">// 一个简单的类  </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;  </span><br><span class="line"><span class="keyword">public</span>:  </span><br><span class="line">    <span class="built_in">MyClass</span>(<span class="type">int</span> value) : <span class="built_in">value_</span>(value) &#123;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;MyClass(&quot;</span> &lt;&lt; value_ &lt;&lt; <span class="string">&quot;) created.\n&quot;</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    ~<span class="built_in">MyClass</span>() &#123;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;MyClass(&quot;</span> &lt;&lt; value_ &lt;&lt; <span class="string">&quot;) destroyed.\n&quot;</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">printValue</span><span class="params">()</span> <span class="type">const</span> </span>&#123;  </span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Value: &quot;</span> &lt;&lt; value_ &lt;&lt; <span class="string">&quot;\n&quot;</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">    <span class="type">int</span> value_;  </span><br><span class="line">&#125;;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="comment">// 使用std::unique_ptr  </span></span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="function">std::unique_ptr&lt;MyClass&gt; <span class="title">uniquePtr</span><span class="params">(<span class="keyword">new</span> MyClass(<span class="number">10</span>))</span></span>;  </span><br><span class="line">        uniquePtr-&gt;<span class="built_in">printValue</span>();  </span><br><span class="line">        <span class="comment">// 当uniquePtr离开作用域时，它指向的对象会被自动删除  </span></span><br><span class="line">    &#125; <span class="comment">// 这里MyClass(10)对象会被销毁  </span></span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 使用std::shared_ptr  </span></span><br><span class="line">    std::shared_ptr&lt;MyClass&gt; sharedPtr1 = std::<span class="built_in">make_shared</span>&lt;MyClass&gt;(<span class="number">20</span>);  </span><br><span class="line">    sharedPtr1-&gt;<span class="built_in">printValue</span>();  </span><br><span class="line">    &#123;  </span><br><span class="line">        std::shared_ptr&lt;MyClass&gt; sharedPtr2 = sharedPtr1; <span class="comment">// sharedPtr1和sharedPtr2现在共享同一个对象  </span></span><br><span class="line">        sharedPtr2-&gt;<span class="built_in">printValue</span>();  </span><br><span class="line">        <span class="comment">// 当sharedPtr2离开作用域时，它指向的对象不会被删除，因为sharedPtr1仍然指向它  </span></span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 当sharedPtr1离开作用域时，如果这是最后一个shared_ptr指向该对象，则对象会被删除  </span></span><br><span class="line">    <span class="comment">// 这里MyClass(20)对象会被销毁  </span></span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 尝试使用std::weak_ptr  </span></span><br><span class="line">    &#123;  </span><br><span class="line">        std::shared_ptr&lt;MyClass&gt; sharedPtr3 = std::<span class="built_in">make_shared</span>&lt;MyClass&gt;(<span class="number">30</span>);  </span><br><span class="line">        std::weak_ptr&lt;MyClass&gt; weakPtr = sharedPtr3;  </span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">auto</span> shared = weakPtr.<span class="built_in">lock</span>()) &#123; <span class="comment">// 尝试获取shared_ptr  </span></span><br><span class="line">            shared-&gt;<span class="built_in">printValue</span>();  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="comment">// 当sharedPtr3离开作用域时，它指向的对象会被删除  </span></span><br><span class="line">        <span class="comment">// 因为weakPtr只是一个弱引用，所以它不会影响对象的生命周期  </span></span><br><span class="line">    &#125; <span class="comment">// 这里MyClass(30)对象会被销毁  </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="编译和链接">编译和链接</h4>
+<p>在C++中，编译和链接是两个不同的步骤，尽管它们通常在一个命令中一起执行。可以分为四个阶段：</p>
+<ul>
+<li>预处理（Preprocessing）</li>
+<li>编译（Compilation）</li>
+<li>汇编（Assembly）</li>
+<li>链接（Linking）</li>
+</ul>
+<h5 id="预处理">预处理</h5>
+<ul>
+<li>替换所有的宏定义（<code>#define</code>）。</li>
+<li>插入包含的头文件内容（<code>#include</code>）。</li>
+<li>删除注释。</li>
+<li>添加行号和文件名信息（用于调试）。</li>
+</ul>
+<h5 id="编译">编译</h5>
+<ul>
+<li>检查代码中的语法错误。</li>
+<li>将代码转换为更低级别的表示形式（通常称为“汇编代码”）。</li>
+<li>简单来说编译的过程即为将 <code>.cpp</code> 源文件翻译成 <code>.s</code> 的汇编代码</li>
+</ul>
+<h5 id="汇编">汇编</h5>
+<ul>
+<li>将编译步骤中生成的汇编代码转换为机器码，这是计算机可以直接执行的指令。</li>
+<li>将汇编代码 <code>.s</code> 翻译成机器指令 <code>.o</code> 文件，一个 <code>.cpp</code> 文件只会生成一个 <code>.o</code> 文件</li>
+</ul>
+<h5 id="链接">链接</h5>
+<ul>
+<li>合并程序中所有单独编译的部分（多个<code>.o</code>文件链接到一起）。</li>
+<li>解决程序中引用的外部函数或变量（例如库函数）的地址。</li>
+<li>生成一个可执行文件（例如<code>.exe</code>文件在Windows上），这个文件可以被计算机直接执行。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">g++ -c main.cpp -o main.o  #生成main.o文件，-c表示只进行编译步骤，并生成目标代码文件</span><br><span class="line">g++ -c utility.cpp -o utility.o#生成utility.o文件，如果使用外部库，要加-l +库名或-L +库路径</span><br><span class="line">g++ main.o utility.o -o my_program#链接成my_program可执行文件</span><br></pre></td></tr></table></figure>
+<h6 id="静态链接与动态链接">静态链接与动态链接</h6>
+<p>静态链接和动态链接是程序编译和链接过程中的两种不同方式，它们在程序运行时对外部库文件的依赖和处理方式上有所不同。静态链接和动态链接各有优缺点，具体选择哪种方式取决于实际需求和应用场景。</p>
+<ul>
+<li>如果对程序的独立性和安全性要求较高，可以选择静态链接</li>
+<li>如果对程序的体积和升级方便性要求较高，可以选择动态链接。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>静态链接</th>
+<th>动态链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>定义</strong></td>
+<td>编译时将外部库直接嵌入到可执行文件中</td>
+<td>编译时只生成可执行文件和必要的资源文件，运行时加载外部库</td>
+</tr>
+<tr>
+<td><strong>完整性</strong></td>
+<td>包含所有代码和数据，无需额外加载</td>
+<td>依赖外部库文件，运行时加载</td>
+</tr>
+<tr>
+<td><strong>稳定性</strong></td>
+<td>运行时库不会被卸载或替换，稳定性高</td>
+<td>运行时库可以被卸载或替换，可能影响稳定性</td>
+</tr>
+<tr>
+<td><strong>独立性</strong></td>
+<td>与目标程序依赖性强，修改库需重新编译程序</td>
+<td>与目标程序依赖性弱，修改库无需重新编译程序</td>
+</tr>
+<tr>
+<td><strong>体积</strong></td>
+<td>体积较大，包含所有代码和数据</td>
+<td>体积较小，多个程序可共享同一个库</td>
+</tr>
+<tr>
+<td><strong>资源占用</strong></td>
+<td>磁盘和内存占用较大</td>
+<td>磁盘和内存占用较小</td>
+</tr>
+<tr>
+<td><strong>升级和维护</strong></td>
+<td>升级或维护需要替换所有相关库并重新编译程序</td>
+<td>升级或维护库时，无需重新编译程序，只需替换库文件</td>
+</tr>
+<tr>
+<td><strong>兼容性</strong></td>
+<td>不易出现兼容性问题，因为所有代码和数据都在一起</td>
+<td>可能出现兼容性问题，特别是当多个程序共享同一个库时</td>
+</tr>
+<tr>
+<td><strong>安全性</strong></td>
+<td>安全性较高，因为不依赖于外部文件</td>
+<td>安全性较低，可能受到外部文件的影响</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>对独立性和安全性要求较高的程序</td>
+<td>对体积和升级方便性要求较高的程序</td>
+</tr>
+</tbody>
+</table>
+<h4 id="大端小端">大端小端</h4>
+<h5 id="字节序">字节序</h5>
+<p>字节序是指多字节数据在计算机内存中存储或者网络传输时各字节的存储顺序。具体来说，它决定了在一个多字节的数据项中，字节的哪一端存储在该数据项的起始地址处。</p>
+<h5 id="大端-Big-Endian">大端(Big-Endian)</h5>
+<p>高位字节在前，低位字节在后。即数据的高位字节存放在内存的低地址处，而数据的低位字节存放在内存的高地址处。例如，一个32位整数<code>0x12345678</code>在大端序系统中会被存储为<code>12 34 56 78</code>（十六进制表示）。</p>
+<h5 id="小端-Little-Endian">小端(Little-Endian)</h5>
+<p>低位字节在前，高位字节在后。与大端序相反，数据的低位字节存放在内存的低地址处，而数据的高位字节存放在内存的高地址处。同样以32位整数<code>0x12345678</code>为例，在小端序系统中它会被存储为<code>78 56 34 12</code>。</p>
+<h5 id="影响">影响</h5>
+<p>在网络编程中，网络字节序通常指的是大端序（Big-Endian）。因此，当数据需要在网络上进行传输时，如果主机字节序是小端序（Little-Endian），则需要在发送前将数据从主机字节序转换为网络字节序，接收端在接收到数据后也需要进行相应的转换。</p>
+<h4 id="内存泄漏">内存泄漏</h4>
+<p>内存泄漏（Memory Leak）是指程序在运行过程中，未能正确释放已经不再需要使用的内存空间，导致系统中的可用内存逐渐减少，直至耗尽所有可用内存并可能引发系统崩溃的严重问题。常见：</p>
+<table>
+<thead>
+<tr>
+<th>特点</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>定义</td>
+<td>程序在运行过程中未能正确释放不再使用的内存空间，导致系统可用内存减少，可能引发系统崩溃。</td>
+</tr>
+<tr>
+<td>原因</td>
+<td>程序员忘记释放内存、异常处理不当、循环引用、资源未关闭等。</td>
+</tr>
+<tr>
+<td>类型</td>
+<td>常发性、偶发性、一次性、隐式内存泄漏。</td>
+</tr>
+<tr>
+<td>影响</td>
+<td>系统性能下降、内存占用持续增加、可能导致系统崩溃。</td>
+</tr>
+<tr>
+<td>解决办法</td>
+<td>及时释放内存、正确处理异常、解除循环引用、正确关闭资源、使用检测工具、养成良好编程习惯。</td>
+</tr>
+<tr>
+<td>重要性</td>
+<td>内存泄漏是严重的编程错误，需要特别注意预防和修复。</td>
+</tr>
+</tbody>
+</table>
+<p>内存泄漏缺陷具有隐蔽性、积累性的特征，比其他内存非法访问错误更难检测。因此，程序员需要特别注意在编写代码时避免内存泄漏的发生，并定期检查代码以发现和修复可能存在的内存泄漏问题。</p>
+<h4 id="include-与">#include&quot; &quot;与&lt; &gt;</h4>
+<p>以下是一个表格，展示了 <code>#include</code> 指令中使用尖括号 <code>&lt; &gt;</code> 和双引号 <code>&quot;&quot;</code> 的区别：</p>
+<table>
+<thead>
+<tr>
+<th>特点</th>
+<th>尖括号 <code>&lt; &gt;</code></th>
+<th>双引号 <code>&quot;&quot;</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>用途</strong></td>
+<td>通常用于包含编译器提供的标准库头文件</td>
+<td>通常用于包含项目中的自定义头文件</td>
+</tr>
+<tr>
+<td><strong>搜索路径</strong></td>
+<td>编译器会在其标准库路径中查找文件</td>
+<td>编译器首先在当前源文件所在的目录中查找文件，如果找不到，则会查找编译器设置的其他路径</td>
+</tr>
+<tr>
+<td><strong>处理自定义头文件</strong></td>
+<td>如果尝试使用尖括号来包含自定义头文件，并且该文件不在标准库路径中，编译器通常会报错</td>
+<td>使用双引号可以包含当前目录或编译器设置的其他路径中的自定义头文件</td>
+</tr>
+<tr>
+<td><strong>示例</strong></td>
+<td><code>&lt;iostream&gt;</code>、<code>&lt;stdio.h&gt;</code></td>
+<td><code>&quot;myheader.h&quot;</code>（假设 <code>myheader.h</code> 在当前目录或编译器设置的其他路径中）</td>
+</tr>
+<tr>
+<td><strong>注意事项</strong></td>
+<td>编译器可能会根据设置来改变默认行为</td>
+<td>编译器可能会根据设置来改变默认行为，但通常优先查找当前目录</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>编译和内存管理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux常用命令集合</title>
     <url>/2024/06/27/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/</url>
     <content><![CDATA[<h3 id="Linux命令">Linux命令</h3>
@@ -212,6 +711,172 @@
 <h6 id="函数：len-2">函数：len</h6>
 <p>作用：返回长度</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(self.targets)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>Per_FedAVG</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Per_FedAVG源码分析总领</title>
+    <url>/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/</url>
+    <content><![CDATA[<h3 id="data-dataset-py">data_dataset.py</h3>
+<p>这段代码定义了两个自定义的PyTorch数据集类：<code>MNISTDataset</code> 和 <code>CIFARDataset</code>。这两个类都继承自PyTorch提供的<code>Dataset</code>类，这使得它们能够与PyTorch的数据加载器一起使用。<br>
+<code>MNISTDataset</code>是为MNIST数据集设计的，该数据集包含28x28像素的灰度手写数字图像。<code>CIFARDataset</code>是为CIFAR数据集设计的，该数据集包含32x32像素的彩色图像，分为10个不同的类别（飞机、汽车、鸟、猫、鹿、狗、青蛙、马、船和卡车）。<br>
+这两个数据集的构造函数和方法都相同，唯一的区别是数据集的名称（这并不影响其功能）。构造函数接受数据子集和目标，或者单独的数据和目标张量。它还接受可选的transform和target_transform函数，这些函数可以在迭代数据集时用于对数据和目标应用变换。<br>
+<code>__getitem__</code>方法为给定的索引返回一个数据样本及其相应的目标。如果提供了变换函数，它将应用于数据样本。如果提供了target_transform函数，它将应用于目标。<br>
+<code>__len__</code>方法返回数据集中的样本数量。</p>
+<h3 id="data-utils-py">data_utils.py</h3>
+<p>这段代码提供了两个函数，<code>get_dataloader</code> 和 <code>get_client_id_indices</code>，用于加载预处理后的联邦学习数据集的数据加载器，以及获取客户端ID的索引。</p>
+<ol>
+<li><code>get_dataloader</code> 函数接受数据集名称（“mnist” 或 “cifar”）、客户端ID、批处理大小和验证集比例作为参数。它首先检查是否存在预处理的数据集pickle文件，如果没有，则抛出运行时错误。然后，它加载指定客户端的数据集，并将其随机划分为训练集和验证集。最后，它为训练集和验证集创建数据加载器，并返回它们。</li>
+<li><code>get_client_id_indices</code> 函数接受数据集名称作为参数。它加载保存的客户端分离信息（“seperation.pkl”），并返回训练客户端、测试客户端和总客户端数的索引列表。<br>
+这些函数允许在联邦学习设置中为每个客户端加载和分割数据集，以便进行模型训练和验证。使用这些函数，可以轻松地获取每个客户端的数据加载器，以及客户端的索引信息。</li>
+</ol>
+<h3 id="data-perprocess-py">data_perprocess.py</h3>
+<p>这段代码是一个Python脚本，用于预处理MNIST或CIFAR10数据集，以适应联邦学习设置。它随机地为每个客户端分配类别，将数据集分为训练集和测试集，然后将这些数据集保存为磁盘上的pickle文件。它还将客户端数据分布的统计信息保存为JSON文件。<br>
+以下是代码的详细说明：</p>
+<ol>
+<li>脚本导入了必要的库，包括PyTorch、<a href="http://xn--torchvisionpath-hb5z.py">torchvision和path.py</a>，用于文件系统操作。</li>
+<li><code>DATASET</code>、<code>MEAN</code>和<code>STD</code>字典定义了数据集、平均值和标准差的信息，用于数据归一化。</li>
+<li><code>preprocess</code>函数是主要的功能，负责处理数据：
+<ul>
+<li>它设置数据集目录和pickle目录。</li>
+<li>它为随机数生成器设置种子，以确保可重复性。</li>
+<li>它根据客户端总数和训练客户端的比例计算训练和测试客户端的数量。</li>
+<li>它定义了用于归一化的数据转换。</li>
+<li>它加载原始数据集，并使用<code>randomly_alloc_classes</code>函数为客户端分配类别。</li>
+<li>它将各个客户端的数据集保存为pickle文件，并将客户端分为训练和测试的分离信息保存为&quot;seperation.pkl&quot;。</li>
+<li>它将数据集分布的统计信息保存为&quot;all_stats.json&quot;。</li>
+</ul>
+</li>
+<li><code>randomly_alloc_classes</code>函数接受原始数据集、目标数据集类、客户端数量、每个客户端的类别数量以及可选的转换。它使用<code>noniid_slicing</code>函数以非独立同分布的方式切分数据集，为每个客户端创建一个包含指定类别数量的数据集列表。它还计算并返回客户端数据分布的统计信息。</li>
+<li><code>__main__</code>块解析命令行参数，包括数据集选择、客户端总数、训练客户端的比例、每个客户端的类别数量和随机种子，然后调用<code>preprocess</code>函数。<br>
+要运行此脚本，通常会在命令行中执行它，并提供必要的参数。例如：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python preprocess.py --dataset mnist --client_num_in_total 100 --fraction 0.8 --classes 2 --seed 123</span><br></pre></td></tr></table></figure>
+<p>这将预处理MNIST数据集，用于有100个客户端的联邦学习设置，其中80%是训练客户端，每个客户端有2个类别的数据，并使用随机种子123确保结果的可重复性。</p>
+<h3 id="model-py"><a href="http://model.py">model.py</a></h3>
+<p>这段代码定义了两个模型类，<code>MLP_MNIST</code> 和 <code>MLP_CIFAR10</code>，分别用于MNIST和CIFAR10数据集。这两个模型都是多层感知机（MLP），包含三个全连接层，每个层后面都有一个ELU激活函数。<br>
+此外，代码还定义了一个<code>MODEL_DICT</code>字典，用于根据数据集名称获取相应的模型类。<br>
+最后，<code>get_model</code>函数接受数据集名称和设备（CPU或GPU）作为参数，并返回相应的模型实例。<br>
+以下是代码的详细说明：</p>
+<ol>
+<li><code>elu</code>类是一个自定义的ELU激活函数，它使用<code>torch.where</code>来判断输入是否大于0，并返回相应的值。对于小于0的输入，它使用0.2乘以指数函数减1的结果。</li>
+<li><code>linear</code>类是一个自定义的全连接层，它包含权重矩阵<code>w</code>和偏置<code>b</code>。权重矩阵是通过随机初始化得到的，其标准差是输入特征数目的倒数。</li>
+<li><code>MLP_MNIST</code>和<code>MLP_CIFAR10</code>类是MNIST和CIFAR10数据集的MLP模型。它们包含三个全连接层，每个层后面都跟着一个ELU激活函数。在MNIST模型中，输入特征是28x28像素的图像，而在CIFAR10模型中，输入特征是32x32x3的图像。</li>
+<li><code>MODEL_DICT</code>字典包含两个模型类，分别对应MNIST和CIFAR10数据集。</li>
+<li><code>get_model</code>函数根据传入的数据集名称和设备，从<code>MODEL_DICT</code>中获取相应的模型类，并实例化模型。如果设备是GPU，它将模型移动到GPU上；如果设备是CPU，它将模型移动到CPU上。</li>
+</ol>
+<h3 id="utils-py"><a href="http://utils.py">utils.py</a></h3>
+<p>这段代码提供了一个命令行参数解析函数 <code>get_args</code>，以及两个用于模型评估和随机种子固定的辅助函数 <code>eval</code> 和 <code>fix_random_seed</code>。</p>
+<ol>
+<li><code>get_args</code> 函数使用 <code>ArgumentParser</code> 从命令行中解析参数。这些参数包括学习率、正则化参数、全局和局部训练轮次、个性化阶段的轮次、批处理大小、验证集比例、数据集名称、每轮训练的客户端数量、随机种子、是否使用GPU、是否在训练过程中进行评估，以及是否记录日志。</li>
+<li><code>eval</code> 函数是一个用于评估模型的函数，它接受模型、数据加载器、损失函数和设备作为参数。该函数在评估模式下运行模型，并计算在数据加载器上的总损失和准确率。它返回总损失和准确率。</li>
+<li><code>fix_random_seed</code> 函数用于固定PyTorch和其他库的随机种子，以确保实验的可重复性。它接受一个种子值作为参数，并设置相应的随机种子。此外，它还清空了GPU缓存，并设置了CUDA的确定性选项。<br>
+这些函数为联邦学习实验提供了一个基础框架，用于处理命令行参数、评估模型和确保实验的可重复性。</li>
+</ol>
+<h3 id="perfedavg-py"><a href="http://perfedavg.py">perfedavg.py</a></h3>
+<p>这段代码定义了一个名为 <code>PerFedAvgClient</code> 的类，用于在联邦学习中训练一个客户端的模型。该类支持两种不同的训练模式：<code>Per-FedAvg(FO)</code> 和 <code>Per-FedAvg(HF)</code>。<br>
+以下是代码的详细说明：</p>
+<ol>
+<li><strong>初始化方法</strong>：
+<ul>
+<li>客户端ID（<code>client_id</code>）：标识客户端的唯一ID。</li>
+<li><code>alpha</code> 和 <code>beta</code>：学习率和正则化参数。</li>
+<li><code>global_model</code>：全局模型，即所有客户端共享的模型。</li>
+<li><code>criterion</code>：损失函数。</li>
+<li><code>batch_size</code>：批量大小。</li>
+<li><code>dataset</code>：数据集名称，支持MNIST和CIFAR10。</li>
+<li><code>local_epochs</code>：本地训练轮次。</li>
+<li><code>valset_ratio</code>：验证集比例。</li>
+<li><code>logger</code>：日志记录器。</li>
+<li><code>gpu</code>：是否使用GPU。</li>
+</ul>
+</li>
+<li><strong>训练方法</strong>：
+<ul>
+<li>首先，客户端加载全局模型的状态字典。</li>
+<li>然后，客户端进行本地训练。对于 <code>Per-FedAvg(HF)</code> 模式，训练分为两个阶段，每个阶段都包含一个梯度计算和模型更新。对于 <code>Per-FedAvg(FO)</code> 模式，代码中包含了注释掉的联邦平均（FedAvg）训练步骤。</li>
+<li>如果设置了 <code>eval_while_training</code>，客户端在本地训练前后都会进行评估。</li>
+<li>训练完成后，客户端返回序列化的模型状态。</li>
+</ul>
+</li>
+<li><strong>计算梯度方法</strong>：
+<ul>
+<li>该方法计算模型参数的梯度。</li>
+<li>对于 <code>Per-FedAvg(HF)</code> 模式，它还会计算二阶导数。</li>
+</ul>
+</li>
+<li><strong>个性化评估方法</strong>：
+<ul>
+<li>该方法用于个性化评估。客户端首先加载全局模型的状态字典，然后进行个性化训练和评估。</li>
+<li>个性化训练包括一个梯度计算和模型更新。</li>
+<li>评估完成后，客户端返回损失和准确率的变化。</li>
+</ul>
+</li>
+<li><strong>辅助方法</strong>：
+<ul>
+<li><code>get_data_batch</code>：获取一个数据批量的方法。</li>
+<li><code>utils.eval</code>：评估模型的方法，从 <code>utils</code> 模块导入。</li>
+<li><code>SerializationTool.serialize_model</code>：序列化模型的方法，从 <code>SerializationTool</code> 模块导入。<br>
+这个类为联邦学习中的客户端提供了训练和评估模型的功能，支持不同的训练模式和个性化评估。</li>
+</ul>
+</li>
+</ol>
+<h3 id="main-py"><a href="http://main.py">main.py</a></h3>
+<p>这段代码是一个联邦学习实验的主程序，它负责初始化客户端、进行训练和评估，并记录日志。以下是代码的详细说明：</p>
+<ol>
+<li><strong>命令行参数解析</strong>：
+<ul>
+<li>代码首先使用 <code>get_args</code> 函数解析命令行参数，并使用 <code>fix_random_seed</code> 函数设置随机种子。</li>
+<li>检查是否存在日志目录，如果不存在则创建。</li>
+</ul>
+</li>
+<li><strong>设备选择</strong>：
+<ul>
+<li>如果指定了GPU并且GPU可用，则选择GPU作为设备；否则选择CPU。</li>
+</ul>
+</li>
+<li><strong>全局模型初始化</strong>：
+<ul>
+<li>使用 <code>get_model</code> 函数根据数据集名称初始化全局模型。</li>
+<li>创建日志记录器。</li>
+</ul>
+</li>
+<li><strong>客户端初始化</strong>：
+<ul>
+<li>创建一个客户端列表，每个客户端都使用 <code>PerFedAvgClient</code> 类初始化。</li>
+</ul>
+</li>
+<li><strong>训练循环</strong>：
+<ul>
+<li>使用 <code>track</code> 函数跟踪训练进度。</li>
+<li>随机选择客户端进行本地训练，并将序列化的模型参数存储在 <code>model_params_cache</code> 中。</li>
+<li>使用 <code>Aggregators.fedavg_aggregate</code> 函数聚合模型参数。</li>
+<li>反序列化聚合后的模型参数到全局模型。</li>
+</ul>
+</li>
+<li><strong>评估循环</strong>：
+<ul>
+<li>使用 <code>track</code> 函数跟踪评估进度。</li>
+<li>对每个评估客户端执行个性化评估，并记录损失和准确率。</li>
+</ul>
+</li>
+<li><strong>结果展示</strong>：
+<ul>
+<li>打印评估结果。</li>
+</ul>
+</li>
+<li><strong>日志记录</strong>：
+<ul>
+<li>如果设置了日志记录，使用 <code>logger.save_html</code> 函数将日志保存为HTML文件。<br>
+这个程序为联邦学习实验提供了一个完整的框架，包括客户端的初始化、模型的训练和评估，以及日志的记录和保存。</li>
+</ul>
+</li>
+</ol>
 ]]></content>
       <categories>
         <category>python</category>
@@ -502,196 +1167,6 @@
       </categories>
       <tags>
         <tag>STL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo+butterfly+Github</title>
-    <url>/2024/06/23/hexo-butterfly-Github/</url>
-    <content><![CDATA[<h3 id="配置butterfly时总结出来的的经验">配置butterfly时总结出来的的经验</h3>
-<ol>
-<li>一步一步配，每配一次，<code>hexo s</code>一次，出问题了就查</li>
-<li>出现报错的情况下，可以先试着<code>hexo clean&amp;hexo g&amp;hexo s</code>多来几次</li>
-</ol>
-<h3 id="我的文件结构注意事项">我的文件结构注意事项</h3>
-<ol>
-<li>在hexo根目录下的_config.yml和_config.butterfly.yml</li>
-<li>没有特别提到的话，数据相关文件应该都是在/source/里面</li>
-<li>文章的创建用<code>hexo new &quot;name&quot;</code>,页面的创建用的<code>hexo new page </code></li>
-</ol>
-<h3 id="用代码说话，两个配置文件最容易出问题">用代码说话，两个配置文件最容易出问题</h3>
-<h4 id="config-butterfly-yml">_config.butterfly.yml</h4>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如果你用vs编程发现最后主页中文是乱码，</span></span><br><span class="line"><span class="comment">#是因为vs默认生成的文件不按照utf-8，请按照这个解决 https://blog.csdn.net/qq_41868108/article/details/105750175</span></span><br><span class="line"><span class="comment">#浏览器图标修改</span></span><br><span class="line"><span class="attr">favicon:</span> <span class="string">/image/luogic.jpg</span></span><br><span class="line"><span class="comment">#导航栏设置 最上面的一栏，logo是最左边的小圈圈</span></span><br><span class="line"><span class="attr">nav:</span></span><br><span class="line">  <span class="attr">logo:</span> <span class="string">/image/微信图片_202406231044301.jpg</span></span><br><span class="line">  <span class="attr">display_title:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">fixed:</span> <span class="literal">false</span> <span class="comment"># fixed navigation bar    </span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#这里是右上角的设置 格式是，/文件夹路劲/|| fas图标</span></span><br><span class="line"><span class="comment">#（一定要建立文件夹，不如找不到会报错） </span></span><br><span class="line"><span class="comment">#这里的fas图标 它用的是一个公司发行的标准图标图</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="string">首页:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="string">分类:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-folder-open</span></span><br><span class="line">  <span class="string">时间轴:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="string">标签:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="string">其他||fa</span> <span class="attr">fa-heartbeat:</span></span><br><span class="line">    <span class="string">音乐:</span> <span class="string">/music/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-music</span></span><br><span class="line">    <span class="string">照片:</span> <span class="string">/Gallery/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-images</span></span><br><span class="line">    <span class="string">电影:</span> <span class="string">/movies/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-video</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#网站副标题，中间标题下面一点点</span></span><br><span class="line"><span class="comment"># 主页subtitle</span></span><br><span class="line"><span class="attr">subtitle:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Typewriter Effect (打字效果)</span></span><br><span class="line">  <span class="attr">effect:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">startDelay:</span> <span class="number">300</span> <span class="comment"># time before typing starts in milliseconds</span></span><br><span class="line">  <span class="attr">typeSpeed:</span> <span class="number">200</span> <span class="comment"># type speed in milliseconds</span></span><br><span class="line">  <span class="attr">backSpeed:</span> <span class="number">800</span> <span class="comment"># backspacing speed in milliseconds</span></span><br><span class="line">  <span class="comment"># loop (循环打字)</span></span><br><span class="line">  <span class="attr">loop:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># source 调用三方服务</span></span><br><span class="line">  <span class="comment"># source: false 开关调用</span></span><br><span class="line">  <span class="comment"># subtitle 会先显示 source , 再显示 sub 的內容</span></span><br><span class="line">  <span class="attr">source:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># 如果关闭打字效果，subtitle 只会显示 sub 的第一行文字</span></span><br><span class="line">  <span class="attr">sub:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">飒飒西风满院栽，蕊寒香冷蝶难来</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">他年我若为青帝，报与桃花一处开</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#页面 右侧个人信息相关的设置</span></span><br><span class="line"><span class="comment">#头像 如果报错或者显示的是吃豆小人，检查你的名称，一定要正确</span></span><br><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="attr">img:</span> <span class="string">/image/luogic.jpg</span></span><br><span class="line">  <span class="comment">#effect: true # 头像会一直转，转的贼快，太鬼畜了（emmm，超级抽象，别设置</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#顶部图片设置，就是主页的那张背景图，建议设置400px，默认的全屏容易让人找不到博客在哪里</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">index_img:</span> <span class="string">/image/流萤.jpg</span></span><br><span class="line"><span class="attr">default_top_img:</span> <span class="string">/image/流萤.jpg</span></span><br><span class="line"><span class="attr">index_top_img_height:</span>  <span class="comment">#顶部图高度</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#背景动态</span></span><br><span class="line"><span class="attr">canvas_fluttering_ribbon:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">mobile:</span> <span class="literal">false</span> <span class="comment"># false 手机端不显示 true 手机端显示</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#页面加载动画</span></span><br><span class="line"><span class="comment">#加载动画</span></span><br><span class="line"><span class="attr">preloader:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">source:</span> <span class="number">1</span> <span class="comment">#可选值1=fullpage或2=progress bar，可查看https://codebyzach.github.io/pace/</span></span><br><span class="line">  <span class="attr">pace_css_url:</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#池塘养鱼（最底部）+渐变色</span></span><br><span class="line"><span class="attr">inject:</span></span><br><span class="line"> <span class="attr">head:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;/styles/fish.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&lt;link</span> <span class="string">rel=&quot;stylesheet&quot;</span> <span class="string">href=&quot;/styles/main.css&quot;&gt;</span>   </span><br><span class="line"> <span class="attr">bottom:</span></span><br><span class="line">       <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line">       <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;https://cdn.jsdelivr.net/gh/xiabo2/CDN@latest/fishes.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#搜索功能</span></span><br><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Preload the search data when the page loads.</span></span><br><span class="line">  <span class="attr">preload:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># Show top n results per article, show all results by setting to -1</span></span><br><span class="line">  <span class="attr">top_n_per_article:</span> <span class="number">3</span></span><br><span class="line">  <span class="comment"># Unescape html strings to the readable one.</span></span><br><span class="line">  <span class="attr">unescape:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">CDN:</span></span><br><span class="line"><span class="comment">#数学公式支持</span></span><br><span class="line"><span class="attr">katex:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># true 表示每一页都加载katex.js</span></span><br><span class="line">  <span class="comment"># false 需要时加载，须在使用的Markdown Front-matter 加上 katex: true</span></span><br><span class="line">  <span class="attr">per_page:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">hide_scrollbar:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-<h4 id="config-yml">_config.yml</h4>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Hexo Configuration</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/configuration.html</span></span><br><span class="line"><span class="comment">## Source: https://github.com/hexojs/hexo/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">龙锦</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;买不起茅台 &#x27;</span></span><br><span class="line"><span class="attr">keywords:</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">龙金伟</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://username.github.io</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Directory</span></span><br><span class="line"><span class="attr">source_dir:</span> <span class="string">source</span></span><br><span class="line"><span class="attr">public_dir:</span> <span class="string">public</span></span><br><span class="line"><span class="attr">tag_dir:</span> <span class="string">tags</span></span><br><span class="line"><span class="attr">archive_dir:</span> <span class="string">archives</span></span><br><span class="line"><span class="attr">category_dir:</span> <span class="string">categories</span></span><br><span class="line"><span class="attr">code_dir:</span> <span class="string">downloads/code</span></span><br><span class="line"><span class="attr">i18n_dir:</span> <span class="string">:lang</span></span><br><span class="line"><span class="attr">skip_render:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Writing</span></span><br><span class="line"><span class="attr">new_post_name:</span> <span class="string">:title.md</span> <span class="comment"># File name of new posts</span></span><br><span class="line"><span class="attr">default_layout:</span> <span class="string">post</span></span><br><span class="line"><span class="attr">titlecase:</span> <span class="literal">false</span> <span class="comment"># Transform title into titlecase</span></span><br><span class="line"><span class="attr">external_link:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># Open external links in new tab</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">site</span> <span class="comment"># Apply to the whole site</span></span><br><span class="line">  <span class="attr">exclude:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">filename_case:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">render_drafts:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">relative_link:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">future:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">syntax_highlighter:</span> <span class="string">highlight.js</span></span><br><span class="line"><span class="attr">highlight:</span></span><br><span class="line">  <span class="attr">line_number:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">auto_detect:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">tab_replace:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">  <span class="attr">wrap:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">hljs:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">prismjs:</span></span><br><span class="line">  <span class="attr">preprocess:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">line_number:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">tab_replace:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Home page setting</span></span><br><span class="line"><span class="comment"># path: Root path for your blogs index page. (default = &#x27;&#x27;)</span></span><br><span class="line"><span class="comment"># per_page: Posts displayed per page. (0 = disable pagination)</span></span><br><span class="line"><span class="comment"># order_by: Posts order. (Order by date descending by default)</span></span><br><span class="line"><span class="attr">index_generator:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">  <span class="attr">per_page:</span> <span class="number">10</span></span><br><span class="line">  <span class="attr">order_by:</span> <span class="string">-date</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Category &amp; Tag</span></span><br><span class="line"><span class="attr">default_category:</span> <span class="string">uncategorized</span></span><br><span class="line"><span class="attr">category_map:</span></span><br><span class="line"><span class="attr">tag_map:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Metadata elements</span></span><br><span class="line"><span class="comment">## https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta</span></span><br><span class="line"><span class="attr">meta_generator:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Date / Time format</span></span><br><span class="line"><span class="comment">## Hexo uses Moment.js to parse and display date</span></span><br><span class="line"><span class="comment">## You can customize the date format as defined in</span></span><br><span class="line"><span class="comment">## http://momentjs.com/docs/#/displaying/format/</span></span><br><span class="line"><span class="attr">date_format:</span> <span class="string">YYYY-MM-DD</span></span><br><span class="line"><span class="attr">time_format:</span> <span class="string">HH:mm:ss</span></span><br><span class="line"><span class="comment">## updated_option supports &#x27;mtime&#x27;, &#x27;date&#x27;, &#x27;empty&#x27;</span></span><br><span class="line"><span class="attr">updated_option:</span> <span class="string">&#x27;mtime&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Pagination</span></span><br><span class="line"><span class="comment">## Set per_page to 0 to disable pagination</span></span><br><span class="line"><span class="attr">per_page:</span> <span class="number">10</span></span><br><span class="line"><span class="attr">pagination_dir:</span> <span class="string">page</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Include / Exclude file(s)</span></span><br><span class="line"><span class="comment">## include:/exclude: options only apply to the &#x27;source/&#x27; folder</span></span><br><span class="line"><span class="attr">include:</span></span><br><span class="line"><span class="attr">exclude:</span></span><br><span class="line"><span class="attr">ignore:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">butterfly</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/one-command-deployment</span></span><br><span class="line"><span class="comment"># deploy:</span></span><br><span class="line"><span class="comment">#   type: &#x27;&#x27;</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/longjinw/longjinw.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br><span class="line">  <span class="comment"># message: Site updated: &#123;&#123; now(&#x27;YYYY-MM-DD HH:mm:ss&#x27;) &#125;&#125;)</span></span><br><span class="line"><span class="comment">#搜索</span></span><br><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">content:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line"><span class="comment">#数学支chi</span></span><br><span class="line"><span class="attr">markdown:</span></span><br><span class="line">    <span class="attr">plugins:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;@renbaoshuo/markdown-it-katex&#x27;</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Per_FedAVG源码分析总领</title>
-    <url>/2024/06/28/Per-FedAVG%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%80%BB%E9%A2%86/</url>
-    <content><![CDATA[<h3 id="data-dataset-py">data_dataset.py</h3>
-<p>这段代码定义了两个自定义的PyTorch数据集类：<code>MNISTDataset</code> 和 <code>CIFARDataset</code>。这两个类都继承自PyTorch提供的<code>Dataset</code>类，这使得它们能够与PyTorch的数据加载器一起使用。<br>
-<code>MNISTDataset</code>是为MNIST数据集设计的，该数据集包含28x28像素的灰度手写数字图像。<code>CIFARDataset</code>是为CIFAR数据集设计的，该数据集包含32x32像素的彩色图像，分为10个不同的类别（飞机、汽车、鸟、猫、鹿、狗、青蛙、马、船和卡车）。<br>
-这两个数据集的构造函数和方法都相同，唯一的区别是数据集的名称（这并不影响其功能）。构造函数接受数据子集和目标，或者单独的数据和目标张量。它还接受可选的transform和target_transform函数，这些函数可以在迭代数据集时用于对数据和目标应用变换。<br>
-<code>__getitem__</code>方法为给定的索引返回一个数据样本及其相应的目标。如果提供了变换函数，它将应用于数据样本。如果提供了target_transform函数，它将应用于目标。<br>
-<code>__len__</code>方法返回数据集中的样本数量。</p>
-<h3 id="data-utils-py">data_utils.py</h3>
-<p>这段代码提供了两个函数，<code>get_dataloader</code> 和 <code>get_client_id_indices</code>，用于加载预处理后的联邦学习数据集的数据加载器，以及获取客户端ID的索引。</p>
-<ol>
-<li><code>get_dataloader</code> 函数接受数据集名称（“mnist” 或 “cifar”）、客户端ID、批处理大小和验证集比例作为参数。它首先检查是否存在预处理的数据集pickle文件，如果没有，则抛出运行时错误。然后，它加载指定客户端的数据集，并将其随机划分为训练集和验证集。最后，它为训练集和验证集创建数据加载器，并返回它们。</li>
-<li><code>get_client_id_indices</code> 函数接受数据集名称作为参数。它加载保存的客户端分离信息（“seperation.pkl”），并返回训练客户端、测试客户端和总客户端数的索引列表。<br>
-这些函数允许在联邦学习设置中为每个客户端加载和分割数据集，以便进行模型训练和验证。使用这些函数，可以轻松地获取每个客户端的数据加载器，以及客户端的索引信息。</li>
-</ol>
-<h3 id="data-perprocess-py">data_perprocess.py</h3>
-<p>这段代码是一个Python脚本，用于预处理MNIST或CIFAR10数据集，以适应联邦学习设置。它随机地为每个客户端分配类别，将数据集分为训练集和测试集，然后将这些数据集保存为磁盘上的pickle文件。它还将客户端数据分布的统计信息保存为JSON文件。<br>
-以下是代码的详细说明：</p>
-<ol>
-<li>脚本导入了必要的库，包括PyTorch、<a href="http://xn--torchvisionpath-hb5z.py">torchvision和path.py</a>，用于文件系统操作。</li>
-<li><code>DATASET</code>、<code>MEAN</code>和<code>STD</code>字典定义了数据集、平均值和标准差的信息，用于数据归一化。</li>
-<li><code>preprocess</code>函数是主要的功能，负责处理数据：
-<ul>
-<li>它设置数据集目录和pickle目录。</li>
-<li>它为随机数生成器设置种子，以确保可重复性。</li>
-<li>它根据客户端总数和训练客户端的比例计算训练和测试客户端的数量。</li>
-<li>它定义了用于归一化的数据转换。</li>
-<li>它加载原始数据集，并使用<code>randomly_alloc_classes</code>函数为客户端分配类别。</li>
-<li>它将各个客户端的数据集保存为pickle文件，并将客户端分为训练和测试的分离信息保存为&quot;seperation.pkl&quot;。</li>
-<li>它将数据集分布的统计信息保存为&quot;all_stats.json&quot;。</li>
-</ul>
-</li>
-<li><code>randomly_alloc_classes</code>函数接受原始数据集、目标数据集类、客户端数量、每个客户端的类别数量以及可选的转换。它使用<code>noniid_slicing</code>函数以非独立同分布的方式切分数据集，为每个客户端创建一个包含指定类别数量的数据集列表。它还计算并返回客户端数据分布的统计信息。</li>
-<li><code>__main__</code>块解析命令行参数，包括数据集选择、客户端总数、训练客户端的比例、每个客户端的类别数量和随机种子，然后调用<code>preprocess</code>函数。<br>
-要运行此脚本，通常会在命令行中执行它，并提供必要的参数。例如：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python preprocess.py --dataset mnist --client_num_in_total 100 --fraction 0.8 --classes 2 --seed 123</span><br></pre></td></tr></table></figure>
-<p>这将预处理MNIST数据集，用于有100个客户端的联邦学习设置，其中80%是训练客户端，每个客户端有2个类别的数据，并使用随机种子123确保结果的可重复性。</p>
-<h3 id="model-py"><a href="http://model.py">model.py</a></h3>
-<p>这段代码定义了两个模型类，<code>MLP_MNIST</code> 和 <code>MLP_CIFAR10</code>，分别用于MNIST和CIFAR10数据集。这两个模型都是多层感知机（MLP），包含三个全连接层，每个层后面都有一个ELU激活函数。<br>
-此外，代码还定义了一个<code>MODEL_DICT</code>字典，用于根据数据集名称获取相应的模型类。<br>
-最后，<code>get_model</code>函数接受数据集名称和设备（CPU或GPU）作为参数，并返回相应的模型实例。<br>
-以下是代码的详细说明：</p>
-<ol>
-<li><code>elu</code>类是一个自定义的ELU激活函数，它使用<code>torch.where</code>来判断输入是否大于0，并返回相应的值。对于小于0的输入，它使用0.2乘以指数函数减1的结果。</li>
-<li><code>linear</code>类是一个自定义的全连接层，它包含权重矩阵<code>w</code>和偏置<code>b</code>。权重矩阵是通过随机初始化得到的，其标准差是输入特征数目的倒数。</li>
-<li><code>MLP_MNIST</code>和<code>MLP_CIFAR10</code>类是MNIST和CIFAR10数据集的MLP模型。它们包含三个全连接层，每个层后面都跟着一个ELU激活函数。在MNIST模型中，输入特征是28x28像素的图像，而在CIFAR10模型中，输入特征是32x32x3的图像。</li>
-<li><code>MODEL_DICT</code>字典包含两个模型类，分别对应MNIST和CIFAR10数据集。</li>
-<li><code>get_model</code>函数根据传入的数据集名称和设备，从<code>MODEL_DICT</code>中获取相应的模型类，并实例化模型。如果设备是GPU，它将模型移动到GPU上；如果设备是CPU，它将模型移动到CPU上。</li>
-</ol>
-<h3 id="utils-py"><a href="http://utils.py">utils.py</a></h3>
-<p>这段代码提供了一个命令行参数解析函数 <code>get_args</code>，以及两个用于模型评估和随机种子固定的辅助函数 <code>eval</code> 和 <code>fix_random_seed</code>。</p>
-<ol>
-<li><code>get_args</code> 函数使用 <code>ArgumentParser</code> 从命令行中解析参数。这些参数包括学习率、正则化参数、全局和局部训练轮次、个性化阶段的轮次、批处理大小、验证集比例、数据集名称、每轮训练的客户端数量、随机种子、是否使用GPU、是否在训练过程中进行评估，以及是否记录日志。</li>
-<li><code>eval</code> 函数是一个用于评估模型的函数，它接受模型、数据加载器、损失函数和设备作为参数。该函数在评估模式下运行模型，并计算在数据加载器上的总损失和准确率。它返回总损失和准确率。</li>
-<li><code>fix_random_seed</code> 函数用于固定PyTorch和其他库的随机种子，以确保实验的可重复性。它接受一个种子值作为参数，并设置相应的随机种子。此外，它还清空了GPU缓存，并设置了CUDA的确定性选项。<br>
-这些函数为联邦学习实验提供了一个基础框架，用于处理命令行参数、评估模型和确保实验的可重复性。</li>
-</ol>
-<h3 id="perfedavg-py"><a href="http://perfedavg.py">perfedavg.py</a></h3>
-<p>这段代码定义了一个名为 <code>PerFedAvgClient</code> 的类，用于在联邦学习中训练一个客户端的模型。该类支持两种不同的训练模式：<code>Per-FedAvg(FO)</code> 和 <code>Per-FedAvg(HF)</code>。<br>
-以下是代码的详细说明：</p>
-<ol>
-<li><strong>初始化方法</strong>：
-<ul>
-<li>客户端ID（<code>client_id</code>）：标识客户端的唯一ID。</li>
-<li><code>alpha</code> 和 <code>beta</code>：学习率和正则化参数。</li>
-<li><code>global_model</code>：全局模型，即所有客户端共享的模型。</li>
-<li><code>criterion</code>：损失函数。</li>
-<li><code>batch_size</code>：批量大小。</li>
-<li><code>dataset</code>：数据集名称，支持MNIST和CIFAR10。</li>
-<li><code>local_epochs</code>：本地训练轮次。</li>
-<li><code>valset_ratio</code>：验证集比例。</li>
-<li><code>logger</code>：日志记录器。</li>
-<li><code>gpu</code>：是否使用GPU。</li>
-</ul>
-</li>
-<li><strong>训练方法</strong>：
-<ul>
-<li>首先，客户端加载全局模型的状态字典。</li>
-<li>然后，客户端进行本地训练。对于 <code>Per-FedAvg(HF)</code> 模式，训练分为两个阶段，每个阶段都包含一个梯度计算和模型更新。对于 <code>Per-FedAvg(FO)</code> 模式，代码中包含了注释掉的联邦平均（FedAvg）训练步骤。</li>
-<li>如果设置了 <code>eval_while_training</code>，客户端在本地训练前后都会进行评估。</li>
-<li>训练完成后，客户端返回序列化的模型状态。</li>
-</ul>
-</li>
-<li><strong>计算梯度方法</strong>：
-<ul>
-<li>该方法计算模型参数的梯度。</li>
-<li>对于 <code>Per-FedAvg(HF)</code> 模式，它还会计算二阶导数。</li>
-</ul>
-</li>
-<li><strong>个性化评估方法</strong>：
-<ul>
-<li>该方法用于个性化评估。客户端首先加载全局模型的状态字典，然后进行个性化训练和评估。</li>
-<li>个性化训练包括一个梯度计算和模型更新。</li>
-<li>评估完成后，客户端返回损失和准确率的变化。</li>
-</ul>
-</li>
-<li><strong>辅助方法</strong>：
-<ul>
-<li><code>get_data_batch</code>：获取一个数据批量的方法。</li>
-<li><code>utils.eval</code>：评估模型的方法，从 <code>utils</code> 模块导入。</li>
-<li><code>SerializationTool.serialize_model</code>：序列化模型的方法，从 <code>SerializationTool</code> 模块导入。<br>
-这个类为联邦学习中的客户端提供了训练和评估模型的功能，支持不同的训练模式和个性化评估。</li>
-</ul>
-</li>
-</ol>
-<h3 id="main-py"><a href="http://main.py">main.py</a></h3>
-<p>这段代码是一个联邦学习实验的主程序，它负责初始化客户端、进行训练和评估，并记录日志。以下是代码的详细说明：</p>
-<ol>
-<li><strong>命令行参数解析</strong>：
-<ul>
-<li>代码首先使用 <code>get_args</code> 函数解析命令行参数，并使用 <code>fix_random_seed</code> 函数设置随机种子。</li>
-<li>检查是否存在日志目录，如果不存在则创建。</li>
-</ul>
-</li>
-<li><strong>设备选择</strong>：
-<ul>
-<li>如果指定了GPU并且GPU可用，则选择GPU作为设备；否则选择CPU。</li>
-</ul>
-</li>
-<li><strong>全局模型初始化</strong>：
-<ul>
-<li>使用 <code>get_model</code> 函数根据数据集名称初始化全局模型。</li>
-<li>创建日志记录器。</li>
-</ul>
-</li>
-<li><strong>客户端初始化</strong>：
-<ul>
-<li>创建一个客户端列表，每个客户端都使用 <code>PerFedAvgClient</code> 类初始化。</li>
-</ul>
-</li>
-<li><strong>训练循环</strong>：
-<ul>
-<li>使用 <code>track</code> 函数跟踪训练进度。</li>
-<li>随机选择客户端进行本地训练，并将序列化的模型参数存储在 <code>model_params_cache</code> 中。</li>
-<li>使用 <code>Aggregators.fedavg_aggregate</code> 函数聚合模型参数。</li>
-<li>反序列化聚合后的模型参数到全局模型。</li>
-</ul>
-</li>
-<li><strong>评估循环</strong>：
-<ul>
-<li>使用 <code>track</code> 函数跟踪评估进度。</li>
-<li>对每个评估客户端执行个性化评估，并记录损失和准确率。</li>
-</ul>
-</li>
-<li><strong>结果展示</strong>：
-<ul>
-<li>打印评估结果。</li>
-</ul>
-</li>
-<li><strong>日志记录</strong>：
-<ul>
-<li>如果设置了日志记录，使用 <code>logger.save_html</code> 函数将日志保存为HTML文件。<br>
-这个程序为联邦学习实验提供了一个完整的框架，包括客户端的初始化、模型的训练和评估，以及日志的记录和保存。</li>
-</ul>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>Per_FedAVG</tag>
       </tags>
   </entry>
   <entry>
@@ -1107,7 +1582,286 @@
         <category>c++</category>
       </categories>
       <tags>
-        <tag>c++</tag>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gdb调试工具详解</title>
+    <url>/2024/07/01/gdb%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<h3 id="gdb调试详解">gdb调试详解</h3>
+<p>是 GNU 调试器（GNU Debugger）的缩写，它是一个功能强大的 Unix-like 系统下的源代码调试器。使用 <code>gdb</code>，程序员可以查看程序在运行时的状态，设置断点，单步执行代码，检查变量的值，以及执行其他调试任务。(在命令行终端中进行)</p>
+<h4 id="gdb启动流程">gdb启动流程</h4>
+<ol>
+<li>
+<p>编译相关：编译链接的时候<code>-g</code>表示可以调试，如果要使用gdb调试记得加上</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">gcc -g test.cpp -o test</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>启动gdb，示例如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">gdb test </span><br><span class="line">gbd -q test <span class="comment">//表示不打印gbd版本信息，界面比较干净</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>gdb下查看源码：<code>list</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(gdb) list </span><br><span class="line"><span class="number">9</span>	<span class="meta">#<span class="keyword">define</span> MAX_SIZE</span></span><br><span class="line"><span class="number">10</span>	</span><br><span class="line"><span class="number">11</span>	<span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function">12	</span>&#123;</span><br><span class="line"><span class="number">13</span>	    <span class="type">int</span> i,fd,size1 ,size2 ,len;</span><br><span class="line"><span class="number">14</span>	    <span class="type">char</span> *buf = <span class="string">&quot;helo!I&#x27;m liujiangyong &quot;</span>;</span><br><span class="line"><span class="number">15</span>	    <span class="type">char</span> buf_r[<span class="number">15</span>];</span><br><span class="line"><span class="number">16</span>	    len = <span class="built_in">strlen</span>(buf);</span><br><span class="line"><span class="number">17</span>	    fd = <span class="built_in">open</span>(<span class="string">&quot;/home/hello.txt&quot;</span>,O_CREAT | O_TRUNC | O_RDWR,<span class="number">0666</span>);</span><br><span class="line"><span class="number">18</span>	    <span class="keyword">if</span> (fd&lt;<span class="number">0</span>)</span><br><span class="line">(gdb) </span><br><span class="line"><span class="number">19</span>	        &#123;</span><br><span class="line"><span class="number">20</span>	            <span class="built_in">perror</span>(<span class="string">&quot;open :&quot;</span>);</span><br><span class="line"><span class="number">21</span>	            <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"><span class="number">22</span>	        &#125;</span><br><span class="line"><span class="number">23</span>	    <span class="keyword">else</span></span><br><span class="line"><span class="number">24</span>	        &#123;</span><br><span class="line"><span class="number">25</span>	        <span class="built_in">printf</span>(<span class="string">&quot;open file:hello.txt %d\n&quot;</span>,fd);</span><br><span class="line"><span class="number">26</span>	        &#125;</span><br><span class="line"><span class="number">27</span>	    size1 = <span class="built_in">write</span>(fd,buf,len);</span><br><span class="line"><span class="number">28</span>	    <span class="keyword">if</span> (fd&lt;<span class="number">0</span>)</span><br><span class="line">(gdb) </span><br><span class="line"><span class="number">29</span>	    &#123;</span><br><span class="line"><span class="number">30</span>	        <span class="built_in">printf</span>(<span class="string">&quot;writre erro;&quot;</span>);</span><br><span class="line"><span class="number">31</span>	</span><br><span class="line"><span class="number">32</span>	    &#125;</span><br><span class="line"><span class="number">33</span>	    <span class="keyword">else</span></span><br><span class="line"><span class="number">34</span>	    &#123;</span><br><span class="line"><span class="number">35</span>	        <span class="built_in">printf</span>(<span class="string">&quot;写入的长度：%d\n写入文本内容：%s\n&quot;</span>,size1,buf);</span><br><span class="line"><span class="number">36</span>	</span><br><span class="line"><span class="number">37</span>	    &#125;</span><br><span class="line"><span class="number">38</span>	    <span class="built_in">lseek</span>(fd,<span class="number">0</span>,SEEK_SET);</span><br><span class="line">(gdb) </span><br><span class="line"><span class="number">39</span>	    size2 = <span class="built_in">read</span>(fd,buf_r,<span class="number">12</span>);</span><br><span class="line"><span class="number">40</span>	    <span class="keyword">if</span> (size2 &lt;<span class="number">0</span>)</span><br><span class="line"><span class="number">41</span>	    &#123;</span><br><span class="line"><span class="number">42</span>	        <span class="built_in">printf</span>(<span class="string">&quot;read  erro\n&quot;</span>);</span><br><span class="line"><span class="number">43</span>	    &#125;</span><br><span class="line"><span class="number">44</span>	    <span class="keyword">else</span></span><br><span class="line"><span class="number">45</span>	    &#123;</span><br><span class="line"><span class="number">46</span>	        <span class="built_in">printf</span>(<span class="string">&quot;读取长度：%d\n 文本内容是：%s\n&quot;</span>,size2,buf_r);</span><br><span class="line"><span class="number">47</span>	    &#125;</span><br><span class="line"><span class="number">48</span>	    <span class="built_in">close</span>(fd);    </span><br><span class="line">(gdb) </span><br><span class="line"><span class="number">49</span>	</span><br><span class="line"><span class="number">50</span>	</span><br><span class="line"><span class="number">51</span>	&#125;</span><br><span class="line">(gdb) </span><br><span class="line">Line number <span class="number">52</span> out of range; write.c has <span class="number">51</span> lines.</span><br><span class="line">(gdb) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>gbd下运行程序：<code>run</code></p>
+<p>该命令会运行程序直到结束或者遇到断点等待下一个命令</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(gdb) r</span><br><span class="line">The program being debugged has been started already.</span><br><span class="line">Start it from the beginning? (y <span class="keyword">or</span> n) y</span><br><span class="line">Starting program: /home/eit/c_test/test </span><br><span class="line">open file:hello.txt <span class="number">3</span></span><br><span class="line">写入的长度：<span class="number">22</span></span><br><span class="line">写入文本内容：helo!I<span class="number">&#x27;</span>m liujiangyong </span><br><span class="line">读取长度：<span class="number">12</span></span><br><span class="line"> 文本内容是：helo!I<span class="number">&#x27;</span>m liu</span><br><span class="line">[Inferior <span class="number">1</span> (process <span class="number">19987</span>) exited normally]</span><br><span class="line">(gdb) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>gdb下设置断点：<code>break</code>+行号</p>
+<p>该命令会在某一行设置一个断点,<code>info breakpoints</code>会显示所有断点信息</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(gdb) b <span class="number">5</span></span><br><span class="line">Breakpoint <span class="number">3</span> at <span class="number">0x400836</span>: file write.c, line <span class="number">5.</span></span><br><span class="line">(gdb) b <span class="number">26</span> </span><br><span class="line">Breakpoint <span class="number">4</span> at <span class="number">0x4008a6</span>: file write.c, line <span class="number">26.</span></span><br><span class="line">(gdb) b <span class="number">30</span></span><br><span class="line">Breakpoint <span class="number">5</span> at <span class="number">0x4008c6</span>: file write.c, line <span class="number">30.</span></span><br><span class="line">(gdb) info breakpoints </span><br><span class="line">Num     Type           Disp Enb Address            What</span><br><span class="line"><span class="number">3</span>       breakpoint     keep y   <span class="number">0x0000000000400836</span> in main at write.c:<span class="number">5</span></span><br><span class="line"><span class="number">4</span>       breakpoint     keep y   <span class="number">0x00000000004008a6</span> in main at write.c:<span class="number">26</span></span><br><span class="line"><span class="number">5</span>       breakpoint     keep y   <span class="number">0x00000000004008c6</span> in main at write.c:<span class="number">30</span></span><br><span class="line">(gdb) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>num</th>
+<th>type</th>
+<th>disp</th>
+<th>enb</th>
+<th>address</th>
+<th>what</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>断点编号</td>
+<td>类型</td>
+<td>断点执行一次后是否有效，keep（有）</td>
+<td>当前断点是否有效，y（有）</td>
+<td>内存地址</td>
+<td>在函数中的位置</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>gdb下单步执行：<code>continue</code>、<code>step</code>、<code>next</code>、<code>finish</code></p>
+<ul>
+<li>
+<p><code>continue</code>：在断点处继续执行程序</p>
+</li>
+<li>
+<p><code>next</code>：执行下一行代码（跳过函数内部）</p>
+</li>
+<li>
+<p><code>step</code>：执行下一行代码（进入函数内部）</p>
+</li>
+<li>
+<p><code>finish</code>：执行完当前函数并返回到父函数</p>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(gdb) r</span><br><span class="line">Starting program: /home/eit/c_test/test </span><br><span class="line"></span><br><span class="line">Breakpoint <span class="number">3</span>, <span class="built_in">main</span> () at write.c:<span class="number">12</span></span><br><span class="line"><span class="number">12</span>	&#123;</span><br><span class="line">(gdb) n</span><br><span class="line"><span class="number">14</span>	    <span class="type">char</span> *buf = <span class="string">&quot;helo!I&#x27;m liujiangyong &quot;</span>;</span><br><span class="line">(gdb) </span><br><span class="line"><span class="number">16</span>	    len = <span class="built_in">strlen</span>(buf);</span><br><span class="line">(gdb) </span><br><span class="line"><span class="number">17</span>	    fd = <span class="built_in">open</span>(<span class="string">&quot;/home/hello.txt&quot;</span>,O_CREAT | O_TRUNC | O_RDWR,<span class="number">0666</span>);</span><br><span class="line">(gdb) <span class="function">s</span></span><br><span class="line"><span class="function"><span class="title">open64</span> <span class="params">()</span> at ../sysdeps/unix/syscall-<span class="keyword">template</span>.S:<span class="number">81</span></span></span><br><span class="line"><span class="function"><span class="number">81</span>	../sysdeps/unix/syscall-template.S: No such file or directory.</span></span><br><span class="line"><span class="function">(gdb) </span></span><br><span class="line"><span class="function">main () at write.c:<span class="number">18</span></span></span><br><span class="line"><span class="function"><span class="number">18</span>	    if (fd&lt;<span class="number">0</span>)</span></span><br><span class="line"><span class="function">(gdb) </span></span><br><span class="line"><span class="function"><span class="number">25</span>	        printf(<span class="string">&quot;open file:hello.txt %d\n&quot;</span>,fd);</span></span><br><span class="line">(gdb) </span><br><span class="line">__printf (format=<span class="number">0x400a26</span> <span class="string">&quot;open file:hello.txt %d\n&quot;</span>) at printf.c:<span class="number">28</span></span><br><span class="line"><span class="number">28</span>	printf.c: No such file <span class="keyword">or</span> directory.</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">open file:hello.txt <span class="number">3</span></span><br><span class="line"></span><br><span class="line">Breakpoint <span class="number">4</span>, <span class="built_in">main</span> () at write.c:<span class="number">27</span></span><br><span class="line"><span class="number">27</span>	    size1 = <span class="built_in">write</span>(fd,buf,len);</span><br><span class="line">(gdb) </span><br><span class="line">Continuing.</span><br><span class="line">写入的长度：<span class="number">22</span></span><br><span class="line">写入文本内容：helo!I<span class="number">&#x27;</span>m liujiangyong </span><br><span class="line">读取长度：<span class="number">12</span></span><br><span class="line"> 文本内容是：helo!I<span class="number">&#x27;</span>m liu</span><br><span class="line">[Inferior <span class="number">1</span> (process <span class="number">20737</span>) exited normally]</span><br><span class="line">(gdb) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>gdb下查看变量：<code>print</code>、<code>whatis</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">main</span> () at write.c:<span class="number">28</span></span><br><span class="line"><span class="number">28</span>	    <span class="keyword">if</span> (fd&lt;<span class="number">0</span>)</span><br><span class="line">(gdb) </span><br><span class="line"><span class="number">35</span>	        <span class="built_in">printf</span>(<span class="string">&quot;写入的长度：%d\n写入文本内容：%s\n&quot;</span>,size1,buf);</span><br><span class="line">(gdb) print fd</span><br><span class="line">$<span class="number">10</span> = <span class="number">3</span></span><br><span class="line">(gdb) whatis fd</span><br><span class="line">type = <span class="built_in">int</span></span><br><span class="line">(gdb) </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>gdb下退出gdb：<code>quit</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(gdb) r</span><br><span class="line">Starting program: /home/eit/c_test/test </span><br><span class="line">open file:hello.txt <span class="number">3</span></span><br><span class="line">写入的长度：<span class="number">22</span></span><br><span class="line">写入文本内容：helo!I<span class="number">&#x27;</span>m liujiangyong </span><br><span class="line">读取长度：<span class="number">12</span></span><br><span class="line"> 文本内容是：helo!I<span class="number">&#x27;</span>m liu</span><br><span class="line">[Inferior <span class="number">1</span> (process <span class="number">20815</span>) exited normally]</span><br><span class="line">(gdb) q</span><br><span class="line">root@ubuntu:/home/eit/c_test# </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="常用命令">常用命令</h4>
+<p>当使用表格来表示 <code>gdb</code> 的常用命令时，可以如下所示：</p>
+<table>
+<thead>
+<tr>
+<th>命令分类</th>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>启动和退出</td>
+<td><code>gdb your_program</code></td>
+<td>启动 GDB 并加载指定的程序</td>
+</tr>
+<tr>
+<td></td>
+<td><code>quit</code> 或 <code>q</code></td>
+<td>退出 GDB</td>
+</tr>
+<tr>
+<td>调试控制</td>
+<td><code>run [arguments]</code> 或 <code>r [arguments]</code></td>
+<td>运行程序并传递参数</td>
+</tr>
+<tr>
+<td></td>
+<td><code>continue</code> 或 <code>c</code></td>
+<td>继续执行，直到遇到下一个断点或程序结束</td>
+</tr>
+<tr>
+<td></td>
+<td><code>next</code> 或 <code>n</code></td>
+<td>执行下一行代码（不进入函数）</td>
+</tr>
+<tr>
+<td></td>
+<td><code>step</code> 或 <code>s</code></td>
+<td>执行下一行代码（进入函数）</td>
+</tr>
+<tr>
+<td></td>
+<td><code>finish</code></td>
+<td>执行完当前函数并返回到父函数</td>
+</tr>
+<tr>
+<td>断点管理</td>
+<td><code>break [location]</code> 或 <code>b [location]</code></td>
+<td>在指定位置设置断点</td>
+</tr>
+<tr>
+<td></td>
+<td><code>info breakpoints</code> 或 <code>info b</code></td>
+<td>显示所有断点信息</td>
+</tr>
+<tr>
+<td></td>
+<td><code>disable [breakpoint_number]</code></td>
+<td>禁用指定编号的断点</td>
+</tr>
+<tr>
+<td></td>
+<td><code>enable [breakpoint_number]</code></td>
+<td>启用指定编号的断点</td>
+</tr>
+<tr>
+<td></td>
+<td><code>delete [breakpoint_number]</code> 或 <code>d [breakpoint_number]</code></td>
+<td>删除指定编号的断点</td>
+</tr>
+<tr>
+<td>变量和内存查看</td>
+<td><code>print [variable_name]</code> 或 <code>p [variable_name]</code></td>
+<td>显示变量的值</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ptype [variable_name]</code></td>
+<td>显示变量的类型</td>
+</tr>
+<tr>
+<td></td>
+<td><code>set var [variable_name]=[newValue]</code></td>
+<td>修改变量的值</td>
+</tr>
+<tr>
+<td></td>
+<td><code>x/NFU [address]</code></td>
+<td>显示内存内容，N是数量，F是格式，U是单位，address是地址</td>
+</tr>
+<tr>
+<td>其他常用命令</td>
+<td><code>list [location]</code> 或 <code>l [location]</code></td>
+<td>显示源代码</td>
+</tr>
+<tr>
+<td></td>
+<td><code>backtrace</code> 或 <code>bt</code></td>
+<td>显示堆栈跟踪</td>
+</tr>
+<tr>
+<td></td>
+<td><code>watch [expression]</code></td>
+<td>设置观察点，当表达式值改变时停止</td>
+</tr>
+<tr>
+<td></td>
+<td><code>catch [event]</code></td>
+<td>捕获特定事件（如异常）</td>
+</tr>
+<tr>
+<td></td>
+<td><code>show path</code></td>
+<td>显示GDB搜索源代码的路径</td>
+</tr>
+<tr>
+<td></td>
+<td><code>setargs [arguments]</code></td>
+<td>设置传递给程序的命令行参数</td>
+</tr>
+<tr>
+<td></td>
+<td><code>show args</code></td>
+<td>显示设置好的运行时参数</td>
+</tr>
+<tr>
+<td></td>
+<td><code>attach [process_id]</code></td>
+<td>连接到正在运行的进程</td>
+</tr>
+<tr>
+<td></td>
+<td><code>detach</code></td>
+<td>断开与已连接进程的连接</td>
+</tr>
+<tr>
+<td></td>
+<td><code>shell [command]</code></td>
+<td>执行shell命令</td>
+</tr>
+<tr>
+<td>自定义命令和脚本</td>
+<td><code>define [cmd_name] [command_list]</code></td>
+<td>定义自定义命令</td>
+</tr>
+<tr>
+<td></td>
+<td>脚本文件</td>
+<td>使用脚本文件来自动化调试任务</td>
+</tr>
+<tr>
+<td>多线程和多进程调试</td>
+<td><code>info threads</code></td>
+<td>显示所有线程信息</td>
+</tr>
+<tr>
+<td></td>
+<td><code>thread [tid]</code></td>
+<td>切换到指定编号的线程</td>
+</tr>
+<tr>
+<td></td>
+<td>`set follow-fork-mode [child</td>
+<td>parent]`</td>
+</tr>
+</tbody>
+</table>
+<p>请注意，这个表格只是提供了 <code>gdb</code> 的一些常用命令的概览，每个命令还有更多的选项和用法可以探索。</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>gdb调试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo+butterfly+Github</title>
+    <url>/2024/06/23/hexo-butterfly-Github/</url>
+    <content><![CDATA[<h3 id="配置butterfly时总结出来的的经验">配置butterfly时总结出来的的经验</h3>
+<ol>
+<li>一步一步配，每配一次，<code>hexo s</code>一次，出问题了就查</li>
+<li>出现报错的情况下，可以先试着<code>hexo clean&amp;hexo g&amp;hexo s</code>多来几次</li>
+</ol>
+<h3 id="我的文件结构注意事项">我的文件结构注意事项</h3>
+<ol>
+<li>在hexo根目录下的_config.yml和_config.butterfly.yml</li>
+<li>没有特别提到的话，数据相关文件应该都是在/source/里面</li>
+<li>文章的创建用<code>hexo new &quot;name&quot;</code>,页面的创建用的<code>hexo new page </code></li>
+</ol>
+<h3 id="用代码说话，两个配置文件最容易出问题">用代码说话，两个配置文件最容易出问题</h3>
+<h4 id="config-butterfly-yml">_config.butterfly.yml</h4>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如果你用vs编程发现最后主页中文是乱码，</span></span><br><span class="line"><span class="comment">#是因为vs默认生成的文件不按照utf-8，请按照这个解决 https://blog.csdn.net/qq_41868108/article/details/105750175</span></span><br><span class="line"><span class="comment">#浏览器图标修改</span></span><br><span class="line"><span class="attr">favicon:</span> <span class="string">/image/luogic.jpg</span></span><br><span class="line"><span class="comment">#导航栏设置 最上面的一栏，logo是最左边的小圈圈</span></span><br><span class="line"><span class="attr">nav:</span></span><br><span class="line">  <span class="attr">logo:</span> <span class="string">/image/微信图片_202406231044301.jpg</span></span><br><span class="line">  <span class="attr">display_title:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">fixed:</span> <span class="literal">false</span> <span class="comment"># fixed navigation bar    </span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#这里是右上角的设置 格式是，/文件夹路劲/|| fas图标</span></span><br><span class="line"><span class="comment">#（一定要建立文件夹，不如找不到会报错） </span></span><br><span class="line"><span class="comment">#这里的fas图标 它用的是一个公司发行的标准图标图</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="string">首页:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="string">分类:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-folder-open</span></span><br><span class="line">  <span class="string">时间轴:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="string">标签:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="string">其他||fa</span> <span class="attr">fa-heartbeat:</span></span><br><span class="line">    <span class="string">音乐:</span> <span class="string">/music/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-music</span></span><br><span class="line">    <span class="string">照片:</span> <span class="string">/Gallery/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-images</span></span><br><span class="line">    <span class="string">电影:</span> <span class="string">/movies/</span> <span class="string">||</span> <span class="string">fas</span> <span class="string">fa-video</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#网站副标题，中间标题下面一点点</span></span><br><span class="line"><span class="comment"># 主页subtitle</span></span><br><span class="line"><span class="attr">subtitle:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Typewriter Effect (打字效果)</span></span><br><span class="line">  <span class="attr">effect:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">startDelay:</span> <span class="number">300</span> <span class="comment"># time before typing starts in milliseconds</span></span><br><span class="line">  <span class="attr">typeSpeed:</span> <span class="number">200</span> <span class="comment"># type speed in milliseconds</span></span><br><span class="line">  <span class="attr">backSpeed:</span> <span class="number">800</span> <span class="comment"># backspacing speed in milliseconds</span></span><br><span class="line">  <span class="comment"># loop (循环打字)</span></span><br><span class="line">  <span class="attr">loop:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># source 调用三方服务</span></span><br><span class="line">  <span class="comment"># source: false 开关调用</span></span><br><span class="line">  <span class="comment"># subtitle 会先显示 source , 再显示 sub 的內容</span></span><br><span class="line">  <span class="attr">source:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># 如果关闭打字效果，subtitle 只会显示 sub 的第一行文字</span></span><br><span class="line">  <span class="attr">sub:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">飒飒西风满院栽，蕊寒香冷蝶难来</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">他年我若为青帝，报与桃花一处开</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#页面 右侧个人信息相关的设置</span></span><br><span class="line"><span class="comment">#头像 如果报错或者显示的是吃豆小人，检查你的名称，一定要正确</span></span><br><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="attr">img:</span> <span class="string">/image/luogic.jpg</span></span><br><span class="line">  <span class="comment">#effect: true # 头像会一直转，转的贼快，太鬼畜了（emmm，超级抽象，别设置</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#顶部图片设置，就是主页的那张背景图，建议设置400px，默认的全屏容易让人找不到博客在哪里</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">index_img:</span> <span class="string">/image/流萤.jpg</span></span><br><span class="line"><span class="attr">default_top_img:</span> <span class="string">/image/流萤.jpg</span></span><br><span class="line"><span class="attr">index_top_img_height:</span>  <span class="comment">#顶部图高度</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#背景动态</span></span><br><span class="line"><span class="attr">canvas_fluttering_ribbon:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">mobile:</span> <span class="literal">false</span> <span class="comment"># false 手机端不显示 true 手机端显示</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#页面加载动画</span></span><br><span class="line"><span class="comment">#加载动画</span></span><br><span class="line"><span class="attr">preloader:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">source:</span> <span class="number">1</span> <span class="comment">#可选值1=fullpage或2=progress bar，可查看https://codebyzach.github.io/pace/</span></span><br><span class="line">  <span class="attr">pace_css_url:</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#池塘养鱼（最底部）+渐变色</span></span><br><span class="line"><span class="attr">inject:</span></span><br><span class="line"> <span class="attr">head:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;/styles/fish.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">&lt;link</span> <span class="string">rel=&quot;stylesheet&quot;</span> <span class="string">href=&quot;/styles/main.css&quot;&gt;</span>   </span><br><span class="line"> <span class="attr">bottom:</span></span><br><span class="line">       <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line">       <span class="bullet">-</span> <span class="string">&lt;script</span> <span class="string">src=&quot;https://cdn.jsdelivr.net/gh/xiabo2/CDN@latest/fishes.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#搜索功能</span></span><br><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Preload the search data when the page loads.</span></span><br><span class="line">  <span class="attr">preload:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># Show top n results per article, show all results by setting to -1</span></span><br><span class="line">  <span class="attr">top_n_per_article:</span> <span class="number">3</span></span><br><span class="line">  <span class="comment"># Unescape html strings to the readable one.</span></span><br><span class="line">  <span class="attr">unescape:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">CDN:</span></span><br><span class="line"><span class="comment">#数学公式支持</span></span><br><span class="line"><span class="attr">katex:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># true 表示每一页都加载katex.js</span></span><br><span class="line">  <span class="comment"># false 需要时加载，须在使用的Markdown Front-matter 加上 katex: true</span></span><br><span class="line">  <span class="attr">per_page:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">hide_scrollbar:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h4 id="config-yml">_config.yml</h4>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Hexo Configuration</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/configuration.html</span></span><br><span class="line"><span class="comment">## Source: https://github.com/hexojs/hexo/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">龙锦</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;买不起茅台 &#x27;</span></span><br><span class="line"><span class="attr">keywords:</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">龙金伟</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://username.github.io</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Directory</span></span><br><span class="line"><span class="attr">source_dir:</span> <span class="string">source</span></span><br><span class="line"><span class="attr">public_dir:</span> <span class="string">public</span></span><br><span class="line"><span class="attr">tag_dir:</span> <span class="string">tags</span></span><br><span class="line"><span class="attr">archive_dir:</span> <span class="string">archives</span></span><br><span class="line"><span class="attr">category_dir:</span> <span class="string">categories</span></span><br><span class="line"><span class="attr">code_dir:</span> <span class="string">downloads/code</span></span><br><span class="line"><span class="attr">i18n_dir:</span> <span class="string">:lang</span></span><br><span class="line"><span class="attr">skip_render:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Writing</span></span><br><span class="line"><span class="attr">new_post_name:</span> <span class="string">:title.md</span> <span class="comment"># File name of new posts</span></span><br><span class="line"><span class="attr">default_layout:</span> <span class="string">post</span></span><br><span class="line"><span class="attr">titlecase:</span> <span class="literal">false</span> <span class="comment"># Transform title into titlecase</span></span><br><span class="line"><span class="attr">external_link:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># Open external links in new tab</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">site</span> <span class="comment"># Apply to the whole site</span></span><br><span class="line">  <span class="attr">exclude:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">filename_case:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">render_drafts:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">relative_link:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">future:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">syntax_highlighter:</span> <span class="string">highlight.js</span></span><br><span class="line"><span class="attr">highlight:</span></span><br><span class="line">  <span class="attr">line_number:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">auto_detect:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">tab_replace:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">  <span class="attr">wrap:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">hljs:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">prismjs:</span></span><br><span class="line">  <span class="attr">preprocess:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">line_number:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">tab_replace:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Home page setting</span></span><br><span class="line"><span class="comment"># path: Root path for your blogs index page. (default = &#x27;&#x27;)</span></span><br><span class="line"><span class="comment"># per_page: Posts displayed per page. (0 = disable pagination)</span></span><br><span class="line"><span class="comment"># order_by: Posts order. (Order by date descending by default)</span></span><br><span class="line"><span class="attr">index_generator:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">  <span class="attr">per_page:</span> <span class="number">10</span></span><br><span class="line">  <span class="attr">order_by:</span> <span class="string">-date</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Category &amp; Tag</span></span><br><span class="line"><span class="attr">default_category:</span> <span class="string">uncategorized</span></span><br><span class="line"><span class="attr">category_map:</span></span><br><span class="line"><span class="attr">tag_map:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Metadata elements</span></span><br><span class="line"><span class="comment">## https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta</span></span><br><span class="line"><span class="attr">meta_generator:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Date / Time format</span></span><br><span class="line"><span class="comment">## Hexo uses Moment.js to parse and display date</span></span><br><span class="line"><span class="comment">## You can customize the date format as defined in</span></span><br><span class="line"><span class="comment">## http://momentjs.com/docs/#/displaying/format/</span></span><br><span class="line"><span class="attr">date_format:</span> <span class="string">YYYY-MM-DD</span></span><br><span class="line"><span class="attr">time_format:</span> <span class="string">HH:mm:ss</span></span><br><span class="line"><span class="comment">## updated_option supports &#x27;mtime&#x27;, &#x27;date&#x27;, &#x27;empty&#x27;</span></span><br><span class="line"><span class="attr">updated_option:</span> <span class="string">&#x27;mtime&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Pagination</span></span><br><span class="line"><span class="comment">## Set per_page to 0 to disable pagination</span></span><br><span class="line"><span class="attr">per_page:</span> <span class="number">10</span></span><br><span class="line"><span class="attr">pagination_dir:</span> <span class="string">page</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Include / Exclude file(s)</span></span><br><span class="line"><span class="comment">## include:/exclude: options only apply to the &#x27;source/&#x27; folder</span></span><br><span class="line"><span class="attr">include:</span></span><br><span class="line"><span class="attr">exclude:</span></span><br><span class="line"><span class="attr">ignore:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">butterfly</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/one-command-deployment</span></span><br><span class="line"><span class="comment"># deploy:</span></span><br><span class="line"><span class="comment">#   type: &#x27;&#x27;</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/longjinw/longjinw.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br><span class="line">  <span class="comment"># message: Site updated: &#123;&#123; now(&#x27;YYYY-MM-DD HH:mm:ss&#x27;) &#125;&#125;)</span></span><br><span class="line"><span class="comment">#搜索</span></span><br><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">content:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line"><span class="comment">#数学支chi</span></span><br><span class="line"><span class="attr">markdown:</span></span><br><span class="line">    <span class="attr">plugins:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;@renbaoshuo/markdown-it-katex&#x27;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -1183,6 +1937,27 @@
         <tag>hexo</tag>
         <tag>博客编写</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>hexo 命令使用</title>
+    <url>/2024/06/23/hexo_%E5%91%BD%E4%BB%A4%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<p>这个是官网（可以查看主题以及更新）：<a href="https://hexo.io/">Hexo</a><br>
+这篇文章是hexo第一篇文章. 点击 <a href="https://hexo.io/docs/">documentation</a> 可以获得更多信息.<br>
+可以在 <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> 找到绝大部分hexo相关问题，或者直接去 <a href="https://github.com/hexojs/hexo/issues">GitHub</a>评论留言.</p>
+<h2 id="快速开始">快速开始</h2>
+<h3 id="创建一个新的文章，文章默认在source-ports-目录下面">创建一个新的文章，文章默认在source/ _ports /目录下面</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>相关: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="在本地上启动">在本地上启动</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>相关: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="生成静态文件">生成静态文件</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>相关: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="部署到网站">部署到网站</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>相关: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>markdown简易上手</title>
@@ -1278,27 +2053,6 @@ ABC[^abc]<br>
       <tags>
         <tag>markdown</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>hexo 命令使用</title>
-    <url>/2024/06/23/hexo_%E5%91%BD%E4%BB%A4%E6%8C%87%E5%8D%97/</url>
-    <content><![CDATA[<p>这个是官网（可以查看主题以及更新）：<a href="https://hexo.io/">Hexo</a><br>
-这篇文章是hexo第一篇文章. 点击 <a href="https://hexo.io/docs/">documentation</a> 可以获得更多信息.<br>
-可以在 <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> 找到绝大部分hexo相关问题，或者直接去 <a href="https://github.com/hexojs/hexo/issues">GitHub</a>评论留言.</p>
-<h2 id="快速开始">快速开始</h2>
-<h3 id="创建一个新的文章，文章默认在source-ports-目录下面">创建一个新的文章，文章默认在source/ _ports /目录下面</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>相关: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="在本地上启动">在本地上启动</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>相关: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="生成静态文件">生成静态文件</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>相关: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="部署到网站">部署到网站</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>相关: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>shell脚本编写基础</title>
