@@ -1,0 +1,437 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>C++语言特性相关 | 龙锦</title><meta name="author" content="龙金伟"><meta name="copyright" content="龙金伟"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一些C++的语言特性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++语言特性相关">
+<meta property="og:url" content="https://longjinw.github.io/2024/07/03/C-%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9B%B8%E5%85%B3/index.html">
+<meta property="og:site_name" content="龙锦">
+<meta property="og:description" content="一些C++的语言特性">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://longjinw.github.io/iamge/T2.jpg">
+<meta property="article:published_time" content="2024-07-03T10:41:30.000Z">
+<meta property="article:modified_time" content="2024-07-04T03:38:33.043Z">
+<meta property="article:author" content="龙金伟">
+<meta property="article:tag" content="C++语言特性">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://longjinw.github.io/iamge/T2.jpg"><link rel="shortcut icon" href="/image/luogic.jpg"><link rel="canonical" href="https://longjinw.github.io/2024/07/03/C-%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9B%B8%E5%85%B3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":3,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++语言特性相关',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-04 11:38:33'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><script src="/styles/fish.js"></script><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><link rel="stylesheet" href="/styles/main.css"><meta name="generator" content="Hexo 7.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/image/luogic.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/iamge/T2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="龙锦"><img class="site-icon" src="/image/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_202406231044301.jpg"/><span class="site-name">龙锦</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++语言特性相关</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-03T10:41:30.000Z" title="发表于 2024-07-03 18:41:30">2024-07-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-04T03:38:33.043Z" title="更新于 2024-07-04 11:38:33">2024-07-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/C/">C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C++语言特性相关"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="左值和右值">左值和右值</h4>
+<p>左值和右值是C/C++编程语言中的两个重要概念，它们在赋值、引用以及类型转换等方面表现出明显的区别。</p>
+<h5 id="定义：">定义：</h5>
+<ul>
+<li><strong>左值</strong>：表示存储在计算机内存中的对象，具有持久性和可寻址性。即，左值能够用“取地址&amp;”运算符获得其内存地址，且在表达式结束后依然存在。左值可以出现在赋值语句的左侧，也可以出现在右侧。</li>
+<li><strong>右值</strong>：与左值相对，右值通常表示临时对象，它们不具有持久性和可寻址性。即，右值不能用“取地址&amp;”运算符获得其内存地址，且在表达式结束后就不再存在。右值只能出现在赋值语句的右侧。</li>
+</ul>
+<h5 id="左-右值引用">左/右值引用</h5>
+<ul>
+<li><strong>左值引用</strong>：左值引用是对左值的引用，即给左值取别名。左值引用在C++中的内部实现通常是一个常量指针，左值引用可以引用非常量左值和常量左值，但不能直接引用右值。</li>
+<li><strong>右值引用</strong>：右值引用是C++11中引入的新特性，用于引用右值。它允许程序员延长临时对象的生命周期，并在需要时移动资源而不是复制资源。用 <code>&amp;&amp;</code> 表示，右值引用只能绑定到右值上，不能绑定到左值上（除非通过 <code>std::move</code> 强制转换）</li>
+</ul>
+<h5 id="转换">转换</h5>
+<ul>
+<li><strong>左值到右值的隐式转换</strong>：在大多数情况下，左值可以隐式地转化为右值。例如，在赋值操作中，左侧的左值会“退化”为右值，以便与右侧的右值进行匹配。</li>
+<li><strong>右值到左值的显式转换</strong>：右值到左值的显式转化通常是不允许的，因为右值在表达式结束后就不再存在。然而，通过 <code>std::move</code> 可以将左值强制转化为右值引用，从而允许对其进行移动操作。</li>
+</ul>
+<h5 id="std-move">std::move</h5>
+<ul>
+<li>
+<p><strong>类型转换</strong>： 并不实际移动任何数据，而是将其参数转换为右值引用，从而允许利用移动语义（如果可用）进行资源的转移，而不是复制。</p>
+</li>
+<li>
+<p><strong>函数原型</strong>：<code>std::move()</code> 函数原型：<code>move</code> 函数是将任意类型的左值转为其类型的右值引用。</p>
+</li>
+</ul>
+<h4 id="指针">指针</h4>
+<p>在C++中，指针是一种非常基础且强大的特性，它允许你直接访问和操作内存地址。指针存储了变量的内存地址，而不是变量的值本身。</p>
+<ul>
+<li>大小：<code>sizeof</code>获得</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::cout &lt;&lt; <span class="string">&quot;Size of pointer: &quot;</span> &lt;&lt; <span class="built_in">sizeof</span>(<span class="type">int</span>*) &lt;&lt; std::endl; <span class="comment">// 输出指针大小  </span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>用法：基本用法包括声明、初始化、解引用（或取值）、指针运算等</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//声明和初始化</span></span><br><span class="line"><span class="type">int</span> a = <span class="number">10</span>;  </span><br><span class="line"><span class="type">int</span>* ptr = &amp;a; <span class="comment">// ptr 是一个指向 int 类型的指针，它存储了变量 a 的地址</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//解引用,使用 * 运算符来访问指针所指向的值：</span></span><br><span class="line">std::cout &lt;&lt; *ptr &lt;&lt; std::endl; <span class="comment">// 输出 10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//指针运算，指针可以进行算术运算，但仅限于加上或减去整数（表示偏移量），以及指针之间的比较。</span></span><br><span class="line"><span class="type">int</span> arr[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;  </span><br><span class="line"><span class="type">int</span>* p = arr; <span class="comment">// p 指向数组的第一个元素  </span></span><br><span class="line">std::cout &lt;&lt; *(p + <span class="number">2</span>) &lt;&lt; std::endl; <span class="comment">// 输出 3，因为 p+2 指向了数组的第三个元素</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意事项：</li>
+</ul>
+<ol>
+<li><strong>空指针</strong>：未初始化的指针是未定义的，可能指向任意内存地址。通常将指针初始化为<code>nullptr</code>（C++11及以后）或<code>NULL</code>（C++11之前，但在C++11中已不推荐使用）来避免野指针问题。</li>
+<li><strong>越界访问</strong>：指针运算时要小心，确保不要越界访问内存。</li>
+<li><strong>悬挂指针</strong>：如果指针指向的对象被删除或释放，但该指针未被设置为<code>nullptr</code>，则该指针成为悬挂指针。尝试通过悬挂指针访问内存是未定义行为。</li>
+<li><strong>内存泄漏</strong>：使用动态内存分配（如<code>new</code>）时，要确保在适当的时候释放内存（使用<code>delete</code>），以避免内存泄漏。</li>
+<li><strong>智能指针</strong>：C++11及以后版本中引入了智能指针（如<code>std::unique_ptr</code>、<code>std::shared_ptr</code>等），它们可以自动管理动态分配的内存，减少内存泄漏的风险。</li>
+<li><strong>指针和数组</strong>：在C++中，数组名在大多数情况下会被视为指向数组首元素的指针。但是，这种用法有一些陷阱，比如数组名本身不是一个可修改的左值。</li>
+</ol>
+<h4 id="指针和引用区别">指针和引用区别</h4>
+<p>指针和引用的主要区别可以简单归纳如下：</p>
+<ol>
+<li>
+<p><strong>定义与性质</strong>：</p>
+<ul>
+<li>指针：是一个变量，存储的是另一个变量的内存地址。</li>
+<li>引用：是某个变量的别名，与原变量共享同一块内存空间，实质上是同一个东西。</li>
+</ul>
+</li>
+<li>
+<p><strong>内存分配</strong>：</p>
+<ul>
+<li>指针：需要分配内存空间来存储地址值。</li>
+<li>引用：不需要分配额外的内存空间，它只是一个别名。</li>
+</ul>
+</li>
+<li>
+<p><strong>初始化和赋值</strong>：</p>
+<ul>
+<li>指针：可以在定义时不初始化，之后可以指向任何有效的内存地址，包括NULL。</li>
+<li>引用：必须在定义时初始化，且之后不能再改变为引用另一个变量。</li>
+</ul>
+</li>
+<li>
+<p><strong>多级性</strong>：</p>
+<ul>
+<li>指针：可以有多级，例如指向指针的指针。</li>
+<li>引用：只能是一级的，不能有多级引用。</li>
+</ul>
+</li>
+<li>
+<p><strong>空值</strong>：</p>
+<ul>
+<li>指针：可以为空（NULL或nullptr）。</li>
+<li>引用：不能为NULL，必须始终引用一个有效的对象。</li>
+</ul>
+</li>
+<li>
+<p><strong>sizeof运算符</strong>：</p>
+<ul>
+<li>指针：使用sizeof返回的是指针本身的大小（通常是4字节或8字节，取决于系统架构）。</li>
+<li>引用：使用sizeof返回的是被引用变量的大小。</li>
+</ul>
+</li>
+<li>
+<p><strong>运算操作</strong>：</p>
+<ul>
+<li>指针：支持算术运算（如加减）和比较运算。</li>
+<li>引用：不支持算术运算，主要用于别名访问。</li>
+</ul>
+</li>
+<li>
+<p><strong>函数参数</strong>：</p>
+<ul>
+<li>指针和引用作为函数参数时，都可以改变实参的值，但引用在语法上更为简洁，且使用上更安全。</li>
+</ul>
+</li>
+<li>
+<p><strong>安全性</strong>：</p>
+<ul>
+<li>指针：使用时需要更加小心，因为错误的指针操作可能导致程序崩溃或安全问题。</li>
+<li>引用：相对更安全，因为它在定义时必须初始化，并且不能改变为引用另一个变量。</li>
+</ul>
+</li>
+</ol>
+<h4 id="常量指针和指针常量">常量指针和指针常量</h4>
+<p>常量指针和指针常量在C++中是两种常见的指针类型，尽管它们都涉及到<code>const</code>关键字，但它们的含义和应用场景存在明显的区别。以下是对这两种指针的详细比较：</p>
+<h5 id="本质区别">本质区别</h5>
+<ul>
+<li><strong>常量指针</strong>：本质上是一个指针，<code>const</code>修饰的是指针指向的内容，表示该指针指向一个“常量”，即指针指向的变量的值不能通过该指针来改变。</li>
+<li><strong>指针常量</strong>：本质上是一个常量，<code>const</code>修饰的是指针本身，表示该常量是一个指针类型的常量，即指针的值（即它所指向的地址）不能改变。</li>
+</ul>
+<h5 id="声明方式">声明方式</h5>
+<ul>
+<li><strong>常量指针</strong>：通常声明为<code>const 数据类型 *指针变量名</code>，例如<code>const int *p = &amp;a;</code>，这里<code>p</code>是一个指向整型常量的指针，不能通过<code>p</code>来修改<code>a</code>的值，但<code>p</code>可以指向另一个整型变量的地址。</li>
+<li><strong>指针常量</strong>：通常声明为<code>数据类型 * const 指针变量名</code>，例如<code>int *const q = &amp;a;</code>，这里<code>q</code>是一个指针常量，它的值（即它指向的地址）不能被修改，但可以通过<code>q</code>来修改它所指向的变量的值（如果那个变量不是常量的话）。</li>
+</ul>
+<h5 id="应用场景">应用场景</h5>
+<ul>
+<li>
+<p><strong>常量指针</strong>：常用于需要保护数据不被意外修改的场景，同时又想通过指针来访问这些数据。</p>
+</li>
+<li>
+<p><strong>指针常量</strong>：常用于需要确保指针始终指向同一个地址的场景，比如某些资源的句柄或引用，一旦初始化后就不应该再指向其他地址。</p>
+</li>
+<li>
+<p><strong>常量指针示例</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *p = &amp;a; <span class="comment">// p 是常量指针，指向 a</span></span><br><span class="line"><span class="comment">// *p = 20; // 编译错误，不能通过 p 修改 a 的值</span></span><br><span class="line">p = &amp;b; <span class="comment">// 正确，p 可以指向另一个变量 b</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>指针常量示例</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> *<span class="type">const</span> q = &amp;a; <span class="comment">// q 是指针常量，指向 a</span></span><br><span class="line">*q = <span class="number">20</span>; <span class="comment">// 正确，可以通过 q 修改 a 的值</span></span><br><span class="line"><span class="comment">// q = &amp;b; // 编译错误，q 不能指向其他地址</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="函数指针">函数指针</h4>
+<p>函数指针是C和C++语言中的一个特性，它允许程序员将函数的地址存储在变量中，并通过这个变量来调用函数。函数指针的概念是高级且强大的，因为它提供了一种机制来动态地调用不同的函数，基于运行时条件。</p>
+<h5 id="函数指针的声明">函数指针的声明</h5>
+<p>函数指针的声明需要指定函数返回值的类型、函数名（在这里我们使用指针名代替）以及函数的参数列表（包括参数的类型和数量）。但是，在声明函数指针时，我们不需要函数名，而是使用指针名来引用这个函数。</p>
+<p>例如，假设我们有一个函数原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span>;</span><br></pre></td></tr></table></figure>
+<p>要声明一个指向这个函数的指针，我们可以这样写：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> (*ptrToAdd)(<span class="type">int</span>, <span class="type">int</span>);</span><br></pre></td></tr></table></figure>
+<p>这里，<code>ptrToAdd</code>是一个指针，它指向一个函数，该函数接受两个<code>int</code>类型的参数并返回一个<code>int</code>类型的值。</p>
+<h5 id="函数指针的赋值">函数指针的赋值</h5>
+<p>一旦我们声明了函数指针，就可以将函数的地址赋给它。在C和C++中，函数名就代表了函数的地址，因此我们可以直接将函数名赋给函数指针。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ptrToAdd = add; <span class="comment">// 将add函数的地址赋给ptrToAdd</span></span><br></pre></td></tr></table></figure>
+<h5 id="通过函数指针调用函数">通过函数指针调用函数</h5>
+<p>有了函数指针之后，我们就可以通过这个函数指针来调用函数了。调用方式是通过解引用函数指针，并像调用普通函数一样传递参数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> result = ptrToAdd(<span class="number">5</span>, <span class="number">3</span>); <span class="comment">// 等同于调用 add(5, 3)</span></span><br></pre></td></tr></table></figure>
+<h5 id="函数指针的应用">函数指针的应用</h5>
+<p>函数指针在C和C++中有很多应用，包括但不限于：</p>
+<ul>
+<li><strong>回调函数</strong>：在某些API中，你可以将函数指针作为参数传递给另一个函数，这个被传递的函数指针指向的函数会在某个特定事件发生时被调用。</li>
+<li><strong>排序函数</strong>：例如，在C标准库中的<code>qsort</code>函数，它接受一个比较函数的指针作为参数，这个比较函数用于定义排序的准则。</li>
+<li><strong>动态函数表</strong>：通过函数指针数组，可以实现基于运行时条件的函数选择，这在实现多态或构建插件系统时非常有用。</li>
+<li><strong>事件处理</strong>：在图形用户界面（GUI）编程中，事件处理函数通常是通过函数指针来指定的，这样当特定事件（如按钮点击）发生时，相应的函数就会被调用。</li>
+</ul>
+<h4 id="值-引用-指针传递">值/引用/指针传递</h4>
+<p>在参数传递中，值传递、引用传递和指针传递是C++（以及C语言）中常见的三种方式，它们各自具有不同的特点和用途。以下是这三种传递方式的详细区别：</p>
+<h5 id="值传递（Pass-by-Value）">值传递（Pass by Value）</h5>
+<p><strong>定义</strong>：值传递时，形参是实参的副本（复制、拷贝）。即函数接收的是实参的一个拷贝，函数体内对形参的任何修改都不会影响到实参。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li><strong>单向性</strong>：数据只能从实参传递到形参，不能反向传递。</li>
+<li><strong>独立性</strong>：形参和实参是两个独立的变量，它们占据不同的内存空间。</li>
+<li><strong>效率</strong>：对于大型对象或结构体，值传递可能会导致较高的内存开销和性能损耗，因为需要复制整个对象。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">swap</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">    <span class="comment">// 这里a和b的交换不会影响实参</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="引用传递（Pass-by-Reference）">引用传递（Pass by Reference）</h5>
+<p><strong>定义</strong>：引用传递时，实参的引用（即内存地址）被传递给形参。形参和实参指向同一块内存地址，因此函数体内对形参的修改会直接影响到实参。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li><strong>双向性</strong>：数据可以在实参和形参之间双向传递。</li>
+<li><strong>共享性</strong>：形参和实参共享同一块内存空间，对形参的修改会反映到实参上。</li>
+<li><strong>效率</strong>：对于大型对象或结构体，引用传递可以避免不必要的复制，提高效率。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">swap</span><span class="params">(<span class="type">int</span>&amp; a, <span class="type">int</span>&amp; b)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">    <span class="comment">// 这里a和b的交换会影响实参</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="指针传递（Pass-by-Pointer）">指针传递（Pass by Pointer）</h5>
+<p><strong>定义</strong>：指针传递时，实参的地址（即指针）被传递给形参。形参是一个指针变量，它存储了实参的地址，因此函数体内可以通过解引用形参来修改实参的值。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li><strong>间接访问</strong>：通过指针可以间接访问和修改实参的值。</li>
+<li><strong>灵活性</strong>：指针传递提供了更高的灵活性，可以动态地修改多个变量的值。</li>
+<li><strong>风险</strong>：指针操作相对复杂，容易出错，如野指针、空指针解引用等问题。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">swap</span><span class="params">(<span class="type">int</span>* a, <span class="type">int</span>* b)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">    <span class="comment">// 这里通过解引用指针来交换实参的值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="适用">适用</h5>
+<ul>
+<li><strong>值传递</strong>：适用于不需要修改实参的场景，或者实参是基本数据类型时。</li>
+<li><strong>引用传递</strong>：适用于需要修改实参的场景，特别是当实参是大型对象或结构体时，可以提高效率。</li>
+<li><strong>指针传递</strong>：提供了更高的灵活性，但也需要更谨慎的操作，以避免指针相关的错误。</li>
+</ul>
+<h4 id="迭代器">迭代器</h4>
+<p>迭代器模式（Iterator Pattern）是一种行为型设计模式，它提供了一种方法顺序访问一个容器对象中的各个元素，而又不暴露其内部的细节。</p>
+<p>迭代器模式的核心思想是将集合的遍历功能从集合对象中分离出来，形成一个独立的迭代器对象来管理访问集合元素的逻辑。</p>
+<ul>
+<li>
+<p>迭代器为不同数据结构提供统一的访问接口，使得遍历数据变得简单统一，同时支持高效处理大型数据集，通过逐个访问元素节省内存资源。</p>
+</li>
+<li>
+<p>迭代器不仅限于遍历，还能与算法结合实现复杂数据处理，支持惰性计算，提升代码可读性和可维护性，是现代编程中不可或缺的工具。</p>
+</li>
+</ul>
+<h4 id="野指针和悬空指针">野指针和悬空指针</h4>
+<p>野指针和悬空指针是编程中常见的两种指针问题，它们通常会导致程序出现不可预测的行为和潜在的错误。</p>
+<h5 id="野指针（Wild-Pointer）">野指针（Wild Pointer）</h5>
+<p><strong>定义</strong>：<br>
+野指针是指向一个已删除的对象或未申请访问受限内存区域的指针。野指针的值是不确定的，可能指向任何位置，包括操作系统不允许访问的内存区域。</p>
+<p><strong>危害</strong>：<br>
+访问野指针通常会导致程序崩溃或未定义行为，因为它可能指向任意内存地址，包括操作系统不允许访问的内存区域。</p>
+<p><strong>成因</strong>：</p>
+<ul>
+<li><strong>指针变量未初始化</strong>：任何指针变量刚被创建时不会自动成为NULL指针，它的缺省值是随机的。如果指针变量在创建时没有初始化，它将指向一个不确定的内存地址，从而成为野指针。</li>
+<li><strong>指针释放之后未置空</strong>：有时指针在free或delete后未赋值NULL，此时指针仍然指向已被释放的内存地址，但该内存可能已经被系统重新分配给其他对象，因此该指针成为野指针。</li>
+<li><strong>指针操作超越变量作用域</strong>：例如，函数返回指向栈内存的指针或引用，因为栈内存在函数结束时会被释放，返回的指针将成为野指针。</li>
+</ul>
+<p><strong>预防措施</strong>：</p>
+<ul>
+<li><strong>初始化时置NULL</strong>：指针变量在创建时应立即初始化为NULL或有效的内存地址。</li>
+<li><strong>释放时置NULL</strong>：当指针指向的内存空间释放时，应立即将指针置为NULL，防止产生野指针。</li>
+<li><strong>避免返回局部变量的地址</strong>：不要从函数中返回局部变量的地址，因为局部变量在函数返回后会被销毁。</li>
+</ul>
+<h5 id="悬空指针（Dangling-Pointer）">悬空指针（Dangling Pointer）</h5>
+<p><strong>定义</strong>：<br>
+悬空指针是指一个曾经指向有效内存区域，但由于该内存区域已经被释放或变得无效，因此现在指向一个不再可用的内存地址的指针。</p>
+<p><strong>危害</strong>：<br>
+尝试通过悬空指针访问内存通常会导致程序崩溃或未定义行为，因为指针指向的内存区域已经不再可用。</p>
+<p><strong>成因</strong>：</p>
+<ol>
+<li><strong>内存释放后继续使用</strong>：动态分配的内存被释放（如使用free()函数），但指针仍然指向原来的内存地址。</li>
+<li><strong>函数返回局部变量的地址</strong>：与野指针类似，但悬空指针特指在内存被释放后仍然指向该内存地址的情况。</li>
+<li><strong>使用已经释放的资源</strong>：例如，文件被关闭后，仍然使用指向该文件的指针。</li>
+</ol>
+<p><strong>预防措施</strong>：</p>
+<ul>
+<li><strong>释放内存后置空指针</strong>：在使用free()或delete释放动态分配的内存后，立即将指针置为NULL。</li>
+<li><strong>避免返回局部变量的地址</strong>：同上，不要从函数中返回局部变量的地址。</li>
+<li><strong>谨慎使用动态内存分配</strong>：尽量减少动态内存分配的使用，特别是在不需要的情况下。如果必须使用，确保正确管理内存的生命周期。</li>
+</ul>
+<h4 id="nullptr-与-NULL">nullptr 与 NULL</h4>
+<ul>
+<li>NULL：预处理变量，是一个宏，它的值是 0，定义在头文件 <cstdlib> 中，即 #define NULL 0。</li>
+<li>nullptr：C++ 11 中的关键字，是一种特殊类型的字面值，可以被转换成任意其他类型。</li>
+</ul>
+<h5 id="nullptr优势：">nullptr优势：</h5>
+<ul>
+<li>有类型，类型是 typdef decltype(nullptr) nullptr_t;，使用 nullptr 提高代码的健壮性。</li>
+<li>函数重载：因为 NULL 本质上是 0，在函数调用过程中，若出现函数重载并且传递的实参是 NULL，可能会出现不知和哪一个函数匹配的情况；但是传递实参 nullptr 就不会出现这种情况。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://longjinw.github.io">龙金伟</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://longjinw.github.io/2024/07/03/C-%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9B%B8%E5%85%B3/">https://longjinw.github.io/2024/07/03/C-%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9B%B8%E5%85%B3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://longjinw.github.io" target="_blank">龙锦</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C-%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7/">C++语言特性</a></div><div class="post_share"><div class="social-share" data-image="/iamge/T2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/07/03/C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%89%B9%E6%80%A7/" title="C++面向对象的特性"><img class="cover" src="/image/T1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">C++面向对象的特性</div></div></a></div><div class="next-post pull-right"><a href="/2024/07/04/C-I-O%E8%BF%9B%E7%A8%8B%E6%8A%80%E6%9C%AF/" title="C++I/O进程技术"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">C++I/O进程技术</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/image/luogic.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">龙金伟</div><div class="author-info__description">买不起茅台 </div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/longjinw"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/longjinw" target="_blank" title="Github"><i class="fab fa-github" style="color: #hdhfbb;"></i></a><a class="social-icon" href="https://blog.csdn.net/longer_net" target="_blank" title="csdn"><i class="fa-regular fa-envelope" style="color: #000000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC"><span class="toc-number">1.</span> <span class="toc-text">左值和右值</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">定义：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B7%A6-%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">左&#x2F;右值引用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%BD%AC%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">转换</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#std-move"><span class="toc-number">1.4.</span> <span class="toc-text">std::move</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">2.</span> <span class="toc-text">指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E5%8C%BA%E5%88%AB"><span class="toc-number">3.</span> <span class="toc-text">指针和引用区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88%E5%92%8C%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">4.</span> <span class="toc-text">常量指针和指针常量</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB"><span class="toc-number">4.1.</span> <span class="toc-text">本质区别</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E6%96%B9%E5%BC%8F"><span class="toc-number">4.2.</span> <span class="toc-text">声明方式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">4.3.</span> <span class="toc-text">应用场景</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">函数指针</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="toc-number">5.1.</span> <span class="toc-text">函数指针的声明</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E7%9A%84%E8%B5%8B%E5%80%BC"><span class="toc-number">5.2.</span> <span class="toc-text">函数指针的赋值</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-number">5.3.</span> <span class="toc-text">通过函数指针调用函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">5.4.</span> <span class="toc-text">函数指针的应用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%80%BC-%E5%BC%95%E7%94%A8-%E6%8C%87%E9%92%88%E4%BC%A0%E9%80%92"><span class="toc-number">6.</span> <span class="toc-text">值&#x2F;引用&#x2F;指针传递</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%80%BC%E4%BC%A0%E9%80%92%EF%BC%88Pass-by-Value%EF%BC%89"><span class="toc-number">6.1.</span> <span class="toc-text">值传递（Pass by Value）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92%EF%BC%88Pass-by-Reference%EF%BC%89"><span class="toc-number">6.2.</span> <span class="toc-text">引用传递（Pass by Reference）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E4%BC%A0%E9%80%92%EF%BC%88Pass-by-Pointer%EF%BC%89"><span class="toc-number">6.3.</span> <span class="toc-text">指针传递（Pass by Pointer）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%82%E7%94%A8"><span class="toc-number">6.4.</span> <span class="toc-text">适用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-number">7.</span> <span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8E%E6%8C%87%E9%92%88%E5%92%8C%E6%82%AC%E7%A9%BA%E6%8C%87%E9%92%88"><span class="toc-number">8.</span> <span class="toc-text">野指针和悬空指针</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%87%8E%E6%8C%87%E9%92%88%EF%BC%88Wild-Pointer%EF%BC%89"><span class="toc-number">8.1.</span> <span class="toc-text">野指针（Wild Pointer）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%82%AC%E7%A9%BA%E6%8C%87%E9%92%88%EF%BC%88Dangling-Pointer%EF%BC%89"><span class="toc-number">8.2.</span> <span class="toc-text">悬空指针（Dangling Pointer）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nullptr-%E4%B8%8E-NULL"><span class="toc-number">9.</span> <span class="toc-text">nullptr 与 NULL</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#nullptr%E4%BC%98%E5%8A%BF%EF%BC%9A"><span class="toc-number">9.1.</span> <span class="toc-text">nullptr优势：</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/04/C-%E5%B8%B8%E8%A7%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="C++常见设计模式">C++常见设计模式</a><time datetime="2024-07-04T03:44:20.000Z" title="发表于 2024-07-04 11:44:20">2024-07-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/04/C-I-O%E8%BF%9B%E7%A8%8B%E6%8A%80%E6%9C%AF/" title="C++I/O进程技术">C++I/O进程技术</a><time datetime="2024-07-04T03:44:04.000Z" title="发表于 2024-07-04 11:44:04">2024-07-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/03/C-%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9B%B8%E5%85%B3/" title="C++语言特性相关"><img src="/iamge/T2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++语言特性相关"/></a><div class="content"><a class="title" href="/2024/07/03/C-%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E7%9B%B8%E5%85%B3/" title="C++语言特性相关">C++语言特性相关</a><time datetime="2024-07-03T10:41:30.000Z" title="发表于 2024-07-03 18:41:30">2024-07-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/03/C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%89%B9%E6%80%A7/" title="C++面向对象的特性"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++面向对象的特性"/></a><div class="content"><a class="title" href="/2024/07/03/C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%89%B9%E6%80%A7/" title="C++面向对象的特性">C++面向对象的特性</a><time datetime="2024-07-03T07:13:01.000Z" title="发表于 2024-07-03 15:13:01">2024-07-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/02/C-%E5%85%B3%E9%94%AE%E5%AD%97%E5%92%8C%E5%85%B3%E9%94%AE%E5%BA%93%E5%87%BD%E6%95%B0%E7%BB%86%E8%AE%BA/" title="C++关键字和关键库函数细论"><img src="/image/T2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++关键字和关键库函数细论"/></a><div class="content"><a class="title" href="/2024/07/02/C-%E5%85%B3%E9%94%AE%E5%AD%97%E5%92%8C%E5%85%B3%E9%94%AE%E5%BA%93%E5%87%BD%E6%95%B0%E7%BB%86%E8%AE%BA/" title="C++关键字和关键库函数细论">C++关键字和关键库函数细论</a><time datetime="2024-07-02T11:43:08.000Z" title="发表于 2024-07-02 19:43:08">2024-07-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By 龙金伟</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/xiabo2/CDN@latest/fishes.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
