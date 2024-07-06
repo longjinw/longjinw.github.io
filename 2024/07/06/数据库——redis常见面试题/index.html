@@ -1,0 +1,345 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据库——redis常见面试题 | 龙锦</title><meta name="author" content="龙金伟"><meta name="copyright" content="龙金伟"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Redis数据库常见面试题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库——redis常见面试题">
+<meta property="og:url" content="https://longjinw.github.io/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94redis%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
+<meta property="og:site_name" content="龙锦">
+<meta property="og:description" content="Redis数据库常见面试题">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://longjinw.github.io/image/T2.jpg">
+<meta property="article:published_time" content="2024-07-06T04:26:01.000Z">
+<meta property="article:modified_time" content="2024-07-06T05:28:35.531Z">
+<meta property="article:author" content="龙金伟">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://longjinw.github.io/image/T2.jpg"><link rel="shortcut icon" href="/image/luogic.jpg"><link rel="canonical" href="https://longjinw.github.io/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94redis%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":3,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据库——redis常见面试题',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-06 13:28:35'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><script src="/styles/fish.js"></script><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><link rel="stylesheet" href="/styles/main.css"><meta name="generator" content="Hexo 7.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/image/luogic.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/image/T2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="龙锦"><img class="site-icon" src="/image/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_202406231044301.jpg"/><span class="site-name">龙锦</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数据库——redis常见面试题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-06T04:26:01.000Z" title="发表于 2024-07-06 12:26:01">2024-07-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-06T05:28:35.531Z" title="更新于 2024-07-06 13:28:35">2024-07-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="数据库——redis常见面试题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="redis">redis</h4>
+<p>Redis是一个高性能的、基于内存的Key-Value数据库，支持多种数据结构，如字符串、哈希、列表、集合和有序集合。它提供快速读写能力，常用于缓存、消息队列、会话管理等场景。Redis支持持久化，保障数据不丢失，同时支持高可用性和可扩展性，通过主从复制和集群部署实现。尽管内存大小有限，但Redis的高性能和灵活性使其成为互联网应用中不可或缺的一部分。</p>
+<h4 id="redis与mysql">redis与mysql</h4>
+<p>Redis是一个高速的内存数据库，适用于需要快速访问的场景；而MySQL是一个功能强大的关系型数据库，适用于需要复杂查询和事务处理的应用程序。</p>
+<ol>
+<li>
+<p><strong>类型与存储</strong>：</p>
+<ul>
+<li>Redis：非关系型（NoSQL），主要基于内存存储，读写速度极快。</li>
+<li>MySQL：关系型数据库（RDBMS），数据存储在磁盘上，支持复杂查询和事务处理。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据持久化</strong>：</p>
+<ul>
+<li>Redis：提供RDB和AOF两种机制，将数据从内存保存到磁盘以防止数据丢失。</li>
+<li>MySQL：通过其存储引擎（如InnoDB）的日志和事务机制来保证数据的持久性。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据结构</strong>：</p>
+<ul>
+<li>Redis：支持多种数据结构，如字符串、哈希、列表、集合和有序集合。</li>
+<li>MySQL：主要支持表结构，包含行和列，以及丰富的数据类型。</li>
+</ul>
+</li>
+<li>
+<p><strong>应用场景</strong>：</p>
+<ul>
+<li>Redis：常用于缓存、消息队列、实时数据分析等需要高速访问的场景。</li>
+<li>MySQL：适用于需要复杂查询、事务处理和数据持久化的应用程序数据库。</li>
+</ul>
+</li>
+<li>
+<p><strong>性能</strong>：</p>
+<ul>
+<li>Redis：因为数据存储在内存中，所以性能极高，适合处理大量并发读写操作。</li>
+<li>MySQL：虽然性能也很强，但受限于磁盘I/O，相对于Redis来说读写速度较慢。</li>
+</ul>
+</li>
+</ol>
+<h4 id="Redis-和-MongoDB">Redis 和 MongoDB</h4>
+<p>MongoDB 和 Redis 都是 NoSQL，采用结构型数据存储，二者之间的主要区别如下所示：</p>
+<ol>
+<li>
+<p><strong>性能</strong>：</p>
+<ul>
+<li>Redis：作为一个内存数据库，其性能非常高，特别是对于读写操作。它适用于需要高速缓存和实时数据处理的场景。</li>
+<li>MongoDB：虽然性能也很强，但更侧重于处理大规模数据集和复杂查询。它通过索引、查询优化和分片等技术来提高性能。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据结构与查询</strong>：</p>
+<ul>
+<li>Redis：支持多种数据结构，如字符串、哈希、列表、集合和有序集合，但查询语言相对简单。</li>
+<li>MongoDB：使用类似于JSON的BSON格式存储数据，支持丰富的查询语言和索引，操作灵活且强大，最接近于关系数据库。</li>
+</ul>
+</li>
+<li>
+<p><strong>存储与内存管理</strong>：</p>
+<ul>
+<li>Redis：主要依赖内存存储数据，但提供了虚拟内存功能（尽管在现代版本中可能不再常用）以突破物理内存限制。</li>
+<li>MongoDB：将数据存储在磁盘上，但会利用内存缓存热点数据。它依赖操作系统的内存管理机制。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据持久化与恢复</strong>：</p>
+<ul>
+<li>Redis：通过RDB快照和AOF日志来确保数据的持久化，但AOF可能会影响访问性能。</li>
+<li>MongoDB：采用oplog（操作日志）来支持复制和恢复操作，增强了数据的可靠性。</li>
+</ul>
+</li>
+<li>
+<p><strong>事务支持</strong>：</p>
+<ul>
+<li>Redis：支持简单的事务，通过MULTI、EXEC等命令保证一系列命令的原子性执行。</li>
+<li>MongoDB：从4.0版本开始支持多文档事务，能够在单个复制集的多个集合中保证数据的一致性。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据分析</strong>：</p>
+<ul>
+<li>Redis：本身不支持数据分析功能，但可以与其他数据分析工具集成。</li>
+<li>MongoDB：内置MapReduce框架，支持在数据库内部执行大规模数据分析。</li>
+</ul>
+</li>
+<li>
+<p><strong>应用场景</strong>：</p>
+<ul>
+<li>Redis：适用于需要高速缓存、实时数据处理、消息队列等场景，适合处理较小到中等规模的数据集。</li>
+<li>MongoDB：适合处理大规模数据集，支持复杂查询、数据分析和高可扩展性，常用于Web应用的后端数据库、日志分析等场景。</li>
+</ul>
+</li>
+</ol>
+<h4 id="Redis支持的几种数据">Redis支持的几种数据</h4>
+<p>Redis的常用数据类型主要包括五种基础数据类型和三种特殊数据类型。以下是这些数据类型的详细概述：</p>
+<h5 id="五种基础数据类型">五种基础数据类型</h5>
+<ol>
+<li>
+<p><strong>String（字符串）</strong></p>
+<ul>
+<li><strong>简介</strong>：String是Redis中最基础且最常用的数据类型。它是二进制安全的，可以用来存储任何类型的数据，如字符串、整数、浮点数、二进制数据（如图片、音频、视频等）的编码或路径，以及序列化后的对象。</li>
+<li><strong>应用场景</strong>：常用于缓存、计数器、共享session、限速等场景。</li>
+<li><strong>常用命令</strong>：包括SET、GET、INCR、DECR、MSET、MGET等。</li>
+</ul>
+</li>
+<li>
+<p><strong>List（列表）</strong></p>
+<ul>
+<li><strong>简介</strong>：List是一个简单的字符串列表，按照插入顺序排序。列表中的元素可以是有序的、唯一的，也可以重复。Redis的List底层实现是双向链表或QuickList（Redis 3.2后引入）。</li>
+<li><strong>应用场景</strong>：可以用于实现队列、栈、分页查询等功能。</li>
+<li><strong>常用命令</strong>：包括RPUSH、LPUSH、LPOP、RPOP、LRANGE等。</li>
+</ul>
+</li>
+<li>
+<p><strong>Set（集合）</strong></p>
+<ul>
+<li><strong>简介</strong>：Set是string类型的无序集合，集合成员是唯一的，不允许重复。Redis的Set是通过哈希表实现的，因此添加、删除和查找的复杂度都是O(1)。</li>
+<li><strong>应用场景</strong>：常用于实现去重、交集、并集、差集等操作。</li>
+<li><strong>常用命令</strong>：包括SADD、SREM、SMEMBERS、SINTER、SUNION等。</li>
+</ul>
+</li>
+<li>
+<p><strong>Hash（哈希）</strong></p>
+<ul>
+<li><strong>简介</strong>：Hash是string类型的field和value的映射表，特别适合用于存储对象。Redis的Hash内部实现类似于JDK 1.8前的HashMap，是数组加链表的组合。</li>
+<li><strong>应用场景</strong>：常用于存储结构化数据，如用户信息、购物车等。</li>
+<li><strong>常用命令</strong>：包括HSET、HGET、HMSET、HMGET、HDEL等。</li>
+</ul>
+</li>
+<li>
+<p><strong>Zset（有序集合）</strong></p>
+<ul>
+<li><strong>简介</strong>：Zset和Set一样也是string类型元素的集合，且不允许重复的成员。不同的是，Zset的每个元素都会关联一个double类型的分数，Redis正是通过分数来为集合中的成员进行从小到大的排序。</li>
+<li><strong>应用场景</strong>：常用于实现排行榜、带权重的集合等功能。</li>
+<li><strong>常用命令</strong>：包括ZADD、ZREM、ZRANGE、ZREVRANGE等。</li>
+</ul>
+</li>
+</ol>
+<h5 id="三种特殊数据类型">三种特殊数据类型</h5>
+<ol>
+<li>
+<p><strong>HyperLogLog</strong></p>
+<ul>
+<li><strong>简介</strong>：HyperLogLog是一种用于基数统计的数据类型，能够在有限的空间内完成独立总数的统计，并且误差率极低。</li>
+<li><strong>应用场景</strong>：适用于统计UV（独立访客数）等场景。</li>
+</ul>
+</li>
+<li>
+<p><strong>Bitmap</strong></p>
+<ul>
+<li><strong>简介</strong>：Bitmap是通过操作一系列的bit位来进行记录的数据类型，其最大优点是空间节省。</li>
+<li><strong>应用场景</strong>：常用于统计用户是否在线、用户活跃度等场景。</li>
+</ul>
+</li>
+<li>
+<p><strong>Geospatial</strong></p>
+<ul>
+<li><strong>简介</strong>：Geospatial是Redis 3.2版本引入的，用于地理位置信息的数据类型。</li>
+<li><strong>应用场景</strong>：适用于实现如附近的人、地理位置查询等功能。</li>
+</ul>
+</li>
+</ol>
+<h4 id="redis的定时机制实现">redis的定时机制实现</h4>
+<p>Redis 服务器是一个 事件驱动程序，服务器需要处理以下两类事件：文件事件 （服务器对套接字操作的抽象）和 时间事件（服务器对定时操作的抽象）。Redis 的定时机制就是借助时间事件实现的。</p>
+<p>一个时间事件主要由以下三个属性组成：id，时间事件标识号；when，记录时间事件的到达时间；timeProc，时间事件处理器，当时间事件到达时，服务器就会调用相应的处理器来处理时间。一个时间事件根据时间事件处理器的返回值来判断是定时事件还是周期性事件。</p>
+<h4 id="单线程-Redis，为什么如此高效">单线程 Redis，为什么如此高效</h4>
+<p>虽然 Redis 文件事件处理器以单线程方式运行，但是通过使用 I/O 多路复用程序 来监听多个套接字，文件事件处理器既实现了高性能的网络通信模型，又可以很好地与 Redis 服务器中其他同样以单线程运行的模块进行对接，这保持了 Redis 内部单线程设计的简单性。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://longjinw.github.io">龙金伟</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://longjinw.github.io/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94redis%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/">https://longjinw.github.io/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94redis%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://longjinw.github.io" target="_blank">龙锦</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></div><div class="post_share"><div class="social-share" data-image="/image/T2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E5%B8%B8%E7%94%A8SQL%E8%AF%AD%E5%8F%A5/" title="数据库——常用SQL语句"><img class="cover" src="/image/T1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数据库——常用SQL语句</div></div></a></div><div class="next-post pull-right"><a href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="数据库——数据库性能优化"><img class="cover" src="/image/T1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">数据库——数据库性能优化</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" title="数据库——事务管理"><img class="cover" src="/image/T1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-06</div><div class="title">数据库——事务管理</div></div></a></div><div><a href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E5%B8%B8%E7%94%A8SQL%E8%AF%AD%E5%8F%A5/" title="数据库——常用SQL语句"><img class="cover" src="/image/T1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-06</div><div class="title">数据库——常用SQL语句</div></div></a></div><div><a href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="数据库——数据库性能优化"><img class="cover" src="/image/T1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-06</div><div class="title">数据库——数据库性能优化</div></div></a></div><div><a href="/2024/07/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E7%B4%A2%E5%BC%95/" title="数据库——索引"><img class="cover" src="/image/T2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-04</div><div class="title">数据库——索引</div></div></a></div><div><a href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E9%94%81/" title="数据库——锁"><img class="cover" src="/image/T2.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-06</div><div class="title">数据库——锁</div></div></a></div><div><a href="/2024/07/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" title="数据库基础概念"><img class="cover" src="/image/T1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-04</div><div class="title">数据库基础概念</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/image/luogic.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">龙金伟</div><div class="author-info__description">买不起茅台 </div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/longjinw"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/longjinw" target="_blank" title="Github"><i class="fab fa-github" style="color: #hdhfbb;"></i></a><a class="social-icon" href="https://blog.csdn.net/longer_net" target="_blank" title="csdn"><i class="fa-regular fa-envelope" style="color: #000000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#redis"><span class="toc-number">1.</span> <span class="toc-text">redis</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#redis%E4%B8%8Emysql"><span class="toc-number">2.</span> <span class="toc-text">redis与mysql</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Redis-%E5%92%8C-MongoDB"><span class="toc-number">3.</span> <span class="toc-text">Redis 和 MongoDB</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Redis%E6%94%AF%E6%8C%81%E7%9A%84%E5%87%A0%E7%A7%8D%E6%95%B0%E6%8D%AE"><span class="toc-number">4.</span> <span class="toc-text">Redis支持的几种数据</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%94%E7%A7%8D%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.1.</span> <span class="toc-text">五种基础数据类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E7%89%B9%E6%AE%8A%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.2.</span> <span class="toc-text">三种特殊数据类型</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#redis%E7%9A%84%E5%AE%9A%E6%97%B6%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">redis的定时机制实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B-Redis%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A6%82%E6%AD%A4%E9%AB%98%E6%95%88"><span class="toc-number">6.</span> <span class="toc-text">单线程 Redis，为什么如此高效</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="数据库——数据库性能优化"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库——数据库性能优化"/></a><div class="content"><a class="title" href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="数据库——数据库性能优化">数据库——数据库性能优化</a><time datetime="2024-07-06T04:26:21.000Z" title="发表于 2024-07-06 12:26:21">2024-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94redis%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/" title="数据库——redis常见面试题"><img src="/image/T2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库——redis常见面试题"/></a><div class="content"><a class="title" href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94redis%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98/" title="数据库——redis常见面试题">数据库——redis常见面试题</a><time datetime="2024-07-06T04:26:01.000Z" title="发表于 2024-07-06 12:26:01">2024-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E5%B8%B8%E7%94%A8SQL%E8%AF%AD%E5%8F%A5/" title="数据库——常用SQL语句"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库——常用SQL语句"/></a><div class="content"><a class="title" href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E5%B8%B8%E7%94%A8SQL%E8%AF%AD%E5%8F%A5/" title="数据库——常用SQL语句">数据库——常用SQL语句</a><time datetime="2024-07-06T04:25:36.000Z" title="发表于 2024-07-06 12:25:36">2024-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E9%94%81/" title="数据库——锁"><img src="/image/T2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库——锁"/></a><div class="content"><a class="title" href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E9%94%81/" title="数据库——锁">数据库——锁</a><time datetime="2024-07-06T04:25:15.000Z" title="发表于 2024-07-06 12:25:15">2024-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" title="数据库——事务管理"><img src="/image/T1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库——事务管理"/></a><div class="content"><a class="title" href="/2024/07/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E2%80%94%E2%80%94%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" title="数据库——事务管理">数据库——事务管理</a><time datetime="2024-07-06T03:55:39.000Z" title="发表于 2024-07-06 11:55:39">2024-07-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By 龙金伟</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/xiabo2/CDN@latest/fishes.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
